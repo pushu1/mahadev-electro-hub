@@ -16,6 +16,7 @@ export default function ReelsShowcase() {
   const [isInViewport, setIsInViewport] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [isPausedHover, setIsPausedHover] = useState(false);
+  const [videoPlayingMap, setVideoPlayingMap] = useState({});
 
   // Per-card playback state: { [reelId]: { isPlaying: boolean, isMuted: boolean } }
   const [mediaState, setMediaState] = useState(() => {
@@ -362,11 +363,16 @@ export default function ReelsShowcase() {
                       loop
                       playsInline
                       preload="none"
+                      onPlaying={() => setVideoPlayingMap(p => ({ ...p, [reel.id]: true }))}
+                      onWaiting={() => setVideoPlayingMap(p => ({ ...p, [reel.id]: false }))}
                       onPlay={() => setMediaState(p => ({ ...p, [reel.id]: { ...(p[reel.id] || {}), isPlaying: true } }))}
-                      onPause={() => setMediaState(p => ({ ...p, [reel.id]: { ...(p[reel.id] || {}), isPlaying: false } }))}
+                      onPause={() => {
+                        setVideoPlayingMap(p => ({ ...p, [reel.id]: false }));
+                        setMediaState(p => ({ ...p, [reel.id]: { ...(p[reel.id] || {}), isPlaying: false } }));
+                      }}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      className={`absolute inset-0 w-full h-full object-cover rounded-xl transition-opacity duration-300 ${
-                        reelState.isPlaying ? 'opacity-100' : 'opacity-0'
+                      className={`absolute inset-0 w-full h-full object-cover rounded-xl transition-opacity duration-500 ${
+                        videoPlayingMap[reel.id] ? 'opacity-100' : 'opacity-0 pointer-events-none'
                       }`}
                     />
                   )}
