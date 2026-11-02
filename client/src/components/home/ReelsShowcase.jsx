@@ -347,8 +347,12 @@ export default function ReelsShowcase() {
                   <img
                     src={posterSrc}
                     alt={reel.category || 'Reel Media'}
-                    loading="lazy"
+                    loading="eager"
                     decoding="async"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = '/images/categories/zatka-machines.png';
+                    }}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     className="w-full h-full object-cover rounded-xl transition-transform duration-700 group-hover:scale-105"
                   />
