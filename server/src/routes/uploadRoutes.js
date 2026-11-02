@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { requireAdmin } from '../middleware/auth.js';
+import { uploadFile, getStorageStatus, isS3Configured } from '../services/storageService.js';
 
 const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
@@ -14,18 +15,18 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Multer Storage Configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    const cleanBase = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_');
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, `${cleanBase}-${uniqueSuffix}${ext}`);
-  }
-});
+// Memory storage when S3/Neon object storage is active, disk storage otherwise
+const storage = isS3Configured
+  ? multer.memoryStorage()
+  : multer.diskStorage({
+      destination: (req, file, cb) => cb(null, uploadDir),
+      filename: (req, file, cb) => {
+        const ext = path.extname(file.originalname).toLowerCase();
+        const cleanBase = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_');
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        cb(null, `${cleanBase}-${uniqueSuffix}${ext}`);
+      }
+    });
 
 const fileFilter = (req, file, cb) => {
   const allowed = /jpeg|jpg|png|webp|gif|svg/;
@@ -61,19 +62,27 @@ const videoUpload = multer({
   fileFilter: videoFileFilter,
 });
 
+// Diagnostic endpoint: get storage status
+router.get('/status', (req, res) => {
+  res.json({
+    success: true,
+    storage: getStorageStatus(),
+  });
+});
+
 // Admin upload single video
-router.post('/video', requireAdmin, videoUpload.single('video'), (req, res) => {
+router.post('/video', requireAdmin, videoUpload.single('video'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ success: false, message: 'Please select a video file to upload.' });
     }
 
-    const fileUrl = `/uploads/${req.file.filename}`;
+    const fileUrl = await uploadFile(req.file, 'reels');
     res.json({
       success: true,
       message: 'Video uploaded successfully.',
       fileUrl,
-      fileName: req.file.filename,
+      fileName: req.file.originalname,
       size: req.file.size,
       mimetype: req.file.mimetype,
     });
@@ -83,18 +92,18 @@ router.post('/video', requireAdmin, videoUpload.single('video'), (req, res) => {
 });
 
 // Admin upload single image
-router.post('/', requireAdmin, upload.single('image'), (req, res) => {
+router.post('/', requireAdmin, upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ success: false, message: 'Please select an image file to upload.' });
     }
 
-    const fileUrl = `/uploads/${req.file.filename}`;
+    const fileUrl = await uploadFile(req.file, 'products');
     res.json({
       success: true,
       message: 'Image uploaded successfully.',
       fileUrl,
-      fileName: req.file.filename,
+      fileName: req.file.originalname,
       size: req.file.size
     });
   } catch (err) {
@@ -103,13 +112,18 @@ router.post('/', requireAdmin, upload.single('image'), (req, res) => {
 });
 
 // Admin upload multiple images
-router.post('/multiple', requireAdmin, upload.array('images', 8), (req, res) => {
+router.post('/multiple', requireAdmin, upload.array('images', 8), async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ success: false, message: 'Please select image files to upload.' });
     }
 
-    const fileUrls = req.files.map(f => `/uploads/${f.filename}`);
+    const fileUrls = [];
+    for (const f of req.files) {
+      const url = await uploadFile(f, 'products');
+      fileUrls.push(url);
+    }
+
     res.json({
       success: true,
       message: `${req.files.length} images uploaded successfully.`,

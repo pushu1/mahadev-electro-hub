@@ -20,9 +20,27 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Middlewares - Robust CORS supporting browser credentials & local dev
+// Middlewares - Robust CORS supporting browser credentials, Vercel preview domains & production
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://127.0.0.1:5173',
+  config.clientOrigin,
+].filter(Boolean);
+
 app.use(cors({
-  origin: true, // Echoes request origin to support credentials cleanly
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.endsWith('.vercel.app') ||
+      origin.includes('mahadev') ||
+      origin.includes('localhost')
+    ) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
@@ -31,12 +49,23 @@ app.use(cors({
 app.use(express.json({ limit: '25mb' }));
 app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 
+// Ensure database is initialized before handling requests (crucial for serverless cold-starts)
+app.use(async (req, res, next) => {
+  try {
+    await initializeDatabase();
+  } catch (err) {
+    // Handled by connection diagnostics
+  }
+  next();
+});
+
 // Static uploads folder
 const uploadsPath = path.join(__dirname, '../public/uploads');
 app.use('/uploads', express.static(uploadsPath));
 
 // Root & API Base Endpoint - Fixes "Cannot GET /api"
-app.get(['/', '/api'], (req, res) => {
+app.get(['/', '/api'], async (req, res) => {
+  await initializeDatabase();
   const dbStatus = getDatabaseStatus();
   res.json({
     name: 'Mahadev Electro Hub REST API',
@@ -66,7 +95,8 @@ app.get(['/', '/api'], (req, res) => {
 });
 
 // Health & Database Diagnostics Endpoint
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
+  await initializeDatabase();
   const dbStatus = getDatabaseStatus();
   const isHealthy = config.nodeEnv !== 'production' || dbStatus.isPostgresConnected;
   res.status(isHealthy ? 200 : 503).json({

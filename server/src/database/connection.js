@@ -21,9 +21,9 @@ export async function initializeDatabase() {
         },
       });
 
-      // Adaptive timeout: 5000ms for cloud databases (Neon, Supabase, Render), 600ms for localhost
+      // Adaptive timeout: 10000ms for cloud databases (Neon, Supabase, Render), 600ms for localhost
       const isRemoteDb = config.databaseUrl && !config.databaseUrl.includes('localhost') && !config.databaseUrl.includes('127.0.0.1');
-      const timeoutMs = isRemoteDb ? 6000 : 600;
+      const timeoutMs = isRemoteDb ? 10000 : 600;
 
       await Promise.race([
         prisma.$queryRaw`SELECT 1`,
