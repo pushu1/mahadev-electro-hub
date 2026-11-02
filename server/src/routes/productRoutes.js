@@ -249,7 +249,9 @@ router.post('/', requireAdmin, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Selected Category ID does not exist in database.' });
     }
 
-    const generatedSlug = (slug || title_en.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')) + '-' + Math.floor(100 + Math.random() * 900);
+    const baseSlug = (slug || title_en.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')).trim();
+    const existingSlug = await prisma.product.findUnique({ where: { slug: baseSlug } });
+    const generatedSlug = existingSlug ? `${baseSlug}-${Math.floor(100 + Math.random() * 900)}` : baseSlug;
     const generatedSku = sku || `MEH-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const newProduct = await prisma.product.create({
