@@ -21,9 +21,9 @@ export async function initializeDatabase() {
         },
       });
 
-      // Adaptive timeout: 10000ms for cloud databases (Neon, Supabase, Render), 600ms for localhost
+      // Adaptive timeout: 15000ms for cloud databases (Neon, Supabase, Render), 600ms for localhost
       const isRemoteDb = config.databaseUrl && !config.databaseUrl.includes('localhost') && !config.databaseUrl.includes('127.0.0.1');
-      const timeoutMs = isRemoteDb ? 10000 : 600;
+      const timeoutMs = isRemoteDb ? 15000 : 600;
 
       await Promise.race([
         prisma.$queryRaw`SELECT 1`,
@@ -36,6 +36,7 @@ export async function initializeDatabase() {
     } catch (err) {
       isPostgresConnected = false;
       postgresErrorReason = err.message;
+      initPromise = null; // Reset promise so next request can retry
       if (config.nodeEnv === 'production') {
         console.error(`🚨 [CRITICAL DATABASE ERROR - PRODUCTION] PostgreSQL is unreachable: ${err.message}`);
         console.error('🚨 Production mode strictly requires Neon PostgreSQL. Running on local JSON in production is NOT permitted.');
