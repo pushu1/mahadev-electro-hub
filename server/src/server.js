@@ -104,7 +104,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Server
+// Start Server (Direct execution mode)
 async function startServer() {
   await initializeDatabase();
 
@@ -117,4 +117,10 @@ async function startServer() {
   });
 }
 
-startServer();
+// Automatically start listener when run directly (local node execution)
+if (!process.env.VERCEL) {
+  startServer();
+}
+
+// Export for serverless runtime (Vercel)
+export default app;
