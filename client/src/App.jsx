@@ -46,7 +46,7 @@ const ReelsManagementPage = lazy(() => import('./pages/admin/ReelsManagementPage
 // Minimalist theme-compliant loading skeleton
 const PageLoadingFallback = () => (
   <div className="min-h-[60vh] bg-[#FAF9F6] flex items-center justify-center" aria-label="Loading page">
-    <div className="w-8 h-8 rounded-full border-2 border-[#A8BFA3]/40 border-t-[#355E3B] animate-spin" />
+    <div className="w-8 h-8 rounded-full border-2 border-[#356B3D]/40 border-t-[#24532F] animate-spin" />
   </div>
 );
 

@@ -47,31 +47,31 @@ export default function PromotionalBanner() {
       className="py-16 md:py-20 bg-[#FAF9F6] select-none relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#F3F0E6] via-[#FAF9F6] to-[#EAE6D8] text-[#26352A] p-8 sm:p-12 md:p-16 border border-[#E2E6DC] shadow-xl">
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#F3F0E6] via-[#FAF9F6] to-[#EAE6D8] text-[#171C17] p-8 sm:p-12 md:p-16 border border-[#D5DDD2] shadow-xl">
           {/* Subtle Organic Ambient Aura */}
-          <div className="absolute right-0 top-0 bottom-0 w-2/3 opacity-20 bg-radial from-[#A8BFA3]/30 via-[#DCE8D5]/15 to-transparent pointer-events-none" />
-          <div className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-[#A8BFA3]/20 blur-3xl pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-2/3 opacity-20 bg-radial from-[#356B3D]/30 via-[#DCE8D5]/15 to-transparent pointer-events-none" />
+          <div className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-[#356B3D]/20 blur-3xl pointer-events-none" />
 
           {/* Subtle Grid lines */}
-          <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#26352A_1px,transparent_1px),linear-gradient(to_bottom,#26352A_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none" />
+          <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#171C17_1px,transparent_1px),linear-gradient(to_bottom,#171C17_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none" />
 
           <div className="relative z-10 max-w-2xl space-y-5">
             {/* Tag Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#DCE8D5]/70 border border-[#A8BFA3]/50 text-[#294A30] text-xs font-extrabold tracking-widest uppercase shadow-sm">
-              <Zap className="w-3.5 h-3.5 text-[#355E3B] animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#DCE8D5]/70 border border-[#356B3D]/50 text-[#183D22] text-xs font-extrabold tracking-widest uppercase shadow-sm">
+              <Zap className="w-3.5 h-3.5 text-[#24532F] animate-pulse" />
               <span>{c.tag}</span>
             </div>
 
             {/* Headline */}
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-extrabold leading-tight text-[#26352A] tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-extrabold leading-tight text-[#171C17] tracking-tight">
               {c.headline1}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#26352A] via-[#355E3B] to-[#2E7D46]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#171C17] via-[#24532F] to-[#2E7D46]">
                 {c.headlineAccent}
               </span>
             </h2>
 
             {/* Description */}
-            <p className="text-sm sm:text-base text-[#50574F] leading-relaxed font-normal max-w-xl">
+            <p className="text-sm sm:text-base text-[#252A25] leading-relaxed font-normal max-w-xl">
               {c.description}
             </p>
 
@@ -79,7 +79,7 @@ export default function PromotionalBanner() {
             <div className="pt-2 flex flex-wrap items-center gap-4">
               <Link
                 to="/category/zatka-machines"
-                className="px-6 py-3.5 rounded-xl bg-[#355E3B] hover:bg-[#294A30] text-white font-extrabold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 group cursor-pointer"
+                className="px-6 py-3.5 rounded-xl bg-[#24532F] hover:bg-[#183D22] text-white font-extrabold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 group cursor-pointer"
               >
                 <span>{c.ctaPrimary}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
@@ -87,17 +87,17 @@ export default function PromotionalBanner() {
 
               <Link
                 to="/category/solar-street-lights"
-                className="px-5 py-3.5 rounded-xl border border-[#A8BFA3] hover:border-[#355E3B] bg-[#FFFFFF] text-[#26352A] font-semibold text-sm hover:bg-[#F3F0E6] transition-all flex items-center gap-2 cursor-pointer shadow-xs"
+                className="px-5 py-3.5 rounded-xl border border-[#356B3D] hover:border-[#24532F] bg-[#FFFFFF] text-[#171C17] font-semibold text-sm hover:bg-[#F3F0E6] transition-all flex items-center gap-2 cursor-pointer shadow-xs"
               >
-                <Sun className="w-4 h-4 text-[#355E3B]" />
+                <Sun className="w-4 h-4 text-[#24532F]" />
                 <span>{c.ctaSecondary}</span>
               </Link>
             </div>
 
             {/* Trust Footnote */}
-            <div className="pt-4 flex flex-wrap items-center gap-3 sm:gap-6 text-xs text-[#50574F] border-t border-[#E2E6DC]">
+            <div className="pt-4 flex flex-wrap items-center gap-3 sm:gap-6 text-xs text-[#252A25] border-t border-[#D5DDD2]">
               <span className="flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#355E3B]" />
+                <ShieldCheck className="w-3.5 h-3.5 text-[#24532F]" />
                 <span>{c.packingNote}</span>
               </span>
               <span>{c.dispatchNote}</span>

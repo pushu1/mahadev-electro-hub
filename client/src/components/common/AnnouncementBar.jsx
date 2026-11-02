@@ -56,16 +56,16 @@ export default function AnnouncementBar() {
     <div key={keyPrefix} className="inline-flex items-center gap-8 px-6 shrink-0">
       {marqueeItems.map((item, idx) => (
         <span key={`${keyPrefix}-${idx}`} className="inline-flex items-center gap-3">
-          <span className={item.highlight ? 'text-[#355E3B] font-bold' : 'text-[#26352A] font-medium'}>
+          <span className={item.highlight ? 'text-[#24532F] font-bold' : 'text-[#171C17] font-medium'}>
             {item.text}
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#8BA889]" aria-hidden="true" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#24532F]" aria-hidden="true" />
         </span>
       ))}
       {customText && (
         <span className="inline-flex items-center gap-3">
-          <span className="text-[#26352A] font-medium hover:text-[#355E3B] transition-colors">{customText}</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#8BA889]" aria-hidden="true" />
+          <span className="text-[#171C17] font-medium hover:text-[#24532F] transition-colors">{customText}</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#24532F]" aria-hidden="true" />
         </span>
       )}
     </div>
@@ -75,7 +75,7 @@ export default function AnnouncementBar() {
     <aside
       role="region"
       aria-label="Store Announcement"
-      className="w-full h-[30px] sm:h-[32px] md:h-[34px] bg-[#F3F0E6] border-b border-[#E2E6DC] text-[11px] sm:text-xs font-normal tracking-wide flex items-center overflow-hidden select-none relative z-50 text-[#26352A]"
+      className="w-full h-[30px] sm:h-[32px] md:h-[34px] bg-[#F3F0E6] border-b border-[#D5DDD2] text-[11px] sm:text-xs font-normal tracking-wide flex items-center overflow-hidden select-none relative z-50 text-[#171C17]"
     >
       <Link
         to={destinationLink}

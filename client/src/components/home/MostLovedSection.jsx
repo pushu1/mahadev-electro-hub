@@ -228,7 +228,7 @@ export default function MostLovedSection() {
       className="relative w-full h-[180vh] lg:h-[190vh] bg-[#FAF9F6] select-none overflow-visible"
     >
       {/* Ambient Sage and Mint glow accents */}
-      <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-[#A8BFA3]/25 blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-[#356B3D]/25 blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 -right-20 w-80 h-80 rounded-full bg-[#DCE8D5]/35 blur-3xl pointer-events-none" />
 
       {/* ======================================================================
@@ -247,10 +247,10 @@ export default function MostLovedSection() {
             1. SECTION HEADER: Centered Title & Subtitle
             ==================================================================== */}
         <div className="w-full text-center shrink-0 mb-3 sm:mb-5">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-black tracking-tight text-[#26352A]">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-black tracking-tight text-[#171C17]">
             {titleText}
           </h2>
-          <p className="text-xs sm:text-sm text-[#50574F] font-medium mt-1">
+          <p className="text-xs sm:text-sm text-[#252A25] font-medium mt-1">
             {subtitleText}
           </p>
         </div>
@@ -273,12 +273,12 @@ export default function MostLovedSection() {
               >
                 {/* Rectangular Card Container */}
                 <div
-                  className="relative w-full h-full p-3.5 sm:p-4 rounded-xl bg-[#FFFFFF] border border-[#E2E6DC] hover:border-[#355E3B] shadow-md hover:shadow-xl transition-all duration-300 ease-out flex flex-col justify-between group cursor-pointer hover:scale-[1.02]"
+                  className="relative w-full h-full p-3.5 sm:p-4 rounded-xl bg-[#FFFFFF] border border-[#D5DDD2] hover:border-[#24532F] shadow-md hover:shadow-xl transition-all duration-300 ease-out flex flex-col justify-between group cursor-pointer hover:scale-[1.02]"
                 >
                   {/* Image Container with rounded corners ONLY on the product image */}
                   <Link
                     to={item.link}
-                    className="block relative aspect-square w-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#F3F0E6] border border-[#E2E6DC] mb-3.5 group-hover:border-[#8BA889] transition-colors"
+                    className="block relative aspect-square w-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#F3F0E6] border border-[#D5DDD2] mb-3.5 group-hover:border-[#24532F] transition-colors"
                     title={item.title}
                   >
                     <img
@@ -293,7 +293,7 @@ export default function MostLovedSection() {
                   {/* Rectangular Forest Green Button: "EXPLORE NOW →" */}
                   <Link
                     to={item.link}
-                    className="w-full h-11 inline-flex items-center justify-center gap-2 px-4 rounded-lg bg-[#355E3B] hover:bg-[#294A30] text-[#FFFFFF] font-heading font-extrabold text-xs tracking-wider uppercase shadow-sm hover:shadow-md transition-all duration-300 active:scale-95 group/btn"
+                    className="w-full h-11 inline-flex items-center justify-center gap-2 px-4 rounded-lg bg-[#24532F] hover:bg-[#183D22] text-[#FFFFFF] font-heading font-extrabold text-xs tracking-wider uppercase shadow-sm hover:shadow-md transition-all duration-300 active:scale-95 group/btn"
                   >
                     <span>{ctaButtonText}</span>
                     <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />
@@ -330,11 +330,11 @@ export default function MostLovedSection() {
                 aria-hidden={!isActive}
               >
                 {/* Mobile Rectangular Card Frame */}
-                <div className="w-full h-full p-3.5 xs:p-4 rounded-xl bg-[#FFFFFF] border border-[#E2E6DC] shadow-lg flex flex-col justify-between">
+                <div className="w-full h-full p-3.5 xs:p-4 rounded-xl bg-[#FFFFFF] border border-[#D5DDD2] shadow-lg flex flex-col justify-between">
                   {/* Product Image Container */}
                   <Link
                     to={item.link}
-                    className="block relative aspect-square w-full rounded-xl xs:rounded-2xl overflow-hidden bg-[#F3F0E6] border border-[#E2E6DC] mb-3.5"
+                    className="block relative aspect-square w-full rounded-xl xs:rounded-2xl overflow-hidden bg-[#F3F0E6] border border-[#D5DDD2] mb-3.5"
                     title={item.title}
                   >
                     <img
@@ -349,7 +349,7 @@ export default function MostLovedSection() {
                   {/* Full-Width Mobile Forest Green Button */}
                   <Link
                     to={item.link}
-                    className="w-full h-11 inline-flex items-center justify-center gap-2 px-4 rounded-lg bg-[#355E3B] hover:bg-[#294A30] text-[#FFFFFF] font-heading font-extrabold text-xs tracking-wider uppercase shadow-sm active:scale-95"
+                    className="w-full h-11 inline-flex items-center justify-center gap-2 px-4 rounded-lg bg-[#24532F] hover:bg-[#183D22] text-[#FFFFFF] font-heading font-extrabold text-xs tracking-wider uppercase shadow-sm active:scale-95"
                   >
                     <span>{ctaButtonText}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -361,8 +361,8 @@ export default function MostLovedSection() {
         </div>
 
         {/* Scroll hint & stage progress indicator */}
-        <div className="text-center shrink-0 pt-1 flex items-center justify-center gap-2 text-[11px] text-[#7A8277] font-medium">
-          <span className="inline-block animate-bounce text-[#355E3B]">↓</span>
+        <div className="text-center shrink-0 pt-1 flex items-center justify-center gap-2 text-[11px] text-[#596358] font-medium">
+          <span className="inline-block animate-bounce text-[#24532F]">↓</span>
           <span>Scroll to explore best sellers ({Math.round(scrollProgress * 100)}%)</span>
         </div>
       </div>

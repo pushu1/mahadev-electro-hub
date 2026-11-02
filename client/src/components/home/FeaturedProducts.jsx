@@ -104,28 +104,28 @@ export default function FeaturedProducts({ products: initialProducts = [] }) {
     <section
       ref={sectionRef}
       aria-label="Featured Products"
-      className="py-12 md:py-16 bg-[#FAF9F6] border-t border-b border-[#E2E6DC] select-none relative overflow-hidden"
+      className="py-12 md:py-16 bg-[#FAF9F6] border-t border-b border-[#D5DDD2] select-none relative overflow-hidden"
     >
       {/* Subtle Ambient Glow */}
-      <div className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-[#A8BFA3]/20 blur-3xl pointer-events-none" />
+      <div className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-[#356B3D]/20 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-24 -right-24 w-80 h-80 rounded-full bg-[#DCE8D5]/30 blur-3xl pointer-events-none" />
 
       {/* Main Container: Exact same max-w-7xl, margins, and padding as Shop by Category */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header: Aligned with Shop by Category header boundaries */}
-        <div className="flex items-center justify-between pb-4 mb-6 md:mb-8 border-b border-[#E2E6DC]">
+        <div className="flex items-center justify-between pb-4 mb-6 md:mb-8 border-b border-[#D5DDD2]">
           <div>
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#355E3B] block mb-1">
+            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#24532F] block mb-1">
               {tagTitle}
             </span>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-heading font-extrabold text-[#26352A] tracking-tight">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-heading font-extrabold text-[#171C17] tracking-tight">
               {headingTitle}
             </h2>
           </div>
 
           <Link
             to="/shop?featured=true"
-            className="text-xs md:text-sm font-bold text-[#355E3B] hover:text-[#294A30] flex items-center gap-1.5 transition-colors group shrink-0"
+            className="text-xs md:text-sm font-bold text-[#24532F] hover:text-[#183D22] flex items-center gap-1.5 transition-colors group shrink-0"
           >
             <span>{t('viewAll') || 'View All'}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />

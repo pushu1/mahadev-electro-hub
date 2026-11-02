@@ -33,19 +33,19 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] text-[#50574F] flex items-center justify-center p-4 admin-portal" data-admin="true">
-      <div className="w-full max-w-md bg-white border border-[#E2E6DC] rounded-2xl p-8 shadow-xl text-[#50574F] relative overflow-hidden">
+    <div className="min-h-screen bg-[#FAF9F6] text-[#252A25] flex items-center justify-center p-4 admin-portal" data-admin="true">
+      <div className="w-full max-w-md bg-white border border-[#D5DDD2] rounded-2xl p-8 shadow-xl text-[#252A25] relative overflow-hidden">
         {/* Top Forest Green Accent */}
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#355E3B]" />
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#24532F]" />
 
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#355E3B] bg-[#F3F0E6] mx-auto mb-3 shadow-md p-0.5">
+          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#24532F] bg-[#F3F0E6] mx-auto mb-3 shadow-md p-0.5">
             <img src="/images/logo.png" alt="Logo" className="w-full h-full object-cover rounded-full" />
           </div>
-          <h1 className="text-xl font-heading font-extrabold text-[#26352A]">
+          <h1 className="text-xl font-heading font-extrabold text-[#171C17]">
             MAHADEV ELECTRO HUB
           </h1>
-          <span className="text-[11px] font-bold uppercase tracking-widest text-[#7A8277] block mt-0.5">
+          <span className="text-[11px] font-bold uppercase tracking-widest text-[#596358] block mt-0.5">
             Admin CMS Portal • Pali, Rajasthan
           </span>
         </div>
@@ -59,7 +59,7 @@ export default function AdminLoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-[#26352A] mb-1">
+            <label className="block text-xs font-semibold text-[#171C17] mb-1">
               Admin Email Address
             </label>
             <div className="relative">
@@ -69,14 +69,14 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@mahadevelectrohub.com"
-                className="w-full pl-9 pr-3 py-2.5 bg-white text-[#26352A] text-xs border border-[#E2E6DC] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] placeholder-[#7A8277]"
+                className="w-full pl-9 pr-3 py-2.5 bg-white text-[#171C17] text-xs border border-[#D5DDD2] rounded-xl focus:outline-none focus:border-[#24532F] focus:ring-1 focus:ring-[#24532F] placeholder-[#596358]"
               />
-              <Mail className="w-4 h-4 text-[#7A8277] absolute left-3 top-3" />
+              <Mail className="w-4 h-4 text-[#596358] absolute left-3 top-3" />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#26352A] mb-1">
+            <label className="block text-xs font-semibold text-[#171C17] mb-1">
               Admin Password
             </label>
             <div className="relative">
@@ -86,16 +86,16 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-9 pr-3 py-2.5 bg-white text-[#26352A] text-xs border border-[#E2E6DC] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] placeholder-[#7A8277]"
+                className="w-full pl-9 pr-3 py-2.5 bg-white text-[#171C17] text-xs border border-[#D5DDD2] rounded-xl focus:outline-none focus:border-[#24532F] focus:ring-1 focus:ring-[#24532F] placeholder-[#596358]"
               />
-              <Lock className="w-4 h-4 text-[#7A8277] absolute left-3 top-3" />
+              <Lock className="w-4 h-4 text-[#596358] absolute left-3 top-3" />
             </div>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-[#355E3B] hover:bg-[#294A30] text-white font-bold text-xs rounded-xl active:scale-98 transition-all flex items-center justify-center gap-2 shadow-sm"
+            className="w-full py-3 bg-[#24532F] hover:bg-[#183D22] text-white font-bold text-xs rounded-xl active:scale-98 transition-all flex items-center justify-center gap-2 shadow-sm"
           >
             {loading ? (
               <span>Login Ho Raha Hai...</span>
@@ -108,7 +108,7 @@ export default function AdminLoginPage() {
           </button>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-[#E2E6DC] text-center text-[11px] text-[#7A8277]">
+        <div className="mt-8 pt-6 border-t border-[#D5DDD2] text-center text-[11px] text-[#596358]">
           <span>Protected Area. Pali, Rajasthan Store Management.</span>
         </div>
       </div>

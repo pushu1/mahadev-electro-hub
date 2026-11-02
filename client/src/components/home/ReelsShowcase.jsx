@@ -228,7 +228,7 @@ export default function ReelsShowcase() {
       id="reels-showcase"
       ref={sectionRef}
       aria-label="Reels Showcase"
-      className="relative py-10 sm:py-12 md:py-14 lg:py-16 bg-[#FAF9F6] border-t border-[#E2E6DC] overflow-hidden select-none"
+      className="relative py-10 sm:py-12 md:py-14 lg:py-16 bg-[#FAF9F6] border-t border-[#D5DDD2] overflow-hidden select-none"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         
@@ -238,26 +238,26 @@ export default function ReelsShowcase() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 opacity-100">
           <div className="max-w-2xl text-left">
             {/* Eyebrow */}
-            <div className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#355E3B] mb-3">
+            <div className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#24532F] mb-3">
               <span>{activeHeading.eyebrow}</span>
             </div>
 
             {/* Main Heading */}
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-heading font-extrabold text-[#26352A] tracking-tight leading-[1.2] mb-3">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-heading font-extrabold text-[#171C17] tracking-tight leading-[1.2] mb-3">
               {activeHeading.heading}
             </h2>
 
             {/* Subtle Animated Sage Underline */}
-            <div className="w-full h-[2.5px] bg-[#E2E6DC] rounded-full mb-4 overflow-hidden">
+            <div className="w-full h-[2.5px] bg-[#D5DDD2] rounded-full mb-4 overflow-hidden">
               <div
-                className={`h-full bg-gradient-to-r from-[#355E3B] via-[#2E7D46] to-transparent transition-all duration-1000 ease-out rounded-full ${
+                className={`h-full bg-gradient-to-r from-[#24532F] via-[#2E7D46] to-transparent transition-all duration-1000 ease-out rounded-full ${
                   hasEntered || reducedMotion ? 'w-32 sm:w-44 opacity-100' : 'w-0 opacity-0'
                 }`}
               />
             </div>
 
             {/* Description */}
-            <p className="text-sm sm:text-base text-[#50574F] leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-[#252A25] leading-relaxed font-normal">
               {activeHeading.description}
             </p>
           </div>
@@ -268,7 +268,7 @@ export default function ReelsShowcase() {
               type="button"
               onClick={scrollLeft}
               aria-label="Previous Reels"
-              className="w-10 h-10 rounded-lg bg-[#FFFFFF] border border-[#E2E6DC] hover:border-[#355E3B] text-[#26352A] hover:text-[#355E3B] flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm"
+              className="w-10 h-10 rounded-lg bg-[#FFFFFF] border border-[#D5DDD2] hover:border-[#24532F] text-[#171C17] hover:text-[#24532F] flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -276,7 +276,7 @@ export default function ReelsShowcase() {
               type="button"
               onClick={scrollRight}
               aria-label="Next Reels"
-              className="w-10 h-10 rounded-lg bg-[#FFFFFF] border border-[#E2E6DC] hover:border-[#355E3B] text-[#26352A] hover:text-[#355E3B] flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm"
+              className="w-10 h-10 rounded-lg bg-[#FFFFFF] border border-[#D5DDD2] hover:border-[#24532F] text-[#171C17] hover:text-[#24532F] flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -329,7 +329,7 @@ export default function ReelsShowcase() {
                     aspectRatio: '9 / 16',
                     transitionDelay: reducedMotion ? '0ms' : `${idx * 80}ms`,
                   }}
-                  className="snap-start shrink-0 w-[228px] sm:w-[calc((100%-32px)/3)] lg:w-[calc((100%-64px)/5)] aspect-[9/16] relative bg-[#FAF9F6] rounded-xl border border-[#E2E6DC] hover:border-[#355E3B] transition-all duration-300 overflow-hidden group cursor-pointer shadow-sm hover:shadow-xl hover:shadow-[#A8BFA3]/15 select-none opacity-100"
+                  className="snap-start shrink-0 w-[228px] sm:w-[calc((100%-32px)/3)] lg:w-[calc((100%-64px)/5)] aspect-[9/16] relative bg-[#FAF9F6] rounded-xl border border-[#D5DDD2] hover:border-[#24532F] transition-all duration-300 overflow-hidden group cursor-pointer shadow-sm hover:shadow-xl hover:shadow-[#356B3D]/15 select-none opacity-100"
                   onClick={() => isVideoUrl && togglePlay(reel.id)}
                 >
                   {/* Base Poster Media Layer - Always visible for instant crisp render with zero blank cards */}
@@ -373,7 +373,7 @@ export default function ReelsShowcase() {
                   {/* Top-Left: Category Label Only */}
                   {reel.category && (
                     <div className="absolute top-3 left-3 z-20 pointer-events-none">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-white/90 text-[#294A30] border border-[#A8BFA3]/50 backdrop-blur-md shadow-sm">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-white/90 text-[#183D22] border border-[#356B3D]/50 backdrop-blur-md shadow-sm">
                         {reel.category}
                       </span>
                     </div>
@@ -386,7 +386,7 @@ export default function ReelsShowcase() {
                         type="button"
                         onClick={(e) => toggleMute(reel.id, e)}
                         aria-label={reelState.isMuted ? 'Unmute video' : 'Mute video'}
-                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-[#355E3B] text-white border border-white/20 hover:border-[#355E3B] flex items-center justify-center transition-all duration-200 backdrop-blur-md shadow-lg active:scale-95"
+                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-[#24532F] text-white border border-white/20 hover:border-[#24532F] flex items-center justify-center transition-all duration-200 backdrop-blur-md shadow-lg active:scale-95"
                       >
                         {reelState.isMuted ? (
                           <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />

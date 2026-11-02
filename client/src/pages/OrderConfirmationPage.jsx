@@ -68,35 +68,35 @@ export default function OrderConfirmationPage() {
   }, [order, orderNumber]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#50574F] selection:bg-[#DCE8D5] selection:text-[#26352A]">
+    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#252A25] selection:bg-[#DCE8D5] selection:text-[#171C17]">
       <Header />
 
       <main className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 w-full">
-        <div className="bg-[#FFFFFF] rounded-2xl sm:rounded-3xl border border-[#E2E6DC] shadow-sm p-6 sm:p-10 text-center text-[#26352A]">
-          <div className="w-16 h-16 bg-[#DCE8D5]/70 text-[#2E7D46] border border-[#A8BFA3]/50 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xs">
+        <div className="bg-[#FFFFFF] rounded-2xl sm:rounded-3xl border border-[#D5DDD2] shadow-sm p-6 sm:p-10 text-center text-[#171C17]">
+          <div className="w-16 h-16 bg-[#DCE8D5]/70 text-[#2E7D46] border border-[#356B3D]/50 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xs">
             <CheckCircle className="w-9 h-9" />
           </div>
 
-          <span className="text-xs font-extrabold uppercase tracking-widest text-[#355E3B] block mb-2">
+          <span className="text-xs font-extrabold uppercase tracking-widest text-[#24532F] block mb-2">
             {c.badge}
           </span>
-          <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-[#26352A] mb-2.5">
+          <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-[#171C17] mb-2.5">
             {c.title}
           </h1>
-          <p className="text-xs sm:text-sm text-[#50574F] mb-8 leading-relaxed max-w-xl mx-auto font-normal">
+          <p className="text-xs sm:text-sm text-[#252A25] mb-8 leading-relaxed max-w-xl mx-auto font-normal">
             {c.desc}
           </p>
 
           {/* Order Details Card */}
-          <div className="bg-[#FAF9F6] rounded-xl p-5 sm:p-6 border border-[#E2E6DC] text-left mb-8 space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-4 border-b border-[#E2E6DC]">
+          <div className="bg-[#FAF9F6] rounded-xl p-5 sm:p-6 border border-[#D5DDD2] text-left mb-8 space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-4 border-b border-[#D5DDD2]">
               <div>
-                <span className="text-[11px] text-[#7A8277] block">{c.orderNumLabel}</span>
-                <span className="font-extrabold text-base text-[#355E3B] font-mono">{orderNumber}</span>
+                <span className="text-[11px] text-[#596358] block">{c.orderNumLabel}</span>
+                <span className="font-extrabold text-base text-[#24532F] font-mono">{orderNumber}</span>
               </div>
               <div>
-                <span className="text-[11px] text-[#7A8277] block">Payment Plan</span>
-                <span className="font-bold text-xs text-[#26352A] block">
+                <span className="text-[11px] text-[#596358] block">Payment Plan</span>
+                <span className="font-bold text-xs text-[#171C17] block">
                   {order?.paymentPlan === 'ADVANCE_25' ? '25% Advance Payment' : (order?.paymentPlan === 'ADVANCE_50' ? '50% Advance Payment' : '100% Full Payment')}
                 </span>
                 <span className="text-[10px] text-[#2E7D46] font-semibold">
@@ -104,28 +104,28 @@ export default function OrderConfirmationPage() {
                 </span>
               </div>
               <div>
-                <span className="text-[11px] text-[#7A8277] block">{c.totalAmountLabel}</span>
-                <span className="font-extrabold text-base text-[#26352A] font-mono">
+                <span className="text-[11px] text-[#596358] block">{c.totalAmountLabel}</span>
+                <span className="font-extrabold text-base text-[#171C17] font-mono">
                   ₹{(order?.totalAmount || 0).toLocaleString('en-IN')}
                 </span>
               </div>
             </div>
 
             {/* Advance vs Remaining Balance Breakdown */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-2 bg-[#FFFFFF] p-3 rounded-lg border border-[#E2E6DC] text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-2 bg-[#FFFFFF] p-3 rounded-lg border border-[#D5DDD2] text-xs">
               <div>
-                <span className="text-[#7A8277] block text-[11px]">Amount Paid Online:</span>
+                <span className="text-[#596358] block text-[11px]">Amount Paid Online:</span>
                 <span className="font-mono font-bold text-[#2E7D46] text-sm">
                   ₹{(order?.amountPaid || order?.payableNow || 0).toLocaleString('en-IN')}
                 </span>
                 {order?.advanceTransactionId && (
-                  <span className="block text-[10px] text-[#7A8277] font-mono truncate">
+                  <span className="block text-[10px] text-[#596358] font-mono truncate">
                     Ref: {order.advanceTransactionId}
                   </span>
                 )}
               </div>
               <div>
-                <span className="text-[#7A8277] block text-[11px]">Remaining Balance at Delivery:</span>
+                <span className="text-[#596358] block text-[11px]">Remaining Balance at Delivery:</span>
                 <span className={`font-mono font-bold text-sm ${order?.remainingBalance === 0 ? 'text-[#2E7D46]' : 'text-[#B7791F]'}`}>
                   {order?.remainingBalance === 0 ? '₹0 (Fully Paid - No Balance)' : `₹${(order?.remainingBalance || 0).toLocaleString('en-IN')}`}
                 </span>
@@ -138,8 +138,8 @@ export default function OrderConfirmationPage() {
             </div>
 
             {order?.shippingAddress && (
-              <div className="text-xs text-[#50574F]">
-                <span className="font-bold text-[#26352A] block mb-1">{c.deliveryAddressLabel}</span>
+              <div className="text-xs text-[#252A25]">
+                <span className="font-bold text-[#171C17] block mb-1">{c.deliveryAddressLabel}</span>
                 <p className="leading-relaxed">
                   {order.customerName} ({order.customerPhone})<br />
                   {order.shippingAddress.street}, {order.shippingAddress.city}, {order.shippingAddress.state} - {order.shippingAddress.pincode}
@@ -152,7 +152,7 @@ export default function OrderConfirmationPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               to={`/track-order?orderNumber=${encodeURIComponent(orderNumber || '')}`}
-              className="w-full sm:w-auto px-6 py-3 bg-[#355E3B] hover:bg-[#294A30] text-white font-extrabold text-xs sm:text-sm rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+              className="w-full sm:w-auto px-6 py-3 bg-[#24532F] hover:bg-[#183D22] text-white font-extrabold text-xs sm:text-sm rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
             >
               <Package className="w-4 h-4" />
               <span>{c.trackOrderBtn}</span>
@@ -160,15 +160,15 @@ export default function OrderConfirmationPage() {
 
             <Link
               to="/shop"
-              className="w-full sm:w-auto px-6 py-3 border border-[#E2E6DC] bg-[#FFFFFF] text-[#26352A] hover:bg-[#F3F0E6] hover:border-[#A8BFA3] font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-2xs"
+              className="w-full sm:w-auto px-6 py-3 border border-[#D5DDD2] bg-[#FFFFFF] text-[#171C17] hover:bg-[#F3F0E6] hover:border-[#356B3D] font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-2xs"
             >
               {c.continueShoppingBtn}
             </Link>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-[#E2E6DC] flex items-center justify-center gap-4 text-xs text-[#7A8277]">
+          <div className="mt-8 pt-6 border-t border-[#D5DDD2] flex items-center justify-center gap-4 text-xs text-[#596358]">
             <span className="flex items-center gap-1.5">
-              <Phone className="w-3.5 h-3.5 text-[#355E3B]" />
+              <Phone className="w-3.5 h-3.5 text-[#24532F]" />
               <span>{c.helpline}</span>
             </span>
           </div>

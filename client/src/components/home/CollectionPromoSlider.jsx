@@ -216,10 +216,10 @@ export default function CollectionPromoSlider() {
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
-          className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#F3F0E6] via-[#FAF9F6] to-[#E8EEE3] text-[#26352A] border border-[#E2E6DC] shadow-xl"
+          className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#F3F0E6] via-[#FAF9F6] to-[#E8EEE3] text-[#171C17] border border-[#D5DDD2] shadow-xl"
         >
           {/* Subtle Ambient Glow */}
-          <div className="absolute -top-28 -left-28 w-[420px] h-[420px] rounded-full bg-[#A8BFA3]/25 blur-3xl pointer-events-none" />
+          <div className="absolute -top-28 -left-28 w-[420px] h-[420px] rounded-full bg-[#356B3D]/25 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-28 -right-28 w-[400px] h-[400px] rounded-full bg-[#DCE8D5]/35 blur-3xl pointer-events-none" />
 
           {/* Slider Horizontal Track */}
@@ -243,9 +243,9 @@ export default function CollectionPromoSlider() {
                   <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 lg:gap-14 items-center">
                     {/* Left Column: Collection Image Card */}
                     <div className="md:col-span-5 lg:col-span-5 flex justify-center">
-                      <div className="relative w-full max-w-[340px] sm:max-w-[380px] md:max-w-none aspect-[3/4] sm:aspect-[4/5] md:aspect-[3/4] max-h-[460px] rounded-2xl sm:rounded-3xl overflow-hidden bg-[#FFFFFF] border border-[#E2E6DC] shadow-lg p-2.5 sm:p-3 group/img">
+                      <div className="relative w-full max-w-[340px] sm:max-w-[380px] md:max-w-none aspect-[3/4] sm:aspect-[4/5] md:aspect-[3/4] max-h-[460px] rounded-2xl sm:rounded-3xl overflow-hidden bg-[#FFFFFF] border border-[#D5DDD2] shadow-lg p-2.5 sm:p-3 group/img">
                         {/* Collection Category Badge */}
-                        <div className="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-[#FAF9F6]/90 backdrop-blur-md border border-[#E2E6DC] text-[#355E3B] text-[10px] sm:text-xs font-extrabold uppercase tracking-wider shadow-sm">
+                        <div className="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-[#FAF9F6]/90 backdrop-blur-md border border-[#D5DDD2] text-[#24532F] text-[10px] sm:text-xs font-extrabold uppercase tracking-wider shadow-sm">
                           <span>{slide.categoryName || 'Collection'}</span>
                         </div>
 
@@ -276,7 +276,7 @@ export default function CollectionPromoSlider() {
                           {cleanTag.split(' ').map((word, wIdx) => (
                             <span
                               key={`${word}-${wIdx}`}
-                              className="promo-tag-word text-[#355E3B] text-xs sm:text-sm font-heading font-extrabold uppercase tracking-[0.22em] select-none"
+                              className="promo-tag-word text-[#24532F] text-xs sm:text-sm font-heading font-extrabold uppercase tracking-[0.22em] select-none"
                               style={{
                                 animationDelay: isCurrent ? `${wIdx * 0.07}s` : '0s',
                               }}
@@ -288,12 +288,12 @@ export default function CollectionPromoSlider() {
                       )}
 
                       {/* Collection Title */}
-                      <h3 className="text-2xl sm:text-3xl md:text-3xl lg:text-5xl font-heading font-black text-[#26352A] leading-[1.16] tracking-tight">
+                      <h3 className="text-2xl sm:text-3xl md:text-3xl lg:text-5xl font-heading font-black text-[#171C17] leading-[1.16] tracking-tight">
                         {title}
                       </h3>
 
                       {/* Description */}
-                      <p className="text-xs sm:text-sm md:text-base text-[#50574F] font-normal leading-relaxed max-w-xl">
+                      <p className="text-xs sm:text-sm md:text-base text-[#252A25] font-normal leading-relaxed max-w-xl">
                         {desc}
                       </p>
 
@@ -301,7 +301,7 @@ export default function CollectionPromoSlider() {
                       <div className="pt-2 sm:pt-4">
                         <Link
                           to={slide.link}
-                          className="inline-flex items-center justify-center gap-3 px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-[#355E3B] hover:bg-[#294A30] text-[#FFFFFF] font-heading font-bold text-xs sm:text-sm tracking-wider uppercase shadow-md active:scale-95 transition-all duration-300 group/btn"
+                          className="inline-flex items-center justify-center gap-3 px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-[#24532F] hover:bg-[#183D22] text-[#FFFFFF] font-heading font-bold text-xs sm:text-sm tracking-wider uppercase shadow-md active:scale-95 transition-all duration-300 group/btn"
                         >
                           <span>{t('shopNow')}</span>
                           <ArrowRight className="w-4 h-4 sm:w-4.5 sm:h-4.5 group-hover/btn:translate-x-1.5 transition-transform" />
@@ -319,7 +319,7 @@ export default function CollectionPromoSlider() {
             type="button"
             onClick={prevSlide}
             aria-label="Previous Slide"
-            className="absolute left-2.5 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/80 hover:bg-[#355E3B] text-[#26352A] hover:text-[#FFFFFF] border border-[#E2E6DC] hover:border-[#355E3B] backdrop-blur-md flex items-center justify-center transition-all duration-300 shadow-md z-20 cursor-pointer group"
+            className="absolute left-2.5 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/80 hover:bg-[#24532F] text-[#171C17] hover:text-[#FFFFFF] border border-[#D5DDD2] hover:border-[#24532F] backdrop-blur-md flex items-center justify-center transition-all duration-300 shadow-md z-20 cursor-pointer group"
           >
             <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-0.5 transition-transform" />
           </button>
@@ -329,7 +329,7 @@ export default function CollectionPromoSlider() {
             type="button"
             onClick={nextSlide}
             aria-label="Next Slide"
-            className="absolute right-2.5 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/80 hover:bg-[#355E3B] text-[#26352A] hover:text-[#FFFFFF] border border-[#E2E6DC] hover:border-[#355E3B] backdrop-blur-md flex items-center justify-center transition-all duration-300 shadow-md z-20 cursor-pointer group"
+            className="absolute right-2.5 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/80 hover:bg-[#24532F] text-[#171C17] hover:text-[#FFFFFF] border border-[#D5DDD2] hover:border-[#24532F] backdrop-blur-md flex items-center justify-center transition-all duration-300 shadow-md z-20 cursor-pointer group"
           >
             <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-0.5 transition-transform" />
           </button>

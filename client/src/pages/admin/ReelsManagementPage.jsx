@@ -277,19 +277,19 @@ export default function ReelsManagementPage() {
 
   return (
     <AdminLayout>
-      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6 text-[#50574F]">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6 text-[#252A25]">
         
         {/* Page Top Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#E2E6DC]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#D5DDD2]">
           <div>
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#355E3B] mb-1">
-              <Film className="w-4 h-4 text-[#355E3B]" />
+            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#24532F] mb-1">
+              <Film className="w-4 h-4 text-[#24532F]" />
               <span>MEDIA & VIDEO MANAGEMENT</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-[#26352A] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-[#171C17] tracking-tight">
               Reels Showcase Management
             </h1>
-            <p className="text-sm text-[#50574F] mt-1">
+            <p className="text-sm text-[#252A25] mt-1">
               Manage short video reels and live product demonstrations displayed in the homepage Reels Showcase.
             </p>
           </div>
@@ -297,7 +297,7 @@ export default function ReelsManagementPage() {
           <button
             type="button"
             onClick={handleOpenAddModal}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#355E3B] hover:bg-[#294A30] text-white font-bold text-sm shadow-sm transition-all duration-200 active:scale-95 shrink-0"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#24532F] hover:bg-[#183D22] text-white font-bold text-sm shadow-sm transition-all duration-200 active:scale-95 shrink-0"
           >
             <Plus className="w-4 h-4" />
             <span>Add New Reel</span>
@@ -309,7 +309,7 @@ export default function ReelsManagementPage() {
           <div
             className={`p-4 rounded-xl flex items-center justify-between text-sm ${
               alert.type === 'success'
-                ? 'bg-[#DCE8D5] border border-[#A8BFA3]/40 text-[#294A30]'
+                ? 'bg-[#DCE8D5] border border-[#356B3D]/40 text-[#183D22]'
                 : 'bg-[#B94343]/10 border border-[#B94343]/30 text-[#B94343]'
             }`}
           >
@@ -320,7 +320,7 @@ export default function ReelsManagementPage() {
             <button
               type="button"
               onClick={() => setAlert(null)}
-              className="p-1 hover:text-[#26352A]"
+              className="p-1 hover:text-[#171C17]"
             >
               <X className="w-4 h-4" />
             </button>
@@ -329,59 +329,59 @@ export default function ReelsManagementPage() {
 
         {/* Quick Statistics Bar */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="bg-white p-4 rounded-2xl border border-[#E2E6DC] shadow-sm">
-            <span className="text-xs text-[#7A8277] uppercase tracking-wider block mb-1">Total Reels</span>
-            <span className="text-2xl font-extrabold text-[#26352A]">{reels.length}</span>
+          <div className="bg-white p-4 rounded-2xl border border-[#D5DDD2] shadow-sm">
+            <span className="text-xs text-[#596358] uppercase tracking-wider block mb-1">Total Reels</span>
+            <span className="text-2xl font-extrabold text-[#171C17]">{reels.length}</span>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-[#E2E6DC] shadow-sm">
+          <div className="bg-white p-4 rounded-2xl border border-[#D5DDD2] shadow-sm">
             <span className="text-xs text-[#2E7D46] uppercase tracking-wider block mb-1">Active on Storefront</span>
             <span className="text-2xl font-extrabold text-[#2E7D46]">{activeReelsCount}</span>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-[#E2E6DC] shadow-sm">
+          <div className="bg-white p-4 rounded-2xl border border-[#D5DDD2] shadow-sm">
             <span className="text-xs text-[#B7791F] uppercase tracking-wider block mb-1">Inactive / Drafts</span>
             <span className="text-2xl font-extrabold text-[#B7791F]">{reels.length - activeReelsCount}</span>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-[#E2E6DC] shadow-sm">
-            <span className="text-xs text-[#355E3B] uppercase tracking-wider block mb-1">Storefront Aspect</span>
-            <span className="text-2xl font-extrabold text-[#355E3B]">4:5 Portrait</span>
+          <div className="bg-white p-4 rounded-2xl border border-[#D5DDD2] shadow-sm">
+            <span className="text-xs text-[#24532F] uppercase tracking-wider block mb-1">Storefront Aspect</span>
+            <span className="text-2xl font-extrabold text-[#24532F]">4:5 Portrait</span>
           </div>
         </div>
 
         {/* Reels Table / Grid List */}
-        <div className="bg-white rounded-2xl border border-[#E2E6DC] overflow-hidden shadow-sm">
-          <div className="p-4 sm:p-5 border-b border-[#E2E6DC] flex items-center justify-between">
-            <h2 className="text-base sm:text-lg font-bold text-[#26352A] flex items-center gap-2">
+        <div className="bg-white rounded-2xl border border-[#D5DDD2] overflow-hidden shadow-sm">
+          <div className="p-4 sm:p-5 border-b border-[#D5DDD2] flex items-center justify-between">
+            <h2 className="text-base sm:text-lg font-bold text-[#171C17] flex items-center gap-2">
               <span>All Configured Reels</span>
-              <span className="text-xs text-[#294A30] bg-[#DCE8D5] px-2.5 py-0.5 rounded-lg border border-[#A8BFA3]/30 font-bold">
+              <span className="text-xs text-[#183D22] bg-[#DCE8D5] px-2.5 py-0.5 rounded-lg border border-[#356B3D]/30 font-bold">
                 {reels.length} Items
               </span>
             </h2>
-            <span className="text-xs text-[#7A8277] hidden sm:inline">
+            <span className="text-xs text-[#596358] hidden sm:inline">
               Drag or use arrows to change display order on the storefront
             </span>
           </div>
 
           {loading ? (
-            <div className="p-12 text-center text-[#7A8277]">
-              <div className="inline-block w-8 h-8 border-2 border-[#355E3B] border-t-transparent rounded-full animate-spin mb-3" />
+            <div className="p-12 text-center text-[#596358]">
+              <div className="inline-block w-8 h-8 border-2 border-[#24532F] border-t-transparent rounded-full animate-spin mb-3" />
               <p>Loading reels...</p>
             </div>
           ) : reels.length === 0 ? (
-            <div className="p-12 text-center text-[#7A8277]">
-              <Film className="w-12 h-12 text-[#7A8277]/50 mx-auto mb-3" />
-              <p className="text-base font-semibold text-[#26352A] mb-1">No video reels configured yet</p>
-              <p className="text-xs text-[#7A8277] mb-4">Add your first demonstration reel to showcase products on the homepage.</p>
+            <div className="p-12 text-center text-[#596358]">
+              <Film className="w-12 h-12 text-[#596358]/50 mx-auto mb-3" />
+              <p className="text-base font-semibold text-[#171C17] mb-1">No video reels configured yet</p>
+              <p className="text-xs text-[#596358] mb-4">Add your first demonstration reel to showcase products on the homepage.</p>
               <button
                 type="button"
                 onClick={handleOpenAddModal}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#355E3B] text-white text-xs font-bold shadow-sm"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#24532F] text-white text-xs font-bold shadow-sm"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Create First Reel</span>
               </button>
             </div>
           ) : (
-            <div className="divide-y divide-[#E2E6DC]">
+            <div className="divide-y divide-[#D5DDD2]">
               {reels.map((reel, idx) => (
                 <div
                   key={reel.id}
@@ -390,7 +390,7 @@ export default function ReelsManagementPage() {
                   {/* Left: 4:5 Media Thumbnail + Info */}
                   <div className="flex items-start gap-4 flex-1">
                     {/* 4:5 Aspect Thumbnail */}
-                    <div className="w-16 h-20 bg-[#FAF9F6] rounded-xl border border-[#E2E6DC] shrink-0 relative overflow-hidden flex items-center justify-center">
+                    <div className="w-16 h-20 bg-[#FAF9F6] rounded-xl border border-[#D5DDD2] shrink-0 relative overflow-hidden flex items-center justify-center">
                       {reel.thumbnailUrl ? (
                         <img
                           src={reel.thumbnailUrl}
@@ -399,7 +399,7 @@ export default function ReelsManagementPage() {
                         />
                       ) : (
                         <div className="w-full h-full bg-[#FAF9F6] flex items-center justify-center">
-                          <Film className="w-6 h-6 text-[#7A8277]" />
+                          <Film className="w-6 h-6 text-[#596358]" />
                         </div>
                       )}
                       <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
@@ -410,14 +410,14 @@ export default function ReelsManagementPage() {
                     {/* Metadata */}
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#294A30] bg-[#DCE8D5] px-2 py-0.5 rounded-lg border border-[#A8BFA3]/30">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#183D22] bg-[#DCE8D5] px-2 py-0.5 rounded-lg border border-[#356B3D]/30">
                           {reel.category || 'General'}
                         </span>
-                        <span className="text-[10px] font-medium text-[#7A8277] bg-[#FAF9F6] px-2 py-0.5 rounded-lg border border-[#E2E6DC] uppercase">
+                        <span className="text-[10px] font-medium text-[#596358] bg-[#FAF9F6] px-2 py-0.5 rounded-lg border border-[#D5DDD2] uppercase">
                           {reel.sourceType || 'url'}
                         </span>
                         {reel.isActive ? (
-                          <span className="text-[10px] font-semibold text-[#2E7D46] bg-[#DCE8D5]/60 px-2 py-0.5 rounded-lg border border-[#A8BFA3]/30">
+                          <span className="text-[10px] font-semibold text-[#2E7D46] bg-[#DCE8D5]/60 px-2 py-0.5 rounded-lg border border-[#356B3D]/30">
                             Active (Live)
                           </span>
                         ) : (
@@ -427,36 +427,36 @@ export default function ReelsManagementPage() {
                         )}
                       </div>
 
-                      <h3 className="font-heading font-bold text-[#26352A] text-sm sm:text-base leading-snug">
+                      <h3 className="font-heading font-bold text-[#171C17] text-sm sm:text-base leading-snug">
                         {reel.title}
                       </h3>
 
                       {reel.description && (
-                        <p className="text-xs text-[#50574F] line-clamp-1 max-w-xl">
+                        <p className="text-xs text-[#252A25] line-clamp-1 max-w-xl">
                           {reel.description}
                         </p>
                       )}
 
-                      <p className="text-[11px] text-[#7A8277] font-mono truncate max-w-md">
+                      <p className="text-[11px] text-[#596358] font-mono truncate max-w-md">
                         {reel.videoUrl}
                       </p>
                     </div>
                   </div>
 
                   {/* Right: Order controls & Actions */}
-                  <div className="flex items-center gap-2 w-full sm:w-auto justify-end shrink-0 border-t sm:border-t-0 pt-3 sm:pt-0 border-[#E2E6DC]">
+                  <div className="flex items-center gap-2 w-full sm:w-auto justify-end shrink-0 border-t sm:border-t-0 pt-3 sm:pt-0 border-[#D5DDD2]">
                     {/* Move Up / Down Buttons */}
-                    <div className="flex items-center gap-1 bg-[#FAF9F6] border border-[#E2E6DC] p-0.5 rounded-xl mr-2">
+                    <div className="flex items-center gap-1 bg-[#FAF9F6] border border-[#D5DDD2] p-0.5 rounded-xl mr-2">
                       <button
                         type="button"
                         disabled={idx === 0}
                         onClick={() => handleMoveOrder(idx, 'up')}
                         title="Move Up"
-                        className="p-1 text-[#7A8277] hover:text-[#26352A] disabled:opacity-30 disabled:hover:text-[#7A8277]"
+                        className="p-1 text-[#596358] hover:text-[#171C17] disabled:opacity-30 disabled:hover:text-[#596358]"
                       >
                         <ArrowUp className="w-3.5 h-3.5" />
                       </button>
-                      <span className="text-xs font-mono text-[#7A8277] px-1 font-bold">
+                      <span className="text-xs font-mono text-[#596358] px-1 font-bold">
                         #{idx + 1}
                       </span>
                       <button
@@ -464,7 +464,7 @@ export default function ReelsManagementPage() {
                         disabled={idx === reels.length - 1}
                         onClick={() => handleMoveOrder(idx, 'down')}
                         title="Move Down"
-                        className="p-1 text-[#7A8277] hover:text-[#26352A] disabled:opacity-30 disabled:hover:text-[#7A8277]"
+                        className="p-1 text-[#596358] hover:text-[#171C17] disabled:opacity-30 disabled:hover:text-[#596358]"
                       >
                         <ArrowDown className="w-3.5 h-3.5" />
                       </button>
@@ -477,7 +477,7 @@ export default function ReelsManagementPage() {
                       title={reel.isActive ? 'Deactivate' : 'Activate'}
                       className={`px-2.5 py-1.5 text-xs font-semibold rounded-xl border transition-all ${
                         reel.isActive
-                          ? 'bg-[#DCE8D5]/60 border-[#A8BFA3]/40 text-[#294A30] hover:bg-[#DCE8D5]'
+                          ? 'bg-[#DCE8D5]/60 border-[#356B3D]/40 text-[#183D22] hover:bg-[#DCE8D5]'
                           : 'bg-[#FAF9F6] border-[#B7791F]/30 text-[#B7791F] hover:bg-[#F3F0E6]'
                       }`}
                     >
@@ -490,7 +490,7 @@ export default function ReelsManagementPage() {
                       type="button"
                       onClick={() => handleOpenEditModal(reel)}
                       title="Edit Reel"
-                      className="p-2 text-[#355E3B] hover:bg-[#DCE8D5]/60 bg-white border border-[#E2E6DC] rounded-xl transition-colors"
+                      className="p-2 text-[#24532F] hover:bg-[#DCE8D5]/60 bg-white border border-[#D5DDD2] rounded-xl transition-colors"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
@@ -500,7 +500,7 @@ export default function ReelsManagementPage() {
                       type="button"
                       onClick={() => handleDeleteReel(reel.id, reel.title)}
                       title="Delete Reel"
-                      className="p-2 text-[#B94343] hover:bg-[#B94343]/10 bg-white border border-[#E2E6DC] rounded-xl transition-colors"
+                      className="p-2 text-[#B94343] hover:bg-[#B94343]/10 bg-white border border-[#D5DDD2] rounded-xl transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -516,20 +516,20 @@ export default function ReelsManagementPage() {
             ==================================================================== */}
         {isModalOpen && (
           <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-            <div className="bg-white border border-[#E2E6DC] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 relative text-[#50574F]">
+            <div className="bg-white border border-[#D5DDD2] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 relative text-[#252A25]">
               
               {/* Modal Header */}
-              <div className="flex items-center justify-between pb-4 mb-5 border-b border-[#E2E6DC]">
+              <div className="flex items-center justify-between pb-4 mb-5 border-b border-[#D5DDD2]">
                 <div className="flex items-center gap-2">
-                  <Film className="w-5 h-5 text-[#355E3B]" />
-                  <h2 className="text-xl font-heading font-extrabold text-[#26352A]">
+                  <Film className="w-5 h-5 text-[#24532F]" />
+                  <h2 className="text-xl font-heading font-extrabold text-[#171C17]">
                     {editingReelId ? 'Edit Reel Video' : 'Add New Video Reel'}
                   </h2>
                 </div>
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="p-1.5 text-[#7A8277] hover:text-[#26352A]"
+                  className="p-1.5 text-[#596358] hover:text-[#171C17]"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -539,7 +539,7 @@ export default function ReelsManagementPage() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* 1. Title */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-[#26352A] mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#171C17] mb-1.5">
                     Reel Title *
                   </label>
                   <input
@@ -548,7 +548,7 @@ export default function ReelsManagementPage() {
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     placeholder="e.g. Solar Zatka Machine 5KM Live Field Test"
-                    className="w-full bg-white border border-[#E2E6DC] rounded-xl px-3.5 py-2.5 text-[#26352A] text-sm focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] outline-none placeholder-[#7A8277]"
+                    className="w-full bg-white border border-[#D5DDD2] rounded-xl px-3.5 py-2.5 text-[#171C17] text-sm focus:border-[#24532F] focus:ring-1 focus:ring-[#24532F] outline-none placeholder-[#596358]"
                   />
                 </div>
 
@@ -556,13 +556,13 @@ export default function ReelsManagementPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Category */}
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-[#26352A] mb-1.5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#171C17] mb-1.5">
                       Product Category *
                     </label>
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full bg-white border border-[#E2E6DC] rounded-xl px-3.5 py-2.5 text-[#26352A] text-sm focus:border-[#355E3B] outline-none"
+                      className="w-full bg-white border border-[#D5DDD2] rounded-xl px-3.5 py-2.5 text-[#171C17] text-sm focus:border-[#24532F] outline-none"
                     >
                       {categoryOptions.map(opt => (
                         <option key={opt} value={opt}>{opt}</option>
@@ -572,13 +572,13 @@ export default function ReelsManagementPage() {
 
                   {/* Source Type */}
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-[#26352A] mb-1.5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#171C17] mb-1.5">
                       Video Source Type *
                     </label>
                     <select
                       value={formData.sourceType}
                       onChange={(e) => setFormData({ ...formData, sourceType: e.target.value })}
-                      className="w-full bg-white border border-[#E2E6DC] rounded-xl px-3.5 py-2.5 text-[#26352A] text-sm focus:border-[#355E3B] outline-none"
+                      className="w-full bg-white border border-[#D5DDD2] rounded-xl px-3.5 py-2.5 text-[#171C17] text-sm focus:border-[#24532F] outline-none"
                     >
                       <option value="upload">Direct Video Upload (MP4 / WebM)</option>
                       <option value="url">Public Video File URL (.mp4 / .webm)</option>
@@ -590,8 +590,8 @@ export default function ReelsManagementPage() {
 
                 {/* 3. Video File Upload (Native File Picker) */}
                 {formData.sourceType === 'upload' && (
-                  <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#E2E6DC] space-y-2">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-[#355E3B]">
+                  <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#D5DDD2] space-y-2">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#24532F]">
                       Upload Video File (MP4, WebM, MOV - Max 100MB)
                     </label>
                     <input
@@ -599,10 +599,10 @@ export default function ReelsManagementPage() {
                       accept="video/mp4,video/webm,video/quicktime,video/mov"
                       onChange={handleVideoUpload}
                       disabled={uploadingVideo}
-                      className="block w-full text-xs text-[#7A8277] file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#355E3B] file:text-white hover:file:bg-[#294A30] cursor-pointer"
+                      className="block w-full text-xs text-[#596358] file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#24532F] file:text-white hover:file:bg-[#183D22] cursor-pointer"
                     />
                     {uploadingVideo && (
-                      <p className="text-xs text-[#355E3B] animate-pulse">Uploading video to server, please wait...</p>
+                      <p className="text-xs text-[#24532F] animate-pulse">Uploading video to server, please wait...</p>
                     )}
                     {formData.videoUrl && (
                       <p className="text-xs text-[#2E7D46] truncate">
@@ -615,7 +615,7 @@ export default function ReelsManagementPage() {
                 {/* 4. Video URL Input */}
                 {formData.sourceType !== 'upload' && (
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-[#26352A] mb-1.5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#171C17] mb-1.5">
                       Video URL *
                     </label>
                     <input
@@ -630,14 +630,14 @@ export default function ReelsManagementPage() {
                             ? 'e.g. https://www.instagram.com/reel/...'
                             : 'e.g. https://example.com/videos/zatka-demo.mp4'
                       }
-                      className="w-full bg-white border border-[#E2E6DC] rounded-xl px-3.5 py-2.5 text-[#26352A] text-sm focus:border-[#355E3B] outline-none placeholder-[#7A8277]"
+                      className="w-full bg-white border border-[#D5DDD2] rounded-xl px-3.5 py-2.5 text-[#171C17] text-sm focus:border-[#24532F] outline-none placeholder-[#596358]"
                     />
                   </div>
                 )}
 
                 {/* 5. Thumbnail Image Upload or URL */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-[#26352A] mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#171C17] mb-1.5">
                     Poster / Thumbnail Image (Optional)
                   </label>
                   <div className="flex gap-2">
@@ -646,10 +646,10 @@ export default function ReelsManagementPage() {
                       value={formData.thumbnailUrl}
                       onChange={(e) => setFormData({ ...formData, thumbnailUrl: e.target.value })}
                       placeholder="e.g. /images/categories/zatka-machines.png or image URL"
-                      className="flex-1 bg-white border border-[#E2E6DC] rounded-xl px-3.5 py-2 text-[#26352A] text-xs focus:border-[#355E3B] outline-none placeholder-[#7A8277]"
+                      className="flex-1 bg-white border border-[#D5DDD2] rounded-xl px-3.5 py-2 text-[#171C17] text-xs focus:border-[#24532F] outline-none placeholder-[#596358]"
                     />
-                    <label className="px-3.5 py-2 bg-[#FAF9F6] border border-[#E2E6DC] hover:border-[#355E3B] text-[#26352A] text-xs font-semibold rounded-xl cursor-pointer shrink-0 flex items-center gap-1.5 transition-colors">
-                      <Upload className="w-3.5 h-3.5 text-[#355E3B]" />
+                    <label className="px-3.5 py-2 bg-[#FAF9F6] border border-[#D5DDD2] hover:border-[#24532F] text-[#171C17] text-xs font-semibold rounded-xl cursor-pointer shrink-0 flex items-center gap-1.5 transition-colors">
+                      <Upload className="w-3.5 h-3.5 text-[#24532F]" />
                       <span>{uploadingThumb ? 'Uploading...' : 'Upload Image'}</span>
                       <input
                         type="file"
@@ -664,7 +664,7 @@ export default function ReelsManagementPage() {
 
                 {/* 6. Description */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-[#26352A] mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#171C17] mb-1.5">
                     Description / Highlights (Optional)
                   </label>
                   <textarea
@@ -672,14 +672,14 @@ export default function ReelsManagementPage() {
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder="Short description of the demonstration or customer experience."
-                    className="w-full bg-white border border-[#E2E6DC] rounded-xl px-3.5 py-2 text-[#26352A] text-xs focus:border-[#355E3B] outline-none placeholder-[#7A8277]"
+                    className="w-full bg-white border border-[#D5DDD2] rounded-xl px-3.5 py-2 text-[#171C17] text-xs focus:border-[#24532F] outline-none placeholder-[#596358]"
                   />
                 </div>
 
                 {/* 7. Sort Order & Active Switch */}
-                <div className="flex items-center justify-between gap-4 pt-2 border-t border-[#E2E6DC]">
+                <div className="flex items-center justify-between gap-4 pt-2 border-t border-[#D5DDD2]">
                   <div className="flex items-center gap-2">
-                    <label className="text-xs font-bold uppercase tracking-wider text-[#26352A]">
+                    <label className="text-xs font-bold uppercase tracking-wider text-[#171C17]">
                       Sort Order:
                     </label>
                     <input
@@ -687,7 +687,7 @@ export default function ReelsManagementPage() {
                       min={1}
                       value={formData.sortOrder}
                       onChange={(e) => setFormData({ ...formData, sortOrder: parseInt(e.target.value, 10) || 1 })}
-                      className="w-16 bg-white border border-[#E2E6DC] rounded-xl px-2 py-1 text-[#26352A] text-xs font-mono text-center outline-none focus:border-[#355E3B]"
+                      className="w-16 bg-white border border-[#D5DDD2] rounded-xl px-2 py-1 text-[#171C17] text-xs font-mono text-center outline-none focus:border-[#24532F]"
                     />
                   </div>
 
@@ -696,27 +696,27 @@ export default function ReelsManagementPage() {
                       type="checkbox"
                       checked={formData.isActive}
                       onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                      className="w-4 h-4 text-[#355E3B] focus:ring-[#8BA889] rounded-md cursor-pointer"
+                      className="w-4 h-4 text-[#24532F] focus:ring-[#24532F] rounded-md cursor-pointer"
                     />
-                    <span className="text-xs font-bold text-[#26352A] uppercase tracking-wider">
+                    <span className="text-xs font-bold text-[#171C17] uppercase tracking-wider">
                       Publish to Storefront (Active)
                     </span>
                   </label>
                 </div>
 
                 {/* Modal Footer Buttons */}
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#E2E6DC]">
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#D5DDD2]">
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-4 py-2 text-xs font-bold text-[#50574F] hover:text-[#26352A] uppercase tracking-wider"
+                    className="px-4 py-2 text-xs font-bold text-[#252A25] hover:text-[#171C17] uppercase tracking-wider"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={saving || uploadingVideo || uploadingThumb}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#355E3B] hover:bg-[#294A30] text-white font-extrabold text-xs uppercase tracking-wider shadow-sm transition-all disabled:opacity-50"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#24532F] hover:bg-[#183D22] text-white font-extrabold text-xs uppercase tracking-wider shadow-sm transition-all disabled:opacity-50"
                   >
                     <Save className="w-4 h-4" />
                     <span>{saving ? 'Saving...' : (editingReelId ? 'Update Reel' : 'Save Reel')}</span>

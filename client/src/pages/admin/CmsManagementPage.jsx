@@ -74,7 +74,7 @@ export default function CmsManagementPage() {
     text_hi: '',
     link: '',
     bgColor: '#F3F0E6',
-    textColor: '#355E3B',
+    textColor: '#24532F',
     isActive: true,
   });
 
@@ -516,10 +516,10 @@ export default function CmsManagementPage() {
     <AdminLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-heading font-extrabold text-[#26352A]">
+          <h1 className="text-2xl font-heading font-extrabold text-[#171C17]">
             CMS, Banners & Store Content
           </h1>
-          <p className="text-xs text-[#7A8277] mt-0.5">
+          <p className="text-xs text-[#596358] mt-0.5">
             Top announcement bar, homepage promotions, discount coupons aur customer reviews moderate karein.
           </p>
         </div>
@@ -532,15 +532,15 @@ export default function CmsManagementPage() {
         )}
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-[#E2E6DC] bg-white rounded-t-xl overflow-x-auto text-xs font-bold">
+        <div className="flex border-b border-[#D5DDD2] bg-white rounded-t-xl overflow-x-auto text-xs font-bold">
           <button
             type="button"
             onClick={() => setActiveTab('newArrivals')}
             className={`py-3.5 px-6 whitespace-nowrap transition-colors border-b-2 flex items-center gap-2 ${
-              activeTab === 'newArrivals' ? 'border-[#355E3B] text-[#294A30] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'
+              activeTab === 'newArrivals' ? 'border-[#24532F] text-[#183D22] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#596358] hover:text-[#171C17]'
             }`}
           >
-            <Package className="w-4 h-4 text-[#355E3B]" />
+            <Package className="w-4 h-4 text-[#24532F]" />
             <span>New Arrivals Management</span>
           </button>
 
@@ -548,10 +548,10 @@ export default function CmsManagementPage() {
             type="button"
             onClick={() => setActiveTab('collectionPromo')}
             className={`py-3.5 px-6 whitespace-nowrap transition-colors border-b-2 flex items-center gap-2 ${
-              activeTab === 'collectionPromo' ? 'border-[#355E3B] text-[#294A30] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'
+              activeTab === 'collectionPromo' ? 'border-[#24532F] text-[#183D22] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#596358] hover:text-[#171C17]'
             }`}
           >
-            <Layers className="w-4 h-4 text-[#355E3B]" />
+            <Layers className="w-4 h-4 text-[#24532F]" />
             <span>Collection Promo Slider</span>
           </button>
 
@@ -559,10 +559,10 @@ export default function CmsManagementPage() {
             type="button"
             onClick={() => setActiveTab('announcement')}
             className={`py-3.5 px-6 whitespace-nowrap transition-colors border-b-2 flex items-center gap-2 ${
-              activeTab === 'announcement' ? 'border-[#355E3B] text-[#294A30] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'
+              activeTab === 'announcement' ? 'border-[#24532F] text-[#183D22] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#596358] hover:text-[#171C17]'
             }`}
           >
-            <Bell className="w-4 h-4 text-[#355E3B]" />
+            <Bell className="w-4 h-4 text-[#24532F]" />
             <span>Announcement Bar</span>
           </button>
 
@@ -570,10 +570,10 @@ export default function CmsManagementPage() {
             type="button"
             onClick={() => setActiveTab('banners')}
             className={`py-3.5 px-6 whitespace-nowrap transition-colors border-b-2 flex items-center gap-2 ${
-              activeTab === 'banners' ? 'border-[#355E3B] text-[#294A30] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'
+              activeTab === 'banners' ? 'border-[#24532F] text-[#183D22] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#596358] hover:text-[#171C17]'
             }`}
           >
-            <Image className="w-4 h-4 text-[#355E3B]" />
+            <Image className="w-4 h-4 text-[#24532F]" />
             <span>Hero Banners</span>
           </button>
 
@@ -581,10 +581,10 @@ export default function CmsManagementPage() {
             type="button"
             onClick={() => setActiveTab('coupons')}
             className={`py-3.5 px-6 whitespace-nowrap transition-colors border-b-2 flex items-center gap-2 ${
-              activeTab === 'coupons' ? 'border-[#355E3B] text-[#294A30] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'
+              activeTab === 'coupons' ? 'border-[#24532F] text-[#183D22] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#596358] hover:text-[#171C17]'
             }`}
           >
-            <Tag className="w-4 h-4 text-[#355E3B]" />
+            <Tag className="w-4 h-4 text-[#24532F]" />
             <span>Discount Coupons</span>
           </button>
 
@@ -592,10 +592,10 @@ export default function CmsManagementPage() {
             type="button"
             onClick={() => setActiveTab('reviews')}
             className={`py-3.5 px-6 whitespace-nowrap transition-colors border-b-2 flex items-center gap-2 ${
-              activeTab === 'reviews' ? 'border-[#355E3B] text-[#294A30] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'
+              activeTab === 'reviews' ? 'border-[#24532F] text-[#183D22] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#596358] hover:text-[#171C17]'
             }`}
           >
-            <MessageSquare className="w-4 h-4 text-[#355E3B]" />
+            <MessageSquare className="w-4 h-4 text-[#24532F]" />
             <span>Customer Reviews</span>
           </button>
 
@@ -603,10 +603,10 @@ export default function CmsManagementPage() {
             type="button"
             onClick={() => setActiveTab('settings')}
             className={`py-3.5 px-6 whitespace-nowrap transition-colors border-b-2 flex items-center gap-2 ${
-              activeTab === 'settings' ? 'border-[#355E3B] text-[#294A30] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'
+              activeTab === 'settings' ? 'border-[#24532F] text-[#183D22] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#596358] hover:text-[#171C17]'
             }`}
           >
-            <Settings className="w-4 h-4 text-[#355E3B]" />
+            <Settings className="w-4 h-4 text-[#24532F]" />
             <span>Store Configuration</span>
           </button>
 
@@ -614,24 +614,24 @@ export default function CmsManagementPage() {
             type="button"
             onClick={() => setActiveTab('translations')}
             className={`py-3.5 px-6 whitespace-nowrap transition-colors border-b-2 flex items-center gap-2 ${
-              activeTab === 'translations' ? 'border-[#355E3B] text-[#294A30] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'
+              activeTab === 'translations' ? 'border-[#24532F] text-[#183D22] bg-[#DCE8D5]/20 font-bold' : 'border-transparent text-[#596358] hover:text-[#171C17]'
             }`}
           >
-            <Globe className="w-4 h-4 text-[#355E3B]" />
+            <Globe className="w-4 h-4 text-[#24532F]" />
             <span>Languages & Translations</span>
           </button>
         </div>
 
         {/* Tab 0: New Arrivals Management */}
         {activeTab === 'newArrivals' && (
-          <div className="bg-white rounded-b-xl border border-t-0 border-[#E2E6DC] p-6 md:p-8 shadow-xs space-y-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-[#E2E6DC] gap-4">
+          <div className="bg-white rounded-b-xl border border-t-0 border-[#D5DDD2] p-6 md:p-8 shadow-xs space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-[#D5DDD2] gap-4">
               <div>
-                <h3 className="font-heading font-bold text-base text-[#26352A] flex items-center gap-2">
-                  <Package className="w-5 h-5 text-[#355E3B]" />
+                <h3 className="font-heading font-bold text-base text-[#171C17] flex items-center gap-2">
+                  <Package className="w-5 h-5 text-[#24532F]" />
                   Homepage New Arrivals Management
                 </h3>
-                <p className="text-xs text-[#7A8277] mt-1">
+                <p className="text-xs text-[#596358] mt-1">
                   Manage products showcased in the storefront &quot;New Arrivals&quot; section. Reorder items, toggle visibility, adjust display limit, or add products from your catalog.
                 </p>
               </div>
@@ -640,7 +640,7 @@ export default function CmsManagementPage() {
                 type="button"
                 onClick={handleSaveNewArrivals}
                 disabled={savingNewArrivals}
-                className="px-5 py-2.5 bg-[#355E3B] text-white font-extrabold text-xs rounded-xl hover:brightness-105 transition-all shadow-xs flex items-center gap-2 shrink-0 disabled:opacity-50"
+                className="px-5 py-2.5 bg-[#24532F] text-white font-extrabold text-xs rounded-xl hover:brightness-105 transition-all shadow-xs flex items-center gap-2 shrink-0 disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
                 <span>{savingNewArrivals ? 'Saving Changes...' : 'Save Section Settings'}</span>
@@ -648,30 +648,30 @@ export default function CmsManagementPage() {
             </div>
 
             {/* General Section Settings */}
-            <div className="bg-[#FAF9F6] p-5 rounded-xl border border-[#E2E6DC] space-y-4">
-              <h4 className="font-bold text-xs uppercase tracking-wider text-[#26352A] flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#355E3B]"></span>
+            <div className="bg-[#FAF9F6] p-5 rounded-xl border border-[#D5DDD2] space-y-4">
+              <h4 className="font-bold text-xs uppercase tracking-wider text-[#171C17] flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#24532F]"></span>
                 Section Configuration & Display Limit
               </h4>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
                 <div>
-                  <label className="block font-semibold mb-1 text-[#7A8277]">Homepage Display Limit</label>
+                  <label className="block font-semibold mb-1 text-[#596358]">Homepage Display Limit</label>
                   <select
                     value={newArrivalsConfig.displayLimit || 8}
                     onChange={(e) => setNewArrivalsConfig(prev => ({ ...prev, displayLimit: Number(e.target.value) }))}
-                    className="w-full px-3 py-2 border rounded-lg bg-white font-medium focus:ring-1 focus:ring-[#8BA889] focus:outline-hidden"
+                    className="w-full px-3 py-2 border rounded-lg bg-white font-medium focus:ring-1 focus:ring-[#24532F] focus:outline-hidden"
                   >
                     <option value={4}>4 Products (1 Full Row)</option>
                     <option value={8}>8 Products (2 Full Rows - Recommended)</option>
                     <option value={12}>12 Products (3 Full Rows)</option>
                     <option value={16}>16 Products (4 Full Rows)</option>
                   </select>
-                  <p className="text-[11px] text-gray-400 mt-1">Maximum number of active products shown on homepage.</p>
+                  <p className="text-[11px] text-[#596358] mt-1">Maximum number of active products shown on homepage.</p>
                 </div>
 
                 <div>
-                  <label className="block font-semibold mb-1 text-[#7A8277]">Section Heading (English)</label>
+                  <label className="block font-semibold mb-1 text-[#596358]">Section Heading (English)</label>
                   <input
                     type="text"
                     value={newArrivalsConfig.title_en || ''}
@@ -682,7 +682,7 @@ export default function CmsManagementPage() {
                 </div>
 
                 <div>
-                  <label className="block font-semibold mb-1 text-[#7A8277]">Section Heading (Hindi)</label>
+                  <label className="block font-semibold mb-1 text-[#596358]">Section Heading (Hindi)</label>
                   <input
                     type="text"
                     value={newArrivalsConfig.title_hi || ''}
@@ -693,7 +693,7 @@ export default function CmsManagementPage() {
                 </div>
 
                 <div>
-                  <label className="block font-semibold mb-1 text-[#7A8277]">Subtitle (English)</label>
+                  <label className="block font-semibold mb-1 text-[#596358]">Subtitle (English)</label>
                   <input
                     type="text"
                     value={newArrivalsConfig.subtitle_en || ''}
@@ -704,7 +704,7 @@ export default function CmsManagementPage() {
                 </div>
 
                 <div>
-                  <label className="block font-semibold mb-1 text-[#7A8277]">Subtitle (Hindi)</label>
+                  <label className="block font-semibold mb-1 text-[#596358]">Subtitle (Hindi)</label>
                   <input
                     type="text"
                     value={newArrivalsConfig.subtitle_hi || ''}
@@ -718,15 +718,15 @@ export default function CmsManagementPage() {
 
             {/* Add Product from Catalog */}
             <div className="bg-amber-50/50 p-4 rounded-xl border border-amber-200/70">
-              <label className="block font-bold text-xs uppercase tracking-wider text-[#26352A] mb-2 flex items-center gap-2">
-                <Plus className="w-4 h-4 text-[#355E3B]" />
+              <label className="block font-bold text-xs uppercase tracking-wider text-[#171C17] mb-2 flex items-center gap-2">
+                <Plus className="w-4 h-4 text-[#24532F]" />
                 Select Existing Product to Add to New Arrivals
               </label>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <select
                   value={selectedProductToAdd}
                   onChange={(e) => setSelectedProductToAdd(e.target.value)}
-                  className="flex-1 px-3 py-2 text-xs border rounded-lg bg-white focus:ring-1 focus:ring-[#8BA889] focus:outline-hidden"
+                  className="flex-1 px-3 py-2 text-xs border rounded-lg bg-white focus:ring-1 focus:ring-[#24532F] focus:outline-hidden"
                 >
                   <option value="">-- Choose a product from catalog --</option>
                   {allProducts.map((p) => {
@@ -742,13 +742,13 @@ export default function CmsManagementPage() {
                   type="button"
                   onClick={handleAddProductToNewArrivals}
                   disabled={!selectedProductToAdd}
-                  className="px-4 py-2 bg-brand-black text-white hover:bg-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-40"
+                  className="px-4 py-2 bg-[#24532F] text-white hover:bg-[#183D22] font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-40"
                 >
-                  <Plus className="w-4 h-4 text-[#355E3B]" />
+                  <Plus className="w-4 h-4 text-[#24532F]" />
                   <span>Add to Section</span>
                 </button>
               </div>
-              <p className="text-[11px] text-[#7A8277] mt-2">
+              <p className="text-[11px] text-[#596358] mt-2">
                 Selecting existing products avoids duplicate records and links live images, prices, and stock directly.
               </p>
             </div>
@@ -756,22 +756,22 @@ export default function CmsManagementPage() {
             {/* Product Ordering & Status Table */}
             <div>
               <div className="flex items-center justify-between mb-3">
-                <h4 className="font-bold text-xs uppercase tracking-wider text-[#26352A]">
+                <h4 className="font-bold text-xs uppercase tracking-wider text-[#171C17]">
                   Curated New Arrivals Queue ({(newArrivalsConfig.items || []).length} products)
                 </h4>
-                <span className="text-[11px] text-gray-400">
+                <span className="text-[11px] text-[#596358]">
                   Use Up / Down controls to change storefront priority order
                 </span>
               </div>
 
               {(!newArrivalsConfig.items || newArrivalsConfig.items.length === 0) ? (
-                <div className="p-8 text-center text-xs text-[#7A8277] bg-[#FAF9F6] rounded-xl border border-dashed border-gray-300">
+                <div className="p-8 text-center text-xs text-[#596358] bg-[#FAF9F6] rounded-xl border border-dashed border-gray-300">
                   No products added to New Arrivals yet. Select a product above to add it.
                 </div>
               ) : (
-                <div className="border border-[#E2E6DC] rounded-xl overflow-hidden shadow-2xs">
+                <div className="border border-[#D5DDD2] rounded-xl overflow-hidden shadow-2xs">
                   <table className="w-full text-left text-xs divide-y divide-gray-200">
-                    <thead className="bg-[#FAF9F6] text-[#7A8277] font-bold uppercase tracking-wider text-[10px]">
+                    <thead className="bg-[#FAF9F6] text-[#596358] font-bold uppercase tracking-wider text-[10px]">
                       <tr>
                         <th className="py-3 px-4 w-12 text-center">#</th>
                         <th className="py-3 px-4 w-16">Image</th>
@@ -791,13 +791,13 @@ export default function CmsManagementPage() {
 
                         return (
                           <tr key={item.productId || index} className={`hover:bg-[#FAF9F6]/80 transition-colors ${!isEnabled ? 'bg-[#FAF9F6]/50 opacity-60' : ''}`}>
-                            <td className="py-3 px-4 text-center font-extrabold text-white">
+                            <td className="py-3 px-4 text-center font-extrabold text-[#171C17]">
                               <span className="inline-block w-6 h-6 rounded-full bg-gray-100 text-[11px] leading-6 text-center">
                                 {index + 1}
                               </span>
                             </td>
                             <td className="py-3 px-4">
-                              <div className="w-12 h-12 rounded-lg bg-gray-100 border border-[#E2E6DC] overflow-hidden flex items-center justify-center shrink-0">
+                              <div className="w-12 h-12 rounded-lg bg-gray-100 border border-[#D5DDD2] overflow-hidden flex items-center justify-center shrink-0">
                                 <img
                                   src={product?.mainImage || product?.images?.[0] || '/images/placeholder.png'}
                                   alt={product?.title_en || 'Product'}
@@ -807,19 +807,19 @@ export default function CmsManagementPage() {
                               </div>
                             </td>
                             <td className="py-3 px-4">
-                              <div className="font-bold text-white">
+                              <div className="font-bold text-[#171C17]">
                                 {product?.title_en || item.productId}
                               </div>
-                              <div className="text-[11px] text-gray-400 mt-0.5 flex items-center gap-2">
+                              <div className="text-[11px] text-[#596358] mt-0.5 flex items-center gap-2">
                                 <span>SKU: {product?.sku || 'N/A'}</span>
                                 <span>•</span>
                                 <span className="capitalize">{product?.categoryId?.replace('cat-', '') || ''}</span>
                               </div>
                             </td>
-                            <td className="py-3 px-4 font-bold text-white">
+                            <td className="py-3 px-4 font-bold text-[#171C17]">
                               ₹{product?.price ?? '—'}
                               {product?.compareAtPrice ? (
-                                <span className="text-[10px] text-gray-400 line-through ml-1.5 font-normal">
+                                <span className="text-[10px] text-[#596358] line-through ml-1.5 font-normal">
                                   ₹{product.compareAtPrice}
                                 </span>
                               ) : null}
@@ -832,7 +832,7 @@ export default function CmsManagementPage() {
                                 className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-extrabold transition-colors ${
                                   isEnabled
                                     ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
-                                    : 'bg-gray-200 text-[#7A8277] hover:bg-gray-300'
+                                    : 'bg-gray-200 text-[#596358] hover:bg-gray-300'
                                 }`}
                               >
                                 {isEnabled ? (
@@ -842,7 +842,7 @@ export default function CmsManagementPage() {
                                   </>
                                 ) : (
                                   <>
-                                    <EyeOff className="w-3 h-3 text-[#7A8277]" />
+                                    <EyeOff className="w-3 h-3 text-[#596358]" />
                                     <span>Disabled</span>
                                   </>
                                 )}
@@ -855,7 +855,7 @@ export default function CmsManagementPage() {
                                   onClick={() => handleMoveNewArrival(index, 'up')}
                                   disabled={isFirst}
                                   title="Move Up in order"
-                                  className="p-1 rounded bg-gray-100 hover:bg-[#355E3B]/20 hover:text-white disabled:opacity-20 disabled:hover:bg-gray-100 transition-colors"
+                                  className="p-1 rounded bg-gray-100 hover:bg-[#24532F]/20 hover:text-white disabled:opacity-20 disabled:hover:bg-gray-100 transition-colors"
                                 >
                                   <ArrowUp className="w-3.5 h-3.5" />
                                 </button>
@@ -864,7 +864,7 @@ export default function CmsManagementPage() {
                                   onClick={() => handleMoveNewArrival(index, 'down')}
                                   disabled={isLast}
                                   title="Move Down in order"
-                                  className="p-1 rounded bg-gray-100 hover:bg-[#355E3B]/20 hover:text-white disabled:opacity-20 disabled:hover:bg-gray-100 transition-colors"
+                                  className="p-1 rounded bg-gray-100 hover:bg-[#24532F]/20 hover:text-white disabled:opacity-20 disabled:hover:bg-gray-100 transition-colors"
                                 >
                                   <ArrowDown className="w-3.5 h-3.5" />
                                 </button>
@@ -875,7 +875,7 @@ export default function CmsManagementPage() {
                                 <Link
                                   to="/admin/products"
                                   title="Edit full product details or images in Products Management"
-                                  className="p-1.5 rounded-lg text-[#7A8277] hover:text-white hover:bg-gray-100 transition-colors flex items-center gap-1 text-[11px]"
+                                  className="p-1.5 rounded-lg text-[#596358] hover:text-[#171C17] hover:bg-[#F3F0E6] transition-colors flex items-center gap-1 text-[11px]"
                                 >
                                   <ExternalLink className="w-3.5 h-3.5" />
                                   <span className="hidden sm:inline">Edit</span>
@@ -900,15 +900,15 @@ export default function CmsManagementPage() {
             </div>
 
             {/* Bottom Actions */}
-            <div className="pt-4 flex items-center justify-between border-t border-[#E2E6DC]">
-              <span className="text-[11px] text-gray-400">
+            <div className="pt-4 flex items-center justify-between border-t border-[#D5DDD2]">
+              <span className="text-[11px] text-[#596358]">
                 All changes must be saved to update the live storefront.
               </span>
               <button
                 type="button"
                 onClick={handleSaveNewArrivals}
                 disabled={savingNewArrivals}
-                className="px-6 py-2.5 bg-[#355E3B] hover:bg-[#294A30] text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2 disabled:opacity-50"
+                className="px-6 py-2.5 bg-[#24532F] hover:bg-[#183D22] text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2 disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
                 <span>{savingNewArrivals ? 'Saving Changes...' : 'Save New Arrivals Settings'}</span>
@@ -919,14 +919,14 @@ export default function CmsManagementPage() {
 
         {/* Tab: Collection Promo Slider Management (5 Slides) */}
         {activeTab === 'collectionPromo' && (
-          <div className="bg-white rounded-b-xl border border-t-0 border-[#E2E6DC] p-6 md:p-8 shadow-xs space-y-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-[#E2E6DC] gap-4">
+          <div className="bg-white rounded-b-xl border border-t-0 border-[#D5DDD2] p-6 md:p-8 shadow-xs space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-[#D5DDD2] gap-4">
               <div>
-                <h3 className="font-heading font-bold text-base text-[#26352A] flex items-center gap-2">
-                  <Layers className="w-5 h-5 text-[#355E3B]" />
+                <h3 className="font-heading font-bold text-base text-[#171C17] flex items-center gap-2">
+                  <Layers className="w-5 h-5 text-[#24532F]" />
                   Homepage Collection Promo Slider Management ({collectionSlides.length} Slides)
                 </h3>
-                <p className="text-xs text-[#7A8277] mt-1">
+                <p className="text-xs text-[#596358] mt-1">
                   Manage the full-width promotional collection slider placed immediately after New Arrivals. Edit titles, descriptions, Shop Now links, reorder slides, upload or choose authentic banner images, and toggle visibility.
                 </p>
               </div>
@@ -935,7 +935,7 @@ export default function CmsManagementPage() {
                 type="button"
                 onClick={handleSaveCollectionSlides}
                 disabled={savingCollectionSlides}
-                className="px-5 py-2.5 bg-[#355E3B] text-white font-extrabold text-xs rounded-xl hover:brightness-105 transition-all shadow-xs flex items-center gap-2 shrink-0 disabled:opacity-50"
+                className="px-5 py-2.5 bg-[#24532F] text-white font-extrabold text-xs rounded-xl hover:brightness-105 transition-all shadow-xs flex items-center gap-2 shrink-0 disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
                 <span>{savingCollectionSlides ? 'Saving Changes...' : 'Save Slider Settings'}</span>
@@ -953,20 +953,20 @@ export default function CmsManagementPage() {
                   <div
                     key={slide.id || index}
                     className={`rounded-2xl border transition-all p-5 sm:p-6 ${
-                      isEnabled ? 'border-[#E2E6DC] bg-white shadow-xs' : 'border-[#E2E6DC] bg-[#FAF9F6] opacity-60'
+                      isEnabled ? 'border-[#D5DDD2] bg-white shadow-xs' : 'border-[#D5DDD2] bg-[#FAF9F6] opacity-60'
                     }`}
                   >
                     {/* Header bar of each slide card */}
-                    <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-[#E2E6DC]">
+                    <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-[#D5DDD2]">
                       <div className="flex items-center gap-3">
-                        <span className="w-7 h-7 rounded-full bg-white text-[#355E3B] font-extrabold text-xs flex items-center justify-center">
+                        <span className="w-7 h-7 rounded-full bg-white text-[#24532F] font-extrabold text-xs flex items-center justify-center">
                           #{index + 1}
                         </span>
                         <div>
-                          <strong className="text-sm text-white block">
+                          <strong className="text-sm text-md text-[#171C17] block">
                             {slide.title_en || `Slide ${index + 1}`}
                           </strong>
-                          <span className="text-[11px] text-gray-400">
+                          <span className="text-[11px] text-[#596358]">
                             Category: {slide.categoryName || slide.collectionKey || 'General'}
                           </span>
                         </div>
@@ -980,7 +980,7 @@ export default function CmsManagementPage() {
                           className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-colors ${
                             isEnabled
                               ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
-                              : 'bg-gray-200 text-[#7A8277] hover:bg-gray-300'
+                              : 'bg-gray-200 text-[#596358] hover:bg-gray-300'
                           }`}
                         >
                           {isEnabled ? (
@@ -990,20 +990,20 @@ export default function CmsManagementPage() {
                             </>
                           ) : (
                             <>
-                              <EyeOff className="w-3.5 h-3.5 text-[#7A8277]" />
+                              <EyeOff className="w-3.5 h-3.5 text-[#596358]" />
                               <span>Disabled</span>
                             </>
                           )}
                         </button>
 
                         {/* Reorder Buttons */}
-                        <div className="inline-flex items-center gap-1 border border-[#E2E6DC] rounded-lg p-0.5 bg-[#FAF9F6]">
+                        <div className="inline-flex items-center gap-1 border border-[#D5DDD2] rounded-lg p-0.5 bg-[#FAF9F6]">
                           <button
                             type="button"
                             onClick={() => handleMoveCollectionSlide(index, 'up')}
                             disabled={isFirst}
                             title="Move Slide Up"
-                            className="p-1 rounded hover:bg-white text-[#7A8277] disabled:opacity-20 transition-colors"
+                            className="p-1 rounded hover:bg-white text-[#596358] disabled:opacity-20 transition-colors"
                           >
                             <ArrowUp className="w-4 h-4" />
                           </button>
@@ -1012,7 +1012,7 @@ export default function CmsManagementPage() {
                             onClick={() => handleMoveCollectionSlide(index, 'down')}
                             disabled={isLast}
                             title="Move Slide Down"
-                            className="p-1 rounded hover:bg-white text-[#7A8277] disabled:opacity-20 transition-colors"
+                            className="p-1 rounded hover:bg-white text-[#596358] disabled:opacity-20 transition-colors"
                           >
                             <ArrowDown className="w-4 h-4" />
                           </button>
@@ -1024,10 +1024,10 @@ export default function CmsManagementPage() {
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start text-xs">
                       {/* Left: Image Card & Controls */}
                       <div className="md:col-span-4 space-y-3">
-                        <label className="block font-bold text-[#7A8277] uppercase text-[10px] tracking-wider">
+                        <label className="block font-bold text-[#596358] uppercase text-[10px] tracking-wider">
                           Slide Banner Image
                         </label>
-                        <div className="relative aspect-[3/4] max-w-[200px] mx-auto md:mx-0 rounded-xl overflow-hidden bg-black/90 border border-[#E2E6DC] shadow-inner flex items-center justify-center">
+                        <div className="relative aspect-[3/4] max-w-[200px] mx-auto md:mx-0 rounded-xl overflow-hidden bg-black/90 border border-[#D5DDD2] shadow-inner flex items-center justify-center">
                           <img
                             src={encodeURI(slide.image)}
                             alt=""
@@ -1038,7 +1038,7 @@ export default function CmsManagementPage() {
 
                         {/* Quick Presets Dropdown */}
                         <div>
-                          <label className="block text-[11px] font-semibold text-[#7A8277] mb-1">
+                          <label className="block text-[11px] font-semibold text-[#596358] mb-1">
                             Choose Existing Banner
                           </label>
                           <select
@@ -1066,10 +1066,10 @@ export default function CmsManagementPage() {
 
                         {/* Upload Image Button */}
                         <div>
-                          <label className="block text-[11px] font-semibold text-[#7A8277] mb-1">
+                          <label className="block text-[11px] font-semibold text-[#596358] mb-1">
                             Or Upload Custom Image
                           </label>
-                          <label className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-white rounded-lg font-bold text-xs cursor-pointer transition-colors border border-gray-300">
+                          <label className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FAF9F6] hover:bg-[#F3F0E6] text-[#171C17] rounded-lg font-bold text-xs cursor-pointer transition-colors border border-gray-300">
                             <Upload className="w-3.5 h-3.5" />
                             <span>{uploadingSlideImgId === slide.id ? 'Uploading...' : 'Upload Image File'}</span>
                             <input
@@ -1086,7 +1086,7 @@ export default function CmsManagementPage() {
                       <div className="md:col-span-8 space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div>
-                            <label className="block font-semibold mb-1 text-[#7A8277]">Title (English)</label>
+                            <label className="block font-semibold mb-1 text-[#596358]">Title (English)</label>
                             <input
                               type="text"
                               value={slide.title_en || ''}
@@ -1095,7 +1095,7 @@ export default function CmsManagementPage() {
                             />
                           </div>
                           <div>
-                            <label className="block font-semibold mb-1 text-[#7A8277]">Title (Hindi)</label>
+                            <label className="block font-semibold mb-1 text-[#596358]">Title (Hindi)</label>
                             <input
                               type="text"
                               value={slide.title_hi || ''}
@@ -1107,7 +1107,7 @@ export default function CmsManagementPage() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div>
-                            <label className="block font-semibold mb-1 text-[#7A8277]">Collection Tag (English)</label>
+                            <label className="block font-semibold mb-1 text-[#596358]">Collection Tag (English)</label>
                             <input
                               type="text"
                               value={slide.tag_en || ''}
@@ -1117,7 +1117,7 @@ export default function CmsManagementPage() {
                             />
                           </div>
                           <div>
-                            <label className="block font-semibold mb-1 text-[#7A8277]">Collection Tag (Hindi)</label>
+                            <label className="block font-semibold mb-1 text-[#596358]">Collection Tag (Hindi)</label>
                             <input
                               type="text"
                               value={slide.tag_hi || ''}
@@ -1130,7 +1130,7 @@ export default function CmsManagementPage() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div>
-                            <label className="block font-semibold mb-1 text-[#7A8277]">Description (English)</label>
+                            <label className="block font-semibold mb-1 text-[#596358]">Description (English)</label>
                             <textarea
                               rows={3}
                               value={slide.description_en || ''}
@@ -1139,7 +1139,7 @@ export default function CmsManagementPage() {
                             />
                           </div>
                           <div>
-                            <label className="block font-semibold mb-1 text-[#7A8277]">Description (Hindi)</label>
+                            <label className="block font-semibold mb-1 text-[#596358]">Description (Hindi)</label>
                             <textarea
                               rows={3}
                               value={slide.description_hi || ''}
@@ -1150,7 +1150,7 @@ export default function CmsManagementPage() {
                         </div>
 
                         <div>
-                          <label className="block font-semibold mb-1 text-[#7A8277]">
+                          <label className="block font-semibold mb-1 text-[#596358]">
                             &quot;Shop Now&quot; Destination Route
                           </label>
                           <div className="flex gap-2">
@@ -1187,15 +1187,15 @@ export default function CmsManagementPage() {
             </div>
 
             {/* Bottom Actions */}
-            <div className="pt-4 flex items-center justify-between border-t border-[#E2E6DC]">
-              <span className="text-[11px] text-gray-400">
+            <div className="pt-4 flex items-center justify-between border-t border-[#D5DDD2]">
+              <span className="text-[11px] text-[#596358]">
                 All changes must be saved to update the live storefront slider.
               </span>
               <button
                 type="button"
                 onClick={handleSaveCollectionSlides}
                 disabled={savingCollectionSlides}
-                className="px-6 py-2.5 bg-[#355E3B] hover:bg-[#294A30] text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2 disabled:opacity-50"
+                className="px-6 py-2.5 bg-[#24532F] hover:bg-[#183D22] text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2 disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
                 <span>{savingCollectionSlides ? 'Saving Changes...' : 'Save Collection Slider Settings'}</span>
@@ -1206,8 +1206,8 @@ export default function CmsManagementPage() {
 
         {/* Tab 1: Announcement Bar Editor */}
         {activeTab === 'announcement' && (
-          <div className="bg-white rounded-b-xl border border-t-0 border-[#E2E6DC] p-6 md:p-8 shadow-xs max-w-2xl">
-            <h3 className="font-heading font-bold text-base text-[#26352A] mb-4">
+          <div className="bg-white rounded-b-xl border border-t-0 border-[#D5DDD2] p-6 md:p-8 shadow-xs max-w-2xl">
+            <h3 className="font-heading font-bold text-base text-[#171C17] mb-4">
               Top Announcement Bar Settings
             </h3>
 
@@ -1264,7 +1264,7 @@ export default function CmsManagementPage() {
                   <div className="flex items-center gap-2">
                     <input
                       type="color"
-                      value={announcement.textColor || '#355E3B'}
+                      value={announcement.textColor || '#24532F'}
                       onChange={(e) => setAnnouncement({ ...announcement, textColor: e.target.value })}
                       className="w-10 h-8 rounded border cursor-pointer"
                     />
@@ -1279,15 +1279,15 @@ export default function CmsManagementPage() {
                     type="checkbox"
                     checked={announcement.isActive}
                     onChange={(e) => setAnnouncement({ ...announcement, isActive: e.target.checked })}
-                    className="rounded text-[#355E3B] h-4 w-4"
+                    className="rounded text-[#24532F] h-4 w-4"
                   />
-                  <span className="font-semibold text-white">Storefront Par Announcement Bar Enable Karein</span>
+                  <span className="font-semibold text-[#171C17]">Storefront Par Announcement Bar Enable Karein</span>
                 </label>
               </div>
 
               <button
                 type="submit"
-                className="px-6 py-2.5 bg-[#355E3B] hover:bg-[#294A30] text-[#000000] font-bold rounded-lg transition-all shadow"
+                className="px-6 py-2.5 bg-[#24532F] hover:bg-[#183D22] text-[#000000] font-bold rounded-lg transition-all shadow"
               >
                 Announcement Save Karein
               </button>
@@ -1297,18 +1297,18 @@ export default function CmsManagementPage() {
 
         {/* Tab 2: Hero Banners */}
         {activeTab === 'banners' && (
-          <div className="bg-white rounded-b-xl border border-t-0 border-[#E2E6DC] p-6 md:p-8 shadow-xs space-y-4">
-            <h3 className="font-heading font-bold text-base text-[#26352A]">
+          <div className="bg-white rounded-b-xl border border-t-0 border-[#D5DDD2] p-6 md:p-8 shadow-xs space-y-4">
+            <h3 className="font-heading font-bold text-base text-[#171C17]">
               Homepage Hero Banner Sliders ({banners.length})
             </h3>
             <div className="space-y-4">
               {banners.map((ban, idx) => (
-                <div key={ban.id} className="p-4 rounded-xl border border-[#E2E6DC] flex flex-col sm:flex-row items-center gap-4 bg-[#FAF9F6]">
+                <div key={ban.id} className="p-4 rounded-xl border border-[#D5DDD2] flex flex-col sm:flex-row items-center gap-4 bg-[#FAF9F6]">
                   <img src={ban.image} alt="" className="w-32 h-20 rounded-lg object-cover bg-black shrink-0" />
                   <div className="flex-1 text-xs">
-                    <strong className="block text-sm text-white">{ban.title_en}</strong>
-                    <span className="text-[#7A8277] font-devanagari block">{ban.title_hi}</span>
-                    <span className="text-[11px] text-gray-400 mt-1 block">Link: {ban.link} • Status: {ban.isActive ? 'Active' : 'Disabled'}</span>
+                    <strong className="block text-sm text-[#171C17]">{ban.title_en}</strong>
+                    <span className="text-[#596358] font-devanagari block">{ban.title_hi}</span>
+                    <span className="text-[11px] text-[#596358] mt-1 block">Link: {ban.link} • Status: {ban.isActive ? 'Active' : 'Disabled'}</span>
                   </div>
                 </div>
               ))}
@@ -1318,18 +1318,18 @@ export default function CmsManagementPage() {
 
         {/* Tab 3: Coupons */}
         {activeTab === 'coupons' && (
-          <div className="bg-white rounded-b-xl border border-t-0 border-[#E2E6DC] p-6 md:p-8 shadow-xs space-y-4 max-w-2xl">
-            <h3 className="font-heading font-bold text-base text-[#26352A]">
+          <div className="bg-white rounded-b-xl border border-t-0 border-[#D5DDD2] p-6 md:p-8 shadow-xs space-y-4 max-w-2xl">
+            <h3 className="font-heading font-bold text-base text-[#171C17]">
               Discount Coupons
             </h3>
             <div className="space-y-3">
               {coupons.map((c) => (
-                <div key={c.id} className="p-4 rounded-xl border border-[#E2E6DC] flex items-center justify-between text-xs bg-[#FAF9F6]">
+                <div key={c.id} className="p-4 rounded-xl border border-[#D5DDD2] flex items-center justify-between text-xs bg-[#FAF9F6]">
                   <div>
-                    <span className="font-extrabold text-sm text-white font-mono block">
+                    <span className="font-extrabold text-sm text-[#171C17] font-mono block">
                       🎟️ {c.code}
                     </span>
-                    <span className="text-[#7A8277]">
+                    <span className="text-[#596358]">
                       {c.discountType === 'percentage' ? `${c.discountValue}% Off` : `₹${c.discountValue} Flat Off`} • Min Order: ₹{c.minOrderValue}
                     </span>
                   </div>
@@ -1344,16 +1344,16 @@ export default function CmsManagementPage() {
 
         {/* Tab 4: Customer Reviews Management */}
         {activeTab === 'reviews' && (
-          <div className="bg-white rounded-b-xl border border-t-0 border-[#E2E6DC] p-6 md:p-8 space-y-6 text-white">
+          <div className="bg-white rounded-b-xl border border-t-0 border-[#D5DDD2] p-6 md:p-8 space-y-6 text-[#252A25]">
             
             {/* Top Bar: Title & Add Button */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#E2E6DC] gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#D5DDD2] gap-4">
               <div>
-                <h3 className="font-heading font-extrabold text-lg sm:text-xl text-white flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5 text-[#355E3B]" />
+                <h3 className="font-heading font-extrabold text-lg sm:text-xl text-[#171C17] flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 text-[#24532F]" />
                   <span>Customer Reviews & Testimonials</span>
                 </h3>
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-[#596358] mt-1">
                   Manage photo-first customer testimonials, ratings, and locations displayed on the homepage.
                 </p>
               </div>
@@ -1361,7 +1361,7 @@ export default function CmsManagementPage() {
               <button
                 type="button"
                 onClick={handleOpenAddReview}
-                className="px-4 py-2.5 bg-[#355E3B] hover:bg-[#294A30] text-black font-extrabold text-xs rounded-xl shadow-lg transition-all flex items-center gap-2 self-start sm:self-auto shrink-0 active:scale-95"
+                className="px-4 py-2.5 bg-[#24532F] hover:bg-[#183D22] text-black font-extrabold text-xs rounded-xl shadow-lg transition-all flex items-center gap-2 self-start sm:self-auto shrink-0 active:scale-95"
               >
                 <Plus className="w-4 h-4 text-black" />
                 <span>Add Customer Review</span>
@@ -1370,23 +1370,23 @@ export default function CmsManagementPage() {
 
             {/* Metrics Overview */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-              <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#E2E6DC]">
-                <span className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider">Total Reviews</span>
-                <span className="block text-xl sm:text-2xl font-black text-white mt-1">{reviews.length}</span>
+              <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#D5DDD2]">
+                <span className="block text-[11px] font-bold text-[#596358] uppercase tracking-wider">Total Reviews</span>
+                <span className="block text-xl sm:text-2xl font-black text-[#171C17] mt-1">{reviews.length}</span>
               </div>
-              <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#E2E6DC]">
+              <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#D5DDD2]">
                 <span className="block text-[11px] font-bold text-[#22C55E] uppercase tracking-wider">Published on Site</span>
                 <span className="block text-xl sm:text-2xl font-black text-[#22C55E] mt-1">
                   {reviews.filter(r => r.status === 'APPROVED' && r.isActive !== false).length}
                 </span>
               </div>
-              <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#E2E6DC]">
-                <span className="block text-[11px] font-bold text-[#355E3B] uppercase tracking-wider">Verified Buyers</span>
-                <span className="block text-xl sm:text-2xl font-black text-[#355E3B] mt-1">
+              <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#D5DDD2]">
+                <span className="block text-[11px] font-bold text-[#24532F] uppercase tracking-wider">Verified Buyers</span>
+                <span className="block text-xl sm:text-2xl font-black text-[#24532F] mt-1">
                   {reviews.filter(r => r.isVerified !== false).length}
                 </span>
               </div>
-              <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#E2E6DC]">
+              <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#D5DDD2]">
                 <span className="block text-[11px] font-bold text-amber-400 uppercase tracking-wider">Average Rating</span>
                 <span className="block text-xl sm:text-2xl font-black text-amber-400 mt-1 flex items-center gap-1">
                   ★ {(reviews.reduce((acc, r) => acc + (Number(r.rating) || 5), 0) / Math.max(1, reviews.length)).toFixed(1)}
@@ -1397,19 +1397,19 @@ export default function CmsManagementPage() {
             {/* Search & Filter Bar */}
             <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 pt-2">
               <div className="relative flex-1 max-w-md">
-                <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-[#596358] absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={reviewSearchQuery}
                   onChange={(e) => setReviewSearchQuery(e.target.value)}
                   placeholder="Search customer, location, product, or review text..."
-                  className="w-full pl-9 pr-4 py-2 bg-white border border-[#E2E6DC] focus:border-[#355E3B] rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none transition-colors"
+                  className="w-full pl-9 pr-4 py-2 bg-white border border-[#D5DDD2] focus:border-[#24532F] rounded-xl text-xs text-[#171C17] placeholder-[#596358] focus:outline-none transition-colors"
                 />
                 {reviewSearchQuery && (
                   <button
                     type="button"
                     onClick={() => setReviewSearchQuery('')}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#596358] hover:text-[#171C17]"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -1423,8 +1423,8 @@ export default function CmsManagementPage() {
                   onClick={() => setReviewFilterStatus('ALL')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
                     reviewFilterStatus === 'ALL'
-                      ? 'bg-[#355E3B] text-black shadow-sm'
-                      : 'bg-[#FAF9F6] text-gray-300 hover:text-white border border-[#E2E6DC]'
+                      ? 'bg-[#24532F] text-white shadow-sm'
+                      : 'bg-[#FAF9F6] text-[#252A25] hover:text-[#171C17] hover:bg-[#DCE8D5] border border-[#D5DDD2]'
                   }`}
                 >
                   All ({reviews.length})
@@ -1435,7 +1435,7 @@ export default function CmsManagementPage() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
                     reviewFilterStatus === 'PUBLISHED'
                       ? 'bg-emerald-600 text-white shadow-sm'
-                      : 'bg-[#FAF9F6] text-gray-300 hover:text-white border border-[#E2E6DC]'
+                      : 'bg-[#FAF9F6] text-[#252A25] hover:text-[#171C17] hover:bg-[#DCE8D5] border border-[#D5DDD2]'
                   }`}
                 >
                   Published ({reviews.filter(r => r.status === 'APPROVED' && r.isActive !== false).length})
@@ -1446,7 +1446,7 @@ export default function CmsManagementPage() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
                     reviewFilterStatus === 'UNPUBLISHED'
                       ? 'bg-amber-600 text-white shadow-sm'
-                      : 'bg-[#FAF9F6] text-gray-300 hover:text-white border border-[#E2E6DC]'
+                      : 'bg-[#FAF9F6] text-[#252A25] hover:text-[#171C17] hover:bg-[#DCE8D5] border border-[#D5DDD2]'
                   }`}
                 >
                   Drafts ({reviews.filter(r => r.status !== 'APPROVED' || r.isActive === false).length})
@@ -1456,8 +1456,8 @@ export default function CmsManagementPage() {
                   onClick={() => setReviewFilterStatus('PHOTO_ONLY')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
                     reviewFilterStatus === 'PHOTO_ONLY'
-                      ? 'bg-[#355E3B] text-black shadow-sm'
-                      : 'bg-[#FAF9F6] text-gray-300 hover:text-white border border-[#E2E6DC]'
+                      ? 'bg-[#24532F] text-white shadow-sm'
+                      : 'bg-[#FAF9F6] text-[#252A25] hover:text-[#171C17] hover:bg-[#DCE8D5] border border-[#D5DDD2]'
                   }`}
                 >
                   With Photo ({reviews.filter(r => !!r.customerPhoto).length})
@@ -1492,10 +1492,10 @@ export default function CmsManagementPage() {
 
               if (filtered.length === 0) {
                 return (
-                  <div className="p-12 text-center rounded-2xl bg-[#FAF9F6] border border-[#E2E6DC]">
-                    <MessageSquare className="w-10 h-10 text-gray-500 mx-auto mb-3" />
-                    <h4 className="font-bold text-white text-sm">No reviews found matching criteria</h4>
-                    <p className="text-xs text-gray-400 mt-1">
+                  <div className="p-12 text-center rounded-2xl bg-[#FAF9F6] border border-[#D5DDD2]">
+                    <MessageSquare className="w-10 h-10 text-[#596358] mx-auto mb-3" />
+                    <h4 className="font-bold text-[#171C17] text-sm">No reviews found matching criteria</h4>
+                    <p className="text-xs text-[#596358] mt-1">
                       {reviewSearchQuery ? 'Try clearing your search term.' : 'Click "Add Customer Review" to publish your first review.'}
                     </p>
                   </div>
@@ -1511,37 +1511,37 @@ export default function CmsManagementPage() {
                         key={rev.id}
                         className={`p-4 sm:p-5 rounded-2xl border transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 ${
                           isPublished
-                            ? 'bg-[#FAF9F6] border-[#E2E6DC] hover:border-[#355E3B]/60'
-                            : 'bg-white border-dashed border-[#E2E6DC] opacity-80'
+                            ? 'bg-[#FAF9F6] border-[#D5DDD2] hover:border-[#24532F]/60'
+                            : 'bg-white border-dashed border-[#D5DDD2] opacity-80'
                         }`}
                       >
                         {/* Left: Reorder arrows & Customer Photo + Info */}
                         <div className="flex items-start sm:items-center gap-3.5 flex-1 min-w-0">
                           {/* Order control */}
-                          <div className="flex flex-col items-center gap-1 shrink-0 text-gray-400">
+                          <div className="flex flex-col items-center gap-1 shrink-0 text-[#596358]">
                             <button
                               type="button"
                               onClick={() => handleMoveReviewOrder(idx, 'up')}
                               disabled={idx === 0}
                               title="Move Up"
-                              className="p-1 hover:text-[#355E3B] disabled:opacity-20"
+                              className="p-1 hover:text-[#24532F] disabled:opacity-20"
                             >
                               <ChevronUp className="w-4 h-4" />
                             </button>
-                            <span className="text-[10px] font-bold text-gray-500">{idx + 1}</span>
+                            <span className="text-[10px] font-bold text-[#596358]">{idx + 1}</span>
                             <button
                               type="button"
                               onClick={() => handleMoveReviewOrder(idx, 'down')}
                               disabled={idx === filtered.length - 1}
                               title="Move Down"
-                              className="p-1 hover:text-[#355E3B] disabled:opacity-20"
+                              className="p-1 hover:text-[#24532F] disabled:opacity-20"
                             >
                               <ChevronDown className="w-4 h-4" />
                             </button>
                           </div>
 
                           {/* Customer Photo or Initials */}
-                          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-white border border-[#E2E6DC] shrink-0 relative">
+                          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-white border border-[#D5DDD2] shrink-0 relative">
                             {rev.customerPhoto ? (
                               <img
                                 src={rev.customerPhoto}
@@ -1563,12 +1563,12 @@ export default function CmsManagementPage() {
                           {/* Customer Details & Snippet */}
                           <div className="flex-1 min-w-0 text-xs">
                             <div className="flex items-center gap-2 flex-wrap mb-1">
-                              <span className="font-heading font-extrabold text-sm text-white">
+                              <span className="font-heading font-extrabold text-sm text-[#171C17]">
                                 {rev.customerName}
                               </span>
                               {rev.location && (
-                                <span className="inline-flex items-center gap-1 text-[11px] text-[#7A8277]">
-                                  <MapPin className="w-3 h-3 text-[#355E3B]" />
+                                <span className="inline-flex items-center gap-1 text-[11px] text-[#596358]">
+                                  <MapPin className="w-3 h-3 text-[#24532F]" />
                                   <span>{rev.location}</span>
                                 </span>
                               )}
@@ -1579,26 +1579,26 @@ export default function CmsManagementPage() {
 
                             {/* Product Badge */}
                             {(rev.productName || rev.productId) && (
-                              <div className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#294A30] bg-[#DCE8D5] border border-[#A8BFA3]/30 px-2 py-0.5 rounded-md mb-1.5 max-w-full truncate">
-                                <ShoppingBag className="w-2.5 h-2.5 text-[#355E3B]" />
+                              <div className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#183D22] bg-[#DCE8D5] border border-[#356B3D]/30 px-2 py-0.5 rounded-md mb-1.5 max-w-full truncate">
+                                <ShoppingBag className="w-2.5 h-2.5 text-[#24532F]" />
                                 <span className="truncate">{rev.productName || rev.productId}</span>
                               </div>
                             )}
 
                             {/* Title & Comment */}
                             {rev.title && (
-                              <strong className="block text-xs text-[#26352A] font-bold mb-0.5">
+                              <strong className="block text-xs text-[#171C17] font-bold mb-0.5">
                                 "{rev.title}"
                               </strong>
                             )}
-                            <p className="text-[#50574F] text-xs italic line-clamp-2">
+                            <p className="text-[#252A25] text-xs italic line-clamp-2">
                               "{rev.comment}"
                             </p>
                           </div>
                         </div>
 
                         {/* Right: Badges & Action Buttons */}
-                        <div className="flex items-center justify-end gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-[#E2E6DC]">
+                        <div className="flex items-center justify-end gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-[#D5DDD2]">
                           {/* Publish/Unpublish toggle */}
                           <button
                             type="button"
@@ -1607,7 +1607,7 @@ export default function CmsManagementPage() {
                             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                               isPublished
                                 ? 'bg-emerald-950 text-emerald-400 border border-emerald-700/60 hover:bg-emerald-900'
-                                : 'bg-gray-800 text-gray-400 border border-gray-700 hover:bg-gray-700'
+                                : 'bg-gray-800 text-[#596358] border border-gray-700 hover:bg-gray-700'
                             }`}
                           >
                             {isPublished ? (
@@ -1628,7 +1628,7 @@ export default function CmsManagementPage() {
                             type="button"
                             onClick={() => handleOpenEditReview(rev)}
                             title="Edit Review"
-                            className="p-2 bg-white hover:bg-[#355E3B] text-gray-200 hover:text-black rounded-lg border border-[#E2E6DC] transition-colors"
+                            className="p-2 bg-white hover:bg-[#24532F] text-gray-200 hover:text-black rounded-lg border border-[#D5DDD2] transition-colors"
                           >
                             <Edit className="w-4 h-4" />
                           </button>
@@ -1655,22 +1655,22 @@ export default function CmsManagementPage() {
                 ======================================================== */}
             {reviewModalOpen && (
               <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm overflow-y-auto">
-                <div className="bg-white border border-[#E2E6DC] rounded-2xl w-full max-w-xl p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto text-white">
+                <div className="bg-white border border-[#D5DDD2] rounded-2xl w-full max-w-xl p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto text-[#252A25]">
                   
                   {/* Modal Header */}
-                  <div className="flex items-center justify-between pb-4 border-b border-[#E2E6DC] mb-5">
+                  <div className="flex items-center justify-between pb-4 border-b border-[#D5DDD2] mb-5">
                     <div>
-                      <h4 className="font-heading font-extrabold text-lg text-white">
+                      <h4 className="font-heading font-extrabold text-lg text-[#171C17]">
                         {editingReview ? 'Edit Customer Review' : 'Add New Customer Review'}
                       </h4>
-                      <p className="text-xs text-gray-400 mt-0.5">
+                      <p className="text-xs text-[#596358] mt-0.5">
                         Uploaded photos appear prominently on the homepage review cards.
                       </p>
                     </div>
                     <button
                       type="button"
                       onClick={() => setReviewModalOpen(false)}
-                      className="text-gray-400 hover:text-white p-1"
+                      className="text-[#596358] hover:text-[#171C17] p-1"
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -1681,12 +1681,12 @@ export default function CmsManagementPage() {
                     
                     {/* Customer Photo Upload Section */}
                     <div>
-                      <label className="block font-bold text-gray-300 mb-2">
+                      <label className="block font-bold text-[#252A25] mb-2">
                         Customer Photo (Square Recommended)
                       </label>
-                      <div className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-xl bg-[#FAF9F6] border border-[#E2E6DC]">
+                      <div className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-xl bg-[#FAF9F6] border border-[#D5DDD2]">
                         {/* Preview */}
-                        <div className="w-24 h-24 rounded-xl overflow-hidden bg-white border-2 border-dashed border-[#A8BFA3] shrink-0 flex items-center justify-center relative">
+                        <div className="w-24 h-24 rounded-xl overflow-hidden bg-white border-2 border-dashed border-[#356B3D] shrink-0 flex items-center justify-center relative">
                           {reviewFormData.customerPhoto ? (
                             <img
                               src={reviewFormData.customerPhoto}
@@ -1694,12 +1694,12 @@ export default function CmsManagementPage() {
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <span className="text-[10px] text-[#7A8277] font-bold text-center px-1">
+                            <span className="text-[10px] text-[#596358] font-bold text-center px-1">
                               No Photo Selected
                             </span>
                           )}
                           {reviewImageUploading && (
-                            <div className="absolute inset-0 bg-white/80 flex items-center justify-center text-[11px] font-bold text-[#355E3B]">
+                            <div className="absolute inset-0 bg-white/80 flex items-center justify-center text-[11px] font-bold text-[#24532F]">
                               Uploading...
                             </div>
                           )}
@@ -1708,7 +1708,7 @@ export default function CmsManagementPage() {
                         {/* Upload buttons & instructions */}
                         <div className="flex-1 space-y-2 text-center sm:text-left">
                           <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
-                            <label className="px-3 py-1.5 rounded-xl bg-[#355E3B] hover:bg-[#294A30] text-white font-extrabold cursor-pointer transition-all inline-flex items-center gap-1.5 shadow-sm">
+                            <label className="px-3 py-1.5 rounded-xl bg-[#24532F] hover:bg-[#183D22] text-white font-extrabold cursor-pointer transition-all inline-flex items-center gap-1.5 shadow-sm">
                               <Upload className="w-3.5 h-3.5" />
                               <span>{reviewFormData.customerPhoto ? 'Change Photo' : 'Upload Device Image'}</span>
                               <input
@@ -1730,7 +1730,7 @@ export default function CmsManagementPage() {
                             )}
                           </div>
 
-                          <div className="text-[11px] text-[#7A8277]">
+                          <div className="text-[11px] text-[#596358]">
                             Supports JPG, JPEG, PNG, WebP up to 10MB.
                           </div>
 
@@ -1740,7 +1740,7 @@ export default function CmsManagementPage() {
                             value={reviewFormData.customerPhoto}
                             onChange={(e) => setReviewFormData(prev => ({ ...prev, customerPhoto: e.target.value }))}
                             placeholder="Or paste direct image URL (https://...)"
-                            className="w-full px-3 py-1.5 rounded-xl bg-white border border-[#E2E6DC] text-[11px] text-[#26352A] placeholder-[#7A8277] focus:outline-none focus:border-[#355E3B]"
+                            className="w-full px-3 py-1.5 rounded-xl bg-white border border-[#D5DDD2] text-[11px] text-[#171C17] placeholder-[#596358] focus:outline-none focus:border-[#24532F]"
                           />
                         </div>
                       </div>
@@ -1749,7 +1749,7 @@ export default function CmsManagementPage() {
                     {/* Customer Name & City/Location */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="block font-bold text-[#26352A] mb-1">
+                        <label className="block font-bold text-[#171C17] mb-1">
                           Customer Name <span className="text-[#B94343]">*</span>
                         </label>
                         <input
@@ -1758,12 +1758,12 @@ export default function CmsManagementPage() {
                           value={reviewFormData.customerName}
                           onChange={(e) => setReviewFormData(prev => ({ ...prev, customerName: e.target.value }))}
                           placeholder="e.g. Ramesh Patel"
-                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#E2E6DC] focus:border-[#355E3B] text-[#26352A] placeholder-[#7A8277] focus:outline-none"
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#D5DDD2] focus:border-[#24532F] text-[#171C17] placeholder-[#596358] focus:outline-none"
                         />
                       </div>
 
                       <div>
-                        <label className="block font-bold text-[#26352A] mb-1">
+                        <label className="block font-bold text-[#171C17] mb-1">
                           City / District / Area
                         </label>
                         <input
@@ -1771,7 +1771,7 @@ export default function CmsManagementPage() {
                           value={reviewFormData.location}
                           onChange={(e) => setReviewFormData(prev => ({ ...prev, location: e.target.value }))}
                           placeholder="e.g. Sumerpur, Pali"
-                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#E2E6DC] focus:border-[#355E3B] text-[#26352A] placeholder-[#7A8277] focus:outline-none"
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#D5DDD2] focus:border-[#24532F] text-[#171C17] placeholder-[#596358] focus:outline-none"
                         />
                       </div>
                     </div>
@@ -1779,10 +1779,10 @@ export default function CmsManagementPage() {
                     {/* Star Rating & Display Order */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="block font-bold text-[#26352A] mb-1">
+                        <label className="block font-bold text-[#171C17] mb-1">
                           Star Rating (1 to 5)
                         </label>
-                        <div className="flex items-center gap-2 p-2 rounded-xl bg-white border border-[#E2E6DC]">
+                        <div className="flex items-center gap-2 p-2 rounded-xl bg-white border border-[#D5DDD2]">
                           {[1, 2, 3, 4, 5].map((starVal) => (
                             <button
                               key={starVal}
@@ -1794,7 +1794,7 @@ export default function CmsManagementPage() {
                                 className={`w-5 h-5 ${
                                   starVal <= reviewFormData.rating
                                     ? 'text-[#B7791F] fill-[#B7791F]'
-                                    : 'text-gray-300'
+                                    : 'text-[#252A25]'
                                 }`}
                               />
                             </button>
@@ -1806,7 +1806,7 @@ export default function CmsManagementPage() {
                       </div>
 
                       <div>
-                        <label className="block font-bold text-gray-300 mb-1">
+                        <label className="block font-bold text-[#252A25] mb-1">
                           Display Sort Order
                         </label>
                         <input
@@ -1814,14 +1814,14 @@ export default function CmsManagementPage() {
                           min="1"
                           value={reviewFormData.sortOrder}
                           onChange={(e) => setReviewFormData(prev => ({ ...prev, sortOrder: Number(e.target.value) || 1 }))}
-                          className="w-full px-3 py-2 rounded-xl bg-[#FAF9F6] border border-[#E2E6DC] focus:border-[#355E3B] text-white focus:outline-none"
+                          className="w-full px-3 py-2 rounded-xl bg-[#FAF9F6] border border-[#D5DDD2] focus:border-[#24532F] text-[#171C17] focus:outline-none"
                         />
                       </div>
                     </div>
 
                     {/* Associated Product */}
                     <div>
-                      <label className="block font-bold text-gray-300 mb-1">
+                      <label className="block font-bold text-[#252A25] mb-1">
                         Purchased Product (Optional)
                       </label>
                       <select
@@ -1835,7 +1835,7 @@ export default function CmsManagementPage() {
                             productName: found ? found.title_en : prev.productName
                           }));
                         }}
-                        className="w-full px-3 py-2 rounded-xl bg-[#FAF9F6] border border-[#E2E6DC] focus:border-[#355E3B] text-white focus:outline-none"
+                        className="w-full px-3 py-2 rounded-xl bg-[#FAF9F6] border border-[#D5DDD2] focus:border-[#24532F] text-[#171C17] focus:outline-none"
                       >
                         <option value="">-- No specific product / General Store Review --</option>
                         {allProducts.map((p) => (
@@ -1848,7 +1848,7 @@ export default function CmsManagementPage() {
 
                     {/* Review Title */}
                     <div>
-                      <label className="block font-bold text-gray-300 mb-1">
+                      <label className="block font-bold text-[#252A25] mb-1">
                         Review Headline / Title
                       </label>
                       <input
@@ -1856,13 +1856,13 @@ export default function CmsManagementPage() {
                         value={reviewFormData.title}
                         onChange={(e) => setReviewFormData(prev => ({ ...prev, title: e.target.value }))}
                         placeholder="e.g. 1.5 KM Beam Covers Entire Field"
-                        className="w-full px-3 py-2 rounded-xl bg-[#FAF9F6] border border-[#E2E6DC] focus:border-[#355E3B] text-white focus:outline-none"
+                        className="w-full px-3 py-2 rounded-xl bg-[#FAF9F6] border border-[#D5DDD2] focus:border-[#24532F] text-[#171C17] focus:outline-none"
                       />
                     </div>
 
                     {/* Review Text */}
                     <div>
-                      <label className="block font-bold text-gray-300 mb-1">
+                      <label className="block font-bold text-[#252A25] mb-1">
                         Review Description / Full Text <span className="text-red-400">*</span>
                       </label>
                       <textarea
@@ -1871,20 +1871,20 @@ export default function CmsManagementPage() {
                         value={reviewFormData.comment}
                         onChange={(e) => setReviewFormData(prev => ({ ...prev, comment: e.target.value }))}
                         placeholder="Customer's honest experience with the product and service..."
-                        className="w-full px-3 py-2 rounded-xl bg-[#FAF9F6] border border-[#E2E6DC] focus:border-[#355E3B] text-white focus:outline-none"
+                        className="w-full px-3 py-2 rounded-xl bg-[#FAF9F6] border border-[#D5DDD2] focus:border-[#24532F] text-[#171C17] focus:outline-none"
                       />
                     </div>
 
                     {/* Toggles: Verified & Published */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 rounded-xl bg-[#FAF9F6] border border-[#E2E6DC]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 rounded-xl bg-[#FAF9F6] border border-[#D5DDD2]">
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
                           type="checkbox"
                           checked={reviewFormData.isVerified}
                           onChange={(e) => setReviewFormData(prev => ({ ...prev, isVerified: e.target.checked }))}
-                          className="w-4 h-4 accent-[#355E3B] rounded"
+                          className="w-4 h-4 accent-[#24532F] rounded"
                         />
-                        <span className="font-bold text-white">✓ Verified Customer</span>
+                        <span className="font-bold text-[#171C17]">✓ Verified Customer</span>
                       </label>
 
                       <label className="flex items-center gap-2 cursor-pointer">
@@ -1892,24 +1892,24 @@ export default function CmsManagementPage() {
                           type="checkbox"
                           checked={reviewFormData.isActive}
                           onChange={(e) => setReviewFormData(prev => ({ ...prev, isActive: e.target.checked }))}
-                          className="w-4 h-4 accent-[#355E3B] rounded"
+                          className="w-4 h-4 accent-[#24532F] rounded"
                         />
-                        <span className="font-bold text-white">👁️ Publish on Website</span>
+                        <span className="font-bold text-[#171C17]">👁️ Publish on Website</span>
                       </label>
                     </div>
 
                     {/* Submit Actions */}
-                    <div className="pt-3 border-t border-[#E2E6DC] flex items-center justify-end gap-3">
+                    <div className="pt-3 border-t border-[#D5DDD2] flex items-center justify-end gap-3">
                       <button
                         type="button"
                         onClick={() => setReviewModalOpen(false)}
-                        className="px-4 py-2 rounded-xl bg-white hover:bg-[#333333] text-gray-300 font-bold"
+                        className="px-4 py-2 rounded-xl bg-white hover:bg-[#333333] text-[#252A25] font-bold"
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
-                        className="px-5 py-2 rounded-xl bg-[#355E3B] hover:bg-[#294A30] text-black font-extrabold shadow-lg flex items-center gap-2"
+                        className="px-5 py-2 rounded-xl bg-[#24532F] hover:bg-[#183D22] text-black font-extrabold shadow-lg flex items-center gap-2"
                       >
                         <Save className="w-4 h-4" />
                         <span>{editingReview ? 'Save Changes' : 'Create Review'}</span>
@@ -1930,17 +1930,17 @@ export default function CmsManagementPage() {
                   <div className="w-12 h-12 rounded-full bg-red-950/60 text-red-400 border border-red-700/60 flex items-center justify-center mx-auto mb-3">
                     <Trash2 className="w-6 h-6" />
                   </div>
-                  <h4 className="font-heading font-extrabold text-base text-white">
+                  <h4 className="font-heading font-extrabold text-base text-[#171C17]">
                     Delete Customer Review?
                   </h4>
-                  <p className="text-xs text-gray-300 mt-2 mb-5">
-                    Are you sure you want to delete the testimonial from <strong className="text-white">"{deleteConfirmReview.customerName}"</strong>? This action cannot be undone.
+                  <p className="text-xs text-[#252A25] mt-2 mb-5">
+                    Are you sure you want to delete the testimonial from <strong className="text-[#171C17]">"{deleteConfirmReview.customerName}"</strong>? This action cannot be undone.
                   </p>
                   <div className="flex items-center justify-center gap-3">
                     <button
                       type="button"
                       onClick={() => setDeleteConfirmReview(null)}
-                      className="px-4 py-2 rounded-xl bg-white hover:bg-[#333333] text-gray-300 font-bold text-xs"
+                      className="px-4 py-2 rounded-xl bg-white hover:bg-[#333333] text-[#252A25] font-bold text-xs"
                     >
                       Cancel
                     </button>
@@ -1961,8 +1961,8 @@ export default function CmsManagementPage() {
 
         {/* Tab 5: Settings */}
         {activeTab === 'settings' && (
-          <div className="bg-white rounded-b-xl border border-t-0 border-[#E2E6DC] p-6 md:p-8 shadow-xs max-w-2xl">
-            <h3 className="font-heading font-bold text-base text-[#26352A] mb-4">
+          <div className="bg-white rounded-b-xl border border-t-0 border-[#D5DDD2] p-6 md:p-8 shadow-xs max-w-2xl">
+            <h3 className="font-heading font-bold text-base text-[#171C17] mb-4">
               Pali Store Contact & Logistics
             </h3>
 
@@ -2021,7 +2021,7 @@ export default function CmsManagementPage() {
 
               <button
                 type="submit"
-                className="px-6 py-2.5 bg-[#355E3B] hover:bg-[#294A30] text-[#000000] font-bold rounded-lg transition-all shadow"
+                className="px-6 py-2.5 bg-[#24532F] hover:bg-[#183D22] text-[#000000] font-bold rounded-lg transition-all shadow"
               >
                 Save Changes
               </button>
@@ -2031,13 +2031,13 @@ export default function CmsManagementPage() {
 
         {/* Tab 6: Multilingual Translations Manager */}
         {activeTab === 'translations' && (
-          <div className="bg-white rounded-b-xl border border-t-0 border-[#E2E6DC] p-6 md:p-8 shadow-xs max-w-4xl">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-6 border-b border-[#E2E6DC] gap-3">
+          <div className="bg-white rounded-b-xl border border-t-0 border-[#D5DDD2] p-6 md:p-8 shadow-xs max-w-4xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-6 border-b border-[#D5DDD2] gap-3">
               <div>
-                <h3 className="font-heading font-bold text-base text-[#26352A]">
+                <h3 className="font-heading font-bold text-base text-[#171C17]">
                   Multilingual Website Translations
                 </h3>
-                <p className="text-xs text-[#7A8277] mt-0.5">
+                <p className="text-xs text-[#596358] mt-0.5">
                   English (Default), Hinglish (Roman Hindi), aur Devanagari Hindi ke buttons, labels aur messages customize karein.
                 </p>
               </div>
@@ -2049,8 +2049,8 @@ export default function CmsManagementPage() {
                   onClick={() => setSelectedTransLang('en')}
                   className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
                     selectedTransLang === 'en'
-                      ? 'bg-white text-white shadow-xs'
-                      : 'text-[#7A8277] hover:text-black'
+                      ? 'bg-[#24532F] text-white shadow-sm'
+                      : 'text-[#596358] hover:text-black'
                   }`}
                 >
                   English (Default)
@@ -2060,8 +2060,8 @@ export default function CmsManagementPage() {
                   onClick={() => setSelectedTransLang('hinglish')}
                   className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
                     selectedTransLang === 'hinglish'
-                      ? 'bg-white text-white shadow-xs'
-                      : 'text-[#7A8277] hover:text-black'
+                      ? 'bg-[#24532F] text-white shadow-sm'
+                      : 'text-[#596358] hover:text-black'
                   }`}
                 >
                   Hinglish
@@ -2071,8 +2071,8 @@ export default function CmsManagementPage() {
                   onClick={() => setSelectedTransLang('hi')}
                   className={`px-3 py-1.5 rounded-md text-xs font-bold font-devanagari transition-all ${
                     selectedTransLang === 'hi'
-                      ? 'bg-white text-white shadow-xs'
-                      : 'text-[#7A8277] hover:text-black'
+                      ? 'bg-[#24532F] text-white shadow-sm'
+                      : 'text-[#596358] hover:text-black'
                   }`}
                 >
                   हिंदी
@@ -2082,9 +2082,9 @@ export default function CmsManagementPage() {
 
             <form onSubmit={handleSaveTranslations} className="space-y-6 text-xs">
               {/* Group 1: Header, Navigation & Search */}
-              <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#E2E6DC]">
-                <h4 className="font-bold text-xs uppercase text-white mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#355E3B]"></span>
+              <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#D5DDD2]">
+                <h4 className="font-bold text-xs uppercase text-[#171C17] mb-3 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#24532F]"></span>
                   Header, Navigation & Search
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
@@ -2128,9 +2128,9 @@ export default function CmsManagementPage() {
               </div>
 
               {/* Group 2: Product Card & Action Buttons */}
-              <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#E2E6DC]">
-                <h4 className="font-bold text-xs uppercase text-white mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#355E3B]"></span>
+              <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#D5DDD2]">
+                <h4 className="font-bold text-xs uppercase text-[#171C17] mb-3 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#24532F]"></span>
                   Product Card & Shopping Buttons
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
@@ -2174,9 +2174,9 @@ export default function CmsManagementPage() {
               </div>
 
               {/* Group 3: Cart & Checkout */}
-              <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#E2E6DC]">
-                <h4 className="font-bold text-xs uppercase text-white mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#355E3B]"></span>
+              <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#D5DDD2]">
+                <h4 className="font-bold text-xs uppercase text-[#171C17] mb-3 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#24532F]"></span>
                   Cart, Checkout & Orders
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
@@ -2220,9 +2220,9 @@ export default function CmsManagementPage() {
               </div>
 
               {/* Group 4: Value Propositions & Badges */}
-              <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#E2E6DC]">
-                <h4 className="font-bold text-xs uppercase text-white mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#355E3B]"></span>
+              <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#D5DDD2]">
+                <h4 className="font-bold text-xs uppercase text-[#171C17] mb-3 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#24532F]"></span>
                   Value Propositions & Trust Badges
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
@@ -2302,9 +2302,9 @@ export default function CmsManagementPage() {
               </div>
 
               {/* Group 5: Store Location & Footer */}
-              <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#E2E6DC]">
-                <h4 className="font-bold text-xs uppercase text-white mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#355E3B]"></span>
+              <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#D5DDD2]">
+                <h4 className="font-bold text-xs uppercase text-[#171C17] mb-3 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#24532F]"></span>
                   Store Location & Copyright
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
@@ -2332,7 +2332,7 @@ export default function CmsManagementPage() {
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-[#355E3B] hover:bg-[#294A30] text-[#000000] font-bold rounded-lg transition-all shadow flex items-center gap-2"
+                  className="px-6 py-2.5 bg-[#24532F] hover:bg-[#183D22] text-[#000000] font-bold rounded-lg transition-all shadow flex items-center gap-2"
                 >
                   <Save className="w-4 h-4" />
                   <span>Save Translations to Database</span>

@@ -61,10 +61,10 @@ export default function CategoryPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#50574F]">
+      <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#252A25]">
         <Header />
         <div className="flex-1 max-w-7xl mx-auto px-4 py-20 flex items-center justify-center">
-          <div className="w-10 h-10 border-4 border-[#355E3B] border-t-transparent rounded-full animate-spin" />
+          <div className="w-10 h-10 border-4 border-[#24532F] border-t-transparent rounded-full animate-spin" />
         </div>
         <Footer />
       </div>
@@ -73,11 +73,11 @@ export default function CategoryPage() {
 
   if (!category) {
     return (
-      <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#50574F]">
+      <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#252A25]">
         <Header />
         <div className="flex-1 max-w-7xl mx-auto px-4 py-20 text-center">
-          <h2 className="text-2xl font-bold mb-4 text-[#26352A]">{t('productNotFound')}</h2>
-          <Link to="/shop" className="text-[#355E3B] font-bold underline hover:text-[#294A30]">
+          <h2 className="text-2xl font-bold mb-4 text-[#171C17]">{t('productNotFound')}</h2>
+          <Link to="/shop" className="text-[#24532F] font-bold underline hover:text-[#183D22]">
             {t('browseAllProducts')}
           </Link>
         </div>
@@ -94,12 +94,12 @@ export default function CategoryPage() {
     : products;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#50574F]">
+    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#252A25]">
       <Header />
 
       <main className="flex-1">
         {/* Category Hero Banner */}
-        <div className="relative bg-[#F3F0E6] text-[#26352A] py-14 sm:py-16 px-4 overflow-hidden border-b border-[#E2E6DC]">
+        <div className="relative bg-[#F3F0E6] text-[#171C17] py-14 sm:py-16 px-4 overflow-hidden border-b border-[#D5DDD2]">
           <div className="absolute inset-0 z-0">
             <img
               src={category.bannerImage || category.image}
@@ -111,19 +111,19 @@ export default function CategoryPage() {
 
           <div className="relative z-10 max-w-7xl mx-auto">
             {/* Breadcrumb */}
-            <div className="flex items-center gap-2 text-xs text-[#7A8277] mb-3 font-medium">
-              <Link to="/" className="hover:text-[#355E3B]">{t('home')}</Link>
+            <div className="flex items-center gap-2 text-xs text-[#596358] mb-3 font-medium">
+              <Link to="/" className="hover:text-[#24532F]">{t('home')}</Link>
               <ChevronRight className="w-3.5 h-3.5" />
-              <Link to="/shop" className="hover:text-[#355E3B]">{t('categories')}</Link>
+              <Link to="/shop" className="hover:text-[#24532F]">{t('categories')}</Link>
               <ChevronRight className="w-3.5 h-3.5" />
-              <span className="text-[#355E3B] font-bold">{categoryName}</span>
+              <span className="text-[#24532F] font-bold">{categoryName}</span>
             </div>
 
-            <h1 className="text-3xl md:text-5xl font-heading font-extrabold mb-3 text-[#26352A] tracking-tight">
+            <h1 className="text-3xl md:text-5xl font-heading font-extrabold mb-3 text-[#171C17] tracking-tight">
               {categoryName}
             </h1>
             {categoryDesc && (
-              <p className="text-sm md:text-base text-[#50574F] max-w-2xl leading-relaxed font-normal">
+              <p className="text-sm md:text-base text-[#252A25] max-w-2xl leading-relaxed font-normal">
                 {categoryDesc}
               </p>
             )}
@@ -132,15 +132,15 @@ export default function CategoryPage() {
 
         {/* Subcategories Filter Pills */}
         {Array.isArray(category.subcategories) && category.subcategories.length > 0 && (
-          <div className="border-b border-[#E2E6DC] bg-[#FAF9F6] py-3.5 sticky top-[60px] md:top-[85px] z-20 shadow-xs">
+          <div className="border-b border-[#D5DDD2] bg-[#FAF9F6] py-3.5 sticky top-[60px] md:top-[85px] z-20 shadow-xs">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-2.5 overflow-x-auto scrollbar-none">
               <button
                 type="button"
                 onClick={() => setActiveSubcategory('')}
                 className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                   activeSubcategory === ''
-                    ? 'bg-[#355E3B] text-white shadow-xs'
-                    : 'bg-[#FFFFFF] text-[#50574F] hover:text-[#26352A] hover:bg-[#F3F0E6] border border-[#E2E6DC]'
+                    ? 'bg-[#24532F] text-white shadow-xs'
+                    : 'bg-[#FFFFFF] text-[#252A25] hover:text-[#171C17] hover:bg-[#F3F0E6] border border-[#D5DDD2]'
                 }`}
               >
                 {t('allProducts')}
@@ -153,8 +153,8 @@ export default function CategoryPage() {
                   onClick={() => setActiveSubcategory(sub.id)}
                   className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                     activeSubcategory === sub.id
-                      ? 'bg-[#DCE8D5]/70 text-[#294A30] border border-[#A8BFA3]/60 shadow-xs font-bold'
-                      : 'bg-[#FFFFFF] text-[#50574F] hover:text-[#26352A] hover:bg-[#F3F0E6] border border-[#E2E6DC]'
+                      ? 'bg-[#DCE8D5]/70 text-[#183D22] border border-[#356B3D]/60 shadow-xs font-bold'
+                      : 'bg-[#FFFFFF] text-[#252A25] hover:text-[#171C17] hover:bg-[#F3F0E6] border border-[#D5DDD2]'
                   }`}
                 >
                   {getProductText(sub, 'name')}
@@ -167,21 +167,21 @@ export default function CategoryPage() {
         {/* Products Grid */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex items-center justify-between mb-6">
-            <span className="text-xs text-[#7A8277] font-semibold">
+            <span className="text-xs text-[#596358] font-semibold">
               {t('showingProducts').replace('{count}', filteredProducts.length)} ({categoryName})
             </span>
           </div>
 
           {filteredProducts.length === 0 ? (
-            <div className="bg-[#FFFFFF] p-12 text-center rounded-2xl border border-[#E2E6DC] text-[#50574F] max-w-md mx-auto shadow-xs">
-              <Zap className="w-10 h-10 text-[#A8BFA3] mx-auto mb-3" />
-              <p className="text-sm font-bold text-[#26352A] mb-4">
+            <div className="bg-[#FFFFFF] p-12 text-center rounded-2xl border border-[#D5DDD2] text-[#252A25] max-w-md mx-auto shadow-xs">
+              <Zap className="w-10 h-10 text-[#356B3D] mx-auto mb-3" />
+              <p className="text-sm font-bold text-[#171C17] mb-4">
                 {t('noProductsFound')}
               </p>
               <button
                 type="button"
                 onClick={() => setActiveSubcategory('')}
-                className="text-xs font-bold text-[#355E3B] hover:underline cursor-pointer"
+                className="text-xs font-bold text-[#24532F] hover:underline cursor-pointer"
               >
                 {t('viewAll')} {categoryName}
               </button>

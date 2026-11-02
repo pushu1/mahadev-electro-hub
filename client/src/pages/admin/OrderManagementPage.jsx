@@ -104,14 +104,14 @@ export default function OrderManagementPage() {
 
   return (
     <AdminLayout>
-      <div className="space-y-6 text-[#50574F]">
+      <div className="space-y-6 text-[#252A25]">
         {/* Header & Filters */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-2xl font-heading font-extrabold text-[#26352A]">
+            <h1 className="text-2xl font-heading font-extrabold text-[#171C17]">
               Order Management & Advance Reconciliation
             </h1>
-            <p className="text-xs text-[#50574F] mt-0.5">
+            <p className="text-xs text-[#252A25] mt-0.5">
               Track customer orders, advance payments, and reconcile remaining delivery balances.
             </p>
           </div>
@@ -121,7 +121,7 @@ export default function OrderManagementPage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-2 bg-white border border-[#E2E6DC] text-[#26352A] rounded-xl text-xs font-semibold focus:outline-none focus:border-[#355E3B]"
+              className="px-3 py-2 bg-white border border-[#D5DDD2] text-[#171C17] rounded-xl text-xs font-semibold focus:outline-none focus:border-[#24532F]"
             >
               <option value="">All Order Statuses</option>
               <option value="PENDING">PENDING</option>
@@ -136,7 +136,7 @@ export default function OrderManagementPage() {
             <select
               value={paymentFilter}
               onChange={(e) => setPaymentFilter(e.target.value)}
-              className="px-3 py-2 bg-white border border-[#E2E6DC] text-[#26352A] rounded-xl text-xs font-semibold focus:outline-none focus:border-[#355E3B]"
+              className="px-3 py-2 bg-white border border-[#D5DDD2] text-[#171C17] rounded-xl text-xs font-semibold focus:outline-none focus:border-[#24532F]"
             >
               <option value="">All Payment Statuses</option>
               <option value="Partially Paid">Partially Paid (Balance Due)</option>
@@ -148,10 +148,10 @@ export default function OrderManagementPage() {
         </div>
 
         {/* Orders Table */}
-        <div className="bg-white rounded-2xl border border-[#E2E6DC] shadow-sm overflow-hidden">
+        <div className="bg-white rounded-2xl border border-[#D5DDD2] shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#F3F0E6] border-b border-[#E2E6DC] text-[#7A8277] uppercase text-[10px]">
+              <thead className="bg-[#F3F0E6] border-b border-[#D5DDD2] text-[#596358] uppercase text-[10px]">
                 <tr>
                   <th className="py-3.5 px-4">Order Number & Date</th>
                   <th className="py-3.5 px-4">Customer</th>
@@ -162,14 +162,14 @@ export default function OrderManagementPage() {
                   <th className="py-3.5 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E2E6DC]">
+              <tbody className="divide-y divide-[#D5DDD2]">
                 {loading ? (
                   <tr>
-                    <td colSpan="7" className="py-8 text-center text-xs text-[#7A8277]">Loading orders...</td>
+                    <td colSpan="7" className="py-8 text-center text-xs text-[#596358]">Loading orders...</td>
                   </tr>
                 ) : orders.length === 0 ? (
                   <tr>
-                    <td colSpan="7" className="py-8 text-center text-xs text-[#7A8277] italic">No orders found.</td>
+                    <td colSpan="7" className="py-8 text-center text-xs text-[#596358] italic">No orders found.</td>
                   </tr>
                 ) : (
                   orders.map(order => {
@@ -179,21 +179,21 @@ export default function OrderManagementPage() {
 
                     return (
                       <tr key={order.id} className="hover:bg-[#FAF9F6] transition-colors">
-                        <td className="py-3.5 px-4 font-bold text-[#26352A]">
-                          <span className="font-mono text-[#355E3B] block">{order.orderNumber}</span>
-                          <span className="text-[10px] text-[#7A8277]">
+                        <td className="py-3.5 px-4 font-bold text-[#171C17]">
+                          <span className="font-mono text-[#24532F] block">{order.orderNumber}</span>
+                          <span className="text-[10px] text-[#596358]">
                             {new Date(order.createdAt).toLocaleDateString()}
                           </span>
                         </td>
 
                         <td className="py-3.5 px-4">
-                          <span className="font-bold text-[#26352A] block">{order.customerName}</span>
-                          <span className="text-[11px] text-[#7A8277]">{order.customerPhone}</span>
+                          <span className="font-bold text-[#171C17] block">{order.customerName}</span>
+                          <span className="text-[11px] text-[#596358]">{order.customerPhone}</span>
                         </td>
 
                         <td className="py-3.5 px-4">
-                          <span className="font-semibold text-[#26352A] block">{planLabel}</span>
-                          <span className="text-[10px] text-[#7A8277]">
+                          <span className="font-semibold text-[#171C17] block">{planLabel}</span>
+                          <span className="text-[10px] text-[#596358]">
                             Total: ₹{(order.totalAmount || 0).toLocaleString('en-IN')}
                           </span>
                         </td>
@@ -218,7 +218,7 @@ export default function OrderManagementPage() {
                         <td className="py-3.5 px-4">
                           <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-extrabold ${
                             order.paymentStatus === 'Fully Paid'
-                              ? 'bg-[#DCE8D5] text-[#294A30]'
+                              ? 'bg-[#DCE8D5] text-[#183D22]'
                               : order.paymentStatus === 'Partially Paid'
                               ? 'bg-[#FAF9F6] text-[#B7791F] border border-[#B7791F]/30'
                               : 'bg-[#B94343]/10 text-[#B94343]'
@@ -232,7 +232,7 @@ export default function OrderManagementPage() {
                             disabled={updating}
                             value={order.status}
                             onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                            className="px-2 py-1 text-[11px] font-bold rounded-xl border border-[#E2E6DC] bg-white text-[#26352A] focus:outline-none focus:border-[#355E3B]"
+                            className="px-2 py-1 text-[11px] font-bold rounded-xl border border-[#D5DDD2] bg-white text-[#171C17] focus:outline-none focus:border-[#24532F]"
                           >
                             <option value="PENDING">PENDING</option>
                             <option value="CONFIRMED">CONFIRMED</option>
@@ -247,9 +247,9 @@ export default function OrderManagementPage() {
                           <button
                             type="button"
                             onClick={() => handleOpenDetails(order)}
-                            className="px-3 py-1.5 bg-[#FAF9F6] hover:bg-[#F3F0E6] text-[#26352A] border border-[#E2E6DC] rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                            className="px-3 py-1.5 bg-[#FAF9F6] hover:bg-[#F3F0E6] text-[#171C17] border border-[#D5DDD2] rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
                           >
-                            <Eye className="w-3.5 h-3.5 text-[#355E3B]" />
+                            <Eye className="w-3.5 h-3.5 text-[#24532F]" />
                             <span>Details</span>
                           </button>
                         </td>
@@ -265,37 +265,37 @@ export default function OrderManagementPage() {
         {/* Order Details & Delivery Balance Reconciliation Modal */}
         {selectedOrder && (
           <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl w-full max-w-3xl p-6 sm:p-8 shadow-2xl border border-[#E2E6DC] space-y-6 max-h-[90vh] overflow-y-auto text-[#50574F] animate-fadeIn">
+            <div className="bg-white rounded-2xl w-full max-w-3xl p-6 sm:p-8 shadow-2xl border border-[#D5DDD2] space-y-6 max-h-[90vh] overflow-y-auto text-[#252A25] animate-fadeIn">
               {/* Header */}
-              <div className="flex justify-between items-start pb-4 border-b border-[#E2E6DC]">
+              <div className="flex justify-between items-start pb-4 border-b border-[#D5DDD2]">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#355E3B] block">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#24532F] block">
                     ORDER FULFILLMENT & BALANCE AUDIT
                   </span>
-                  <h3 className="font-heading font-extrabold text-2xl text-[#26352A] font-mono">
+                  <h3 className="font-heading font-extrabold text-2xl text-[#171C17] font-mono">
                     {selectedOrder.orderNumber}
                   </h3>
-                  <span className="text-xs text-[#7A8277]">
+                  <span className="text-xs text-[#596358]">
                     Placed on {new Date(selectedOrder.createdAt).toLocaleString()}
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setSelectedOrder(null)}
-                  className="p-1.5 rounded-xl text-[#7A8277] hover:text-[#26352A] hover:bg-[#FAF9F6] transition-colors"
+                  className="p-1.5 rounded-xl text-[#596358] hover:text-[#171C17] hover:bg-[#FAF9F6] transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               {/* Status Update Bar */}
-              <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#E2E6DC] flex flex-wrap items-center justify-between gap-4 text-xs">
+              <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#D5DDD2] flex flex-wrap items-center justify-between gap-4 text-xs">
                 <div>
-                  <span className="font-bold text-[#26352A] block mb-1">Fulfillment Status:</span>
+                  <span className="font-bold text-[#171C17] block mb-1">Fulfillment Status:</span>
                   <select
                     value={selectedOrder.status}
                     onChange={(e) => handleStatusChange(selectedOrder.id, e.target.value)}
-                    className="px-3 py-1.5 bg-white border border-[#E2E6DC] text-[#26352A] rounded-xl font-bold focus:outline-none focus:border-[#355E3B]"
+                    className="px-3 py-1.5 bg-white border border-[#D5DDD2] text-[#171C17] rounded-xl font-bold focus:outline-none focus:border-[#24532F]"
                   >
                     <option value="PENDING">PENDING</option>
                     <option value="CONFIRMED">CONFIRMED</option>
@@ -307,11 +307,11 @@ export default function OrderManagementPage() {
                 </div>
 
                 <div>
-                  <span className="font-bold text-[#26352A] block mb-1">Payment Status:</span>
+                  <span className="font-bold text-[#171C17] block mb-1">Payment Status:</span>
                   <select
                     value={selectedOrder.paymentStatus}
                     onChange={(e) => handleStatusChange(selectedOrder.id, undefined, e.target.value)}
-                    className="px-3 py-1.5 bg-white border border-[#E2E6DC] text-[#26352A] rounded-xl font-bold focus:outline-none focus:border-[#355E3B]"
+                    className="px-3 py-1.5 bg-white border border-[#D5DDD2] text-[#171C17] rounded-xl font-bold focus:outline-none focus:border-[#24532F]"
                   >
                     <option value="Advance Payment Pending">Advance Payment Pending</option>
                     <option value="Partially Paid">Partially Paid</option>
@@ -322,43 +322,43 @@ export default function OrderManagementPage() {
               </div>
 
               {/* Financial Balance Summary Card */}
-              <div className="bg-[#F3F0E6] rounded-xl p-5 border border-[#E2E6DC] space-y-3">
-                <h4 className="font-heading font-extrabold text-sm text-[#26352A] flex items-center gap-2">
-                  <CreditCard className="w-4 h-4 text-[#355E3B]" />
+              <div className="bg-[#F3F0E6] rounded-xl p-5 border border-[#D5DDD2] space-y-3">
+                <h4 className="font-heading font-extrabold text-sm text-[#171C17] flex items-center gap-2">
+                  <CreditCard className="w-4 h-4 text-[#24532F]" />
                   <span>Payment Plan & Financial Breakdown</span>
                 </h4>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-                  <div className="p-3 bg-white rounded-xl border border-[#E2E6DC]">
-                    <span className="text-[#7A8277] block text-[10px]">Payment Plan:</span>
-                    <strong className="text-[#26352A] text-xs block mt-0.5">
+                  <div className="p-3 bg-white rounded-xl border border-[#D5DDD2]">
+                    <span className="text-[#596358] block text-[10px]">Payment Plan:</span>
+                    <strong className="text-[#171C17] text-xs block mt-0.5">
                       {selectedOrder.paymentPlan === 'ADVANCE_25'
                         ? '25% Advance'
                         : (selectedOrder.paymentPlan === 'ADVANCE_50' ? '50% Advance' : '100% Full Payment')}
                     </strong>
                   </div>
 
-                  <div className="p-3 bg-white rounded-xl border border-[#E2E6DC]">
-                    <span className="text-[#7A8277] block text-[10px]">Total Order Amount:</span>
-                    <strong className="text-[#26352A] text-sm font-mono block mt-0.5">
+                  <div className="p-3 bg-white rounded-xl border border-[#D5DDD2]">
+                    <span className="text-[#596358] block text-[10px]">Total Order Amount:</span>
+                    <strong className="text-[#171C17] text-sm font-mono block mt-0.5">
                       ₹{(selectedOrder.totalAmount || 0).toLocaleString('en-IN')}
                     </strong>
                   </div>
 
-                  <div className="p-3 bg-white rounded-xl border border-[#E2E6DC]">
-                    <span className="text-[#7A8277] block text-[10px]">Amount Paid Online:</span>
+                  <div className="p-3 bg-white rounded-xl border border-[#D5DDD2]">
+                    <span className="text-[#596358] block text-[10px]">Amount Paid Online:</span>
                     <strong className="text-[#2E7D46] text-sm font-mono block mt-0.5">
                       ₹{(selectedOrder.amountPaid || selectedOrder.payableNow || 0).toLocaleString('en-IN')}
                     </strong>
                     {selectedOrder.advanceTransactionId && (
-                      <span className="text-[10px] text-[#7A8277] font-mono block truncate" title={selectedOrder.advanceTransactionId}>
+                      <span className="text-[10px] text-[#596358] font-mono block truncate" title={selectedOrder.advanceTransactionId}>
                         Txn: {selectedOrder.advanceTransactionId}
                       </span>
                     )}
                   </div>
 
-                  <div className="p-3 bg-white rounded-xl border border-[#E2E6DC]">
-                    <span className="text-[#7A8277] block text-[10px]">Outstanding Balance:</span>
+                  <div className="p-3 bg-white rounded-xl border border-[#D5DDD2]">
+                    <span className="text-[#596358] block text-[10px]">Outstanding Balance:</span>
                     <strong className={`text-sm font-mono block mt-0.5 ${selectedOrder.remainingBalance === 0 ? 'text-[#2E7D46]' : 'text-[#B7791F]'}`}>
                       {selectedOrder.remainingBalance === 0 ? '₹0 (Fully Paid)' : `₹${selectedOrder.remainingBalance.toLocaleString('en-IN')}`}
                     </strong>
@@ -367,7 +367,7 @@ export default function OrderManagementPage() {
               </div>
 
               {reconcileSuccess && (
-                <div className="p-3 bg-[#DCE8D5] border border-[#A8BFA3]/40 rounded-xl text-[#294A30] text-xs font-bold flex items-center gap-2">
+                <div className="p-3 bg-[#DCE8D5] border border-[#356B3D]/40 rounded-xl text-[#183D22] text-xs font-bold flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#2E7D46] shrink-0" />
                   <span>{reconcileSuccess}</span>
                 </div>
@@ -375,10 +375,10 @@ export default function OrderManagementPage() {
 
               {/* Delivery Balance Reconciliation Form (If Balance Due > 0) */}
               {selectedOrder.remainingBalance > 0 ? (
-                <div className="bg-[#FAF9F6] p-5 rounded-xl border border-[#E2E6DC] space-y-4">
+                <div className="bg-[#FAF9F6] p-5 rounded-xl border border-[#D5DDD2] space-y-4">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-heading font-extrabold text-sm text-[#26352A] flex items-center gap-2">
-                      <Truck className="w-4 h-4 text-[#355E3B]" />
+                    <h4 className="font-heading font-extrabold text-sm text-[#171C17] flex items-center gap-2">
+                      <Truck className="w-4 h-4 text-[#24532F]" />
                       <span>Reconcile Delivery Balance Collection</span>
                     </h4>
                     <span className="text-xs font-bold text-[#B7791F] bg-[#FAF9F6] border border-[#B7791F]/30 px-2.5 py-0.5 rounded-full">
@@ -386,13 +386,13 @@ export default function OrderManagementPage() {
                     </span>
                   </div>
 
-                  <p className="text-xs text-[#50574F] leading-relaxed">
+                  <p className="text-xs text-[#252A25] leading-relaxed">
                     When the remaining balance is collected upon delivery (doorstep UPI, card, or transport collection), record the details below to reconcile the balance and mark this order as <strong>Fully Paid</strong>.
                   </p>
 
                   <form onSubmit={handleReconcileBalance} className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-[11px] font-semibold text-[#26352A] mb-1">
+                      <label className="block text-[11px] font-semibold text-[#171C17] mb-1">
                         Amount Collected (₹) *
                       </label>
                       <input
@@ -401,12 +401,12 @@ export default function OrderManagementPage() {
                         required
                         value={reconcileAmount}
                         onChange={(e) => setReconcileAmount(e.target.value)}
-                        className="w-full px-3 py-2 bg-white border border-[#E2E6DC] rounded-xl text-[#26352A] font-mono text-xs focus:outline-none focus:border-[#355E3B]"
+                        className="w-full px-3 py-2 bg-white border border-[#D5DDD2] rounded-xl text-[#171C17] font-mono text-xs focus:outline-none focus:border-[#24532F]"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-semibold text-[#26352A] mb-1">
+                      <label className="block text-[11px] font-semibold text-[#171C17] mb-1">
                         Receipt / Reference ID
                       </label>
                       <input
@@ -414,12 +414,12 @@ export default function OrderManagementPage() {
                         value={reconcileRef}
                         onChange={(e) => setReconcileRef(e.target.value)}
                         placeholder="e.g. REC-PALI-9842"
-                        className="w-full px-3 py-2 bg-white border border-[#E2E6DC] rounded-xl text-[#26352A] text-xs focus:outline-none focus:border-[#355E3B]"
+                        className="w-full px-3 py-2 bg-white border border-[#D5DDD2] rounded-xl text-[#171C17] text-xs focus:outline-none focus:border-[#24532F]"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-semibold text-[#26352A] mb-1">
+                      <label className="block text-[11px] font-semibold text-[#171C17] mb-1">
                         Notes / Receiver
                       </label>
                       <input
@@ -427,7 +427,7 @@ export default function OrderManagementPage() {
                         value={reconcileNotes}
                         onChange={(e) => setReconcileNotes(e.target.value)}
                         placeholder="Delivered by DTDC / cash verified"
-                        className="w-full px-3 py-2 bg-white border border-[#E2E6DC] rounded-xl text-[#26352A] text-xs focus:outline-none focus:border-[#355E3B]"
+                        className="w-full px-3 py-2 bg-white border border-[#D5DDD2] rounded-xl text-[#171C17] text-xs focus:outline-none focus:border-[#24532F]"
                       />
                     </div>
 
@@ -444,19 +444,19 @@ export default function OrderManagementPage() {
                   </form>
                 </div>
               ) : (
-                <div className="p-4 bg-[#DCE8D5]/60 rounded-xl border border-[#A8BFA3]/40 flex items-center justify-between">
+                <div className="p-4 bg-[#DCE8D5]/60 rounded-xl border border-[#356B3D]/40 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-[#2E7D46]/20 text-[#2E7D46] flex items-center justify-center font-bold">
                       ✓
                     </div>
                     <div>
-                      <strong className="text-[#26352A] text-xs block">Order Fully Paid & Balance Reconciled</strong>
-                      <span className="text-[11px] text-[#50574F]">
+                      <strong className="text-[#171C17] text-xs block">Order Fully Paid & Balance Reconciled</strong>
+                      <span className="text-[11px] text-[#252A25]">
                         Zero outstanding balance at delivery. {selectedOrder.finalTransactionId ? `Receipt Ref: ${selectedOrder.finalTransactionId}` : ''}
                       </span>
                     </div>
                   </div>
-                  <span className="text-xs font-bold bg-[#DCE8D5] text-[#294A30] border border-[#A8BFA3]/40 px-3 py-1 rounded-full uppercase">
+                  <span className="text-xs font-bold bg-[#DCE8D5] text-[#183D22] border border-[#356B3D]/40 px-3 py-1 rounded-full uppercase">
                     Fully Paid
                   </span>
                 </div>
@@ -464,17 +464,17 @@ export default function OrderManagementPage() {
 
               {/* Customer & Shipping Details */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div className="p-4 bg-[#FAF9F6] rounded-xl border border-[#E2E6DC] space-y-1.5">
-                  <span className="font-bold text-[#26352A] block mb-1">Customer Information</span>
+                <div className="p-4 bg-[#FAF9F6] rounded-xl border border-[#D5DDD2] space-y-1.5">
+                  <span className="font-bold text-[#171C17] block mb-1">Customer Information</span>
                   <p><strong>Name:</strong> {selectedOrder.customerName}</p>
                   <p><strong>Phone:</strong> {selectedOrder.customerPhone}</p>
                   {selectedOrder.customerEmail && <p><strong>Email:</strong> {selectedOrder.customerEmail}</p>}
                 </div>
 
-                <div className="p-4 bg-[#FAF9F6] rounded-xl border border-[#E2E6DC] space-y-1.5">
-                  <span className="font-bold text-[#26352A] block mb-1">Delivery Destination</span>
+                <div className="p-4 bg-[#FAF9F6] rounded-xl border border-[#D5DDD2] space-y-1.5">
+                  <span className="font-bold text-[#171C17] block mb-1">Delivery Destination</span>
                   {selectedOrder.shippingAddress && (
-                    <p className="leading-relaxed text-[#50574F]">
+                    <p className="leading-relaxed text-[#252A25]">
                       {selectedOrder.shippingAddress.street}, {selectedOrder.shippingAddress.city},<br />
                       {selectedOrder.shippingAddress.district || ''} {selectedOrder.shippingAddress.state} - {selectedOrder.shippingAddress.pincode}
                     </p>
@@ -487,31 +487,31 @@ export default function OrderManagementPage() {
 
               {/* Items in order */}
               <div>
-                <span className="font-bold text-xs uppercase tracking-wider text-[#7A8277] block mb-3">
+                <span className="font-bold text-xs uppercase tracking-wider text-[#596358] block mb-3">
                   Ordered Products ({selectedOrder.items?.length || 0} Items)
                 </span>
                 <div className="space-y-2">
                   {selectedOrder.items?.map((item, idx) => (
-                    <div key={idx} className="flex items-center justify-between text-xs p-3 rounded-xl border border-[#E2E6DC] bg-[#FAF9F6]">
+                    <div key={idx} className="flex items-center justify-between text-xs p-3 rounded-xl border border-[#D5DDD2] bg-[#FAF9F6]">
                       <div className="flex items-center gap-3">
-                        <img src={item.productImage || '/images/logo.png'} alt="" className="w-10 h-10 rounded-lg object-cover bg-white border border-[#E2E6DC]" />
+                        <img src={item.productImage || '/images/logo.png'} alt="" className="w-10 h-10 rounded-lg object-cover bg-white border border-[#D5DDD2]" />
                         <div>
-                          <span className="font-bold text-[#26352A] block">{item.productTitle_en}</span>
-                          <span className="text-[#7A8277]">Qty: {item.quantity} × ₹{item.price}</span>
+                          <span className="font-bold text-[#171C17] block">{item.productTitle_en}</span>
+                          <span className="text-[#596358]">Qty: {item.quantity} × ₹{item.price}</span>
                         </div>
                       </div>
-                      <span className="font-extrabold text-[#26352A] font-mono">₹{item.total?.toLocaleString('en-IN')}</span>
+                      <span className="font-extrabold text-[#171C17] font-mono">₹{item.total?.toLocaleString('en-IN')}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Financial Totals */}
-              <div className="pt-4 border-t border-[#E2E6DC] space-y-1 text-xs text-right text-[#50574F]">
+              <div className="pt-4 border-t border-[#D5DDD2] space-y-1 text-xs text-right text-[#252A25]">
                 <div>Subtotal: ₹{selectedOrder.subtotal?.toLocaleString('en-IN')}</div>
                 {selectedOrder.discount > 0 && <div className="text-[#2E7D46]">Discount: -₹{selectedOrder.discount}</div>}
                 <div>Shipping Fee: ₹{selectedOrder.shippingFee}</div>
-                <div className="text-base font-extrabold text-[#26352A] pt-1 font-mono">
+                <div className="text-base font-extrabold text-[#171C17] pt-1 font-mono">
                   Final Order Total: ₹{selectedOrder.totalAmount?.toLocaleString('en-IN')}
                 </div>
               </div>

@@ -106,10 +106,10 @@ export default function CustomerReviewsSection() {
     <section
       id="customer-reviews"
       aria-label="Verified Customer Experiences"
-      className="py-16 md:py-24 bg-[#F3F0E6] border-t border-[#E2E6DC] relative overflow-hidden select-none"
+      className="py-16 md:py-24 bg-[#F3F0E6] border-t border-[#D5DDD2] relative overflow-hidden select-none"
     >
       {/* Subtle Ambient Sage Aura */}
-      <div className="absolute top-1/2 -left-36 -translate-y-1/2 w-96 h-96 rounded-full bg-[#A8BFA3]/[0.10] blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 -left-36 -translate-y-1/2 w-96 h-96 rounded-full bg-[#356B3D]/[0.10] blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 -right-36 -translate-y-1/2 w-96 h-96 rounded-full bg-[#DCE8D5]/[0.15] blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -117,21 +117,21 @@ export default function CustomerReviewsSection() {
         {/* ====================================================================
             SECTION HEADER: Label, Large Heading, Subtitle & Slider Arrows
             ==================================================================== */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between pb-6 mb-8 sm:mb-10 border-b border-[#E2E6DC] gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-6 mb-8 sm:mb-10 border-b border-[#D5DDD2] gap-4">
           <div className="max-w-2xl">
             {/* Small Eyebrow */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DCE8D5]/70 border border-[#A8BFA3]/40 text-[#294A30] text-xs font-extrabold uppercase tracking-widest mb-3">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#355E3B]" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DCE8D5]/70 border border-[#356B3D]/40 text-[#183D22] text-xs font-extrabold uppercase tracking-widest mb-3">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#24532F]" />
               <span>{content.eyebrow}</span>
             </div>
 
             {/* Main Heading */}
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-[#26352A] tracking-tight leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-[#171C17] tracking-tight leading-tight">
               {content.heading}
             </h2>
 
             {/* Subtitle */}
-            <p className="text-xs sm:text-sm md:text-base text-[#50574F] font-normal mt-2 leading-relaxed">
+            <p className="text-xs sm:text-sm md:text-base text-[#252A25] font-normal mt-2 leading-relaxed">
               {content.subtitle}
             </p>
           </div>
@@ -142,7 +142,7 @@ export default function CustomerReviewsSection() {
               type="button"
               onClick={scrollLeft}
               aria-label="Previous Testimonials"
-              className="w-10 h-10 rounded-lg bg-[#FFFFFF] border border-[#E2E6DC] hover:border-[#355E3B] text-[#26352A] hover:text-[#355E3B] flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm"
+              className="w-10 h-10 rounded-lg bg-[#FFFFFF] border border-[#D5DDD2] hover:border-[#24532F] text-[#171C17] hover:text-[#24532F] flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -150,7 +150,7 @@ export default function CustomerReviewsSection() {
               type="button"
               onClick={scrollRight}
               aria-label="Next Testimonials"
-              className="w-10 h-10 rounded-lg bg-[#FFFFFF] border border-[#E2E6DC] hover:border-[#355E3B] text-[#26352A] hover:text-[#355E3B] flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm"
+              className="w-10 h-10 rounded-lg bg-[#FFFFFF] border border-[#D5DDD2] hover:border-[#24532F] text-[#171C17] hover:text-[#24532F] flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -184,8 +184,8 @@ export default function CustomerReviewsSection() {
                 }}
                 className={`snap-start shrink-0 w-[280px] sm:w-[320px] md:w-[340px] lg:w-[calc((100%-60px)/4)] aspect-square relative bg-[#FFFFFF] rounded-2xl border transition-all duration-300 overflow-hidden group cursor-pointer shadow-sm ${
                   isRevealed
-                    ? 'border-[#355E3B] shadow-xl shadow-[#355E3B]/10'
-                    : 'border-[#E2E6DC] hover:border-[#355E3B] hover:shadow-xl hover:shadow-[#A8BFA3]/15'
+                    ? 'border-[#24532F] shadow-xl shadow-[#24532F]/10'
+                    : 'border-[#D5DDD2] hover:border-[#24532F] hover:shadow-xl hover:shadow-[#356B3D]/15'
                 }`}
               >
                 {/* --------------------------------------------------------
@@ -206,12 +206,12 @@ export default function CustomerReviewsSection() {
                 ) : (
                   /* Tasteful Initials Avatar Placeholder */
                   <div className="w-full h-full bg-gradient-to-br from-[#FAF9F6] via-[#F3F0E6] to-[#EAE6D8] flex flex-col items-center justify-center p-6 text-center transition-transform duration-700 group-hover:scale-105">
-                    <div className="w-20 h-20 rounded-full bg-[#DCE8D5]/70 border-2 border-[#A8BFA3] flex items-center justify-center mb-3 shadow-inner">
-                      <span className="font-heading font-black text-2xl text-[#294A30] tracking-wider">
+                    <div className="w-20 h-20 rounded-full bg-[#DCE8D5]/70 border-2 border-[#356B3D] flex items-center justify-center mb-3 shadow-inner">
+                      <span className="font-heading font-black text-2xl text-[#183D22] tracking-wider">
                         {getInitials(rev.customerName)}
                       </span>
                     </div>
-                    <span className="text-xs text-[#7A8277] font-medium tracking-wide">
+                    <span className="text-xs text-[#596358] font-medium tracking-wide">
                       Verified Customer
                     </span>
                   </div>
@@ -229,8 +229,8 @@ export default function CustomerReviewsSection() {
                 {!isRevealed && (
                   <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 flex flex-col justify-end transition-opacity duration-200 group-hover:opacity-0">
                     {/* Verified Buyer Badge */}
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FAF9F6]/90 border border-[#A8BFA3]/50 text-[#294A30] text-[10px] font-bold w-fit mb-2 backdrop-blur-md">
-                      <CheckCircle2 className="w-3 h-3 text-[#355E3B]" />
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FAF9F6]/90 border border-[#356B3D]/50 text-[#183D22] text-[10px] font-bold w-fit mb-2 backdrop-blur-md">
+                      <CheckCircle2 className="w-3 h-3 text-[#24532F]" />
                       <span>{content.verified}</span>
                     </div>
 
@@ -256,7 +256,7 @@ export default function CustomerReviewsSection() {
                             className={`w-3 h-3 ${
                               i < (rev.rating || 5)
                                 ? 'text-[#B7791F] fill-[#B7791F]'
-                                : 'text-gray-400'
+                                : 'text-[#D5DDD2]'
                             }`}
                           />
                         ))}
@@ -269,7 +269,7 @@ export default function CustomerReviewsSection() {
                     HOVER-TO-REVEAL OVERLAY (Smoothly revealed on hover/tap)
                     -------------------------------------------------------- */}
                 <div
-                  className={`absolute inset-0 bg-[#FFFFFF]/98 border border-[#E2E6DC] backdrop-blur-md p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 ease-out z-20 ${
+                  className={`absolute inset-0 bg-[#FFFFFF]/98 border border-[#D5DDD2] backdrop-blur-md p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 ease-out z-20 ${
                     isRevealed
                       ? 'opacity-100 translate-y-0 pointer-events-auto'
                       : 'opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none group-hover:pointer-events-auto'
@@ -285,21 +285,21 @@ export default function CustomerReviewsSection() {
                             className={`w-3.5 h-3.5 ${
                               i < (rev.rating || 5)
                                 ? 'text-[#B7791F] fill-[#B7791F]'
-                                : 'text-gray-300'
+                                : 'text-[#D5DDD2]'
                             }`}
                           />
                         ))}
-                        <span className="text-xs font-bold text-[#26352A] ml-1.5">
+                        <span className="text-xs font-bold text-[#171C17] ml-1.5">
                           {(rev.rating || 5).toFixed(1)}
                         </span>
                       </div>
-                      <Quote className="w-5 h-5 text-[#A8BFA3]" />
+                      <Quote className="w-5 h-5 text-[#356B3D]" />
                     </div>
 
                     {/* Associated Product Badge */}
                     {(rev.productName || rev.productId) && (
-                      <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-semibold text-[#294A30] bg-[#DCE8D5]/60 border border-[#A8BFA3]/50 px-2.5 py-1 rounded-md mb-2.5 w-fit max-w-full">
-                        <ShoppingBag className="w-3 h-3 text-[#355E3B] shrink-0" />
+                      <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-semibold text-[#183D22] bg-[#DCE8D5]/60 border border-[#356B3D]/50 px-2.5 py-1 rounded-md mb-2.5 w-fit max-w-full">
+                        <ShoppingBag className="w-3 h-3 text-[#24532F] shrink-0" />
                         <span className="truncate">
                           {rev.productName || 'Mahadev Solar Product'}
                         </span>
@@ -308,26 +308,26 @@ export default function CustomerReviewsSection() {
 
                     {/* Review Title */}
                     {rev.title && (
-                      <h4 className="font-heading font-bold text-xs sm:text-sm text-[#26352A] mb-1.5 leading-snug line-clamp-2">
+                      <h4 className="font-heading font-bold text-xs sm:text-sm text-[#171C17] mb-1.5 leading-snug line-clamp-2">
                         "{rev.title}"
                       </h4>
                     )}
 
                     {/* Full Review Text with Subtle Scroll if long */}
-                    <p className="text-[11px] sm:text-xs text-[#50574F] leading-relaxed italic line-clamp-3 sm:line-clamp-4 max-h-[85px] overflow-y-auto pr-1">
+                    <p className="text-[11px] sm:text-xs text-[#252A25] leading-relaxed italic line-clamp-3 sm:line-clamp-4 max-h-[85px] overflow-y-auto pr-1">
                       "{rev.comment}"
                     </p>
                   </div>
 
                   {/* Bottom: Customer Details & Trust Badge */}
-                  <div className="pt-3 border-t border-[#E2E6DC] mt-auto">
+                  <div className="pt-3 border-t border-[#D5DDD2] mt-auto">
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="block font-heading font-bold text-xs sm:text-sm text-[#26352A]">
+                        <span className="block font-heading font-bold text-xs sm:text-sm text-[#171C17]">
                           {rev.customerName}
                         </span>
-                        <div className="flex items-center gap-1 text-[11px] text-[#7A8277] mt-0.5">
-                          <MapPin className="w-2.5 h-2.5 text-[#355E3B]" />
+                        <div className="flex items-center gap-1 text-[11px] text-[#596358] mt-0.5">
+                          <MapPin className="w-2.5 h-2.5 text-[#24532F]" />
                           <span>{rev.location || 'Rajasthan'}</span>
                         </div>
                       </div>
@@ -338,7 +338,7 @@ export default function CustomerReviewsSection() {
                           <span>{content.verified}</span>
                         </span>
                         {isTouchDevice && (
-                          <span className="block text-[9px] text-[#7A8277] mt-0.5">
+                          <span className="block text-[9px] text-[#596358] mt-0.5">
                             {content.tapToClose}
                           </span>
                         )}

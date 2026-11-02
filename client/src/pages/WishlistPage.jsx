@@ -55,27 +55,27 @@ export default function WishlistPage() {
   }, [wishlist]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#50574F]">
+    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#252A25]">
       <Header />
 
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 w-full">
-        <h1 className="text-2xl md:text-3xl font-heading font-extrabold text-[#26352A] mb-6 flex items-center gap-2">
+        <h1 className="text-2xl md:text-3xl font-heading font-extrabold text-[#171C17] mb-6 flex items-center gap-2">
           <Heart className="w-6 h-6 text-[#B94343] fill-[#B94343]" />
           <span>{t('wishlist')} ({wishlist.length})</span>
         </h1>
 
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#7A8277]">Loading wishlist...</div>
+          <div className="py-12 text-center text-xs text-[#596358]">Loading wishlist...</div>
         ) : products.length === 0 ? (
-          <div className="bg-[#FFFFFF] rounded-2xl p-8 sm:p-12 text-center border border-[#E2E6DC] text-[#26352A] max-w-md mx-auto my-12 shadow-sm">
-            <Heart className="w-16 h-16 text-[#A8BFA3] mx-auto mb-4" />
-            <h2 className="text-lg sm:text-xl font-heading font-bold text-[#26352A] mb-2">{emptyInfo.title}</h2>
-            <p className="text-xs sm:text-sm text-[#50574F] mb-6 leading-relaxed">
+          <div className="bg-[#FFFFFF] rounded-2xl p-8 sm:p-12 text-center border border-[#D5DDD2] text-[#171C17] max-w-md mx-auto my-12 shadow-sm">
+            <Heart className="w-16 h-16 text-[#356B3D] mx-auto mb-4" />
+            <h2 className="text-lg sm:text-xl font-heading font-bold text-[#171C17] mb-2">{emptyInfo.title}</h2>
+            <p className="text-xs sm:text-sm text-[#252A25] mb-6 leading-relaxed">
               {emptyInfo.desc}
             </p>
             <Link
               to="/shop"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#355E3B] hover:bg-[#294A30] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-sm transition-all active:scale-95"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#24532F] hover:bg-[#183D22] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-sm transition-all active:scale-95"
             >
               <span>{emptyInfo.btn}</span>
               <ArrowRight className="w-4 h-4" />

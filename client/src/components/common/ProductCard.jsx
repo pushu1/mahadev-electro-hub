@@ -48,7 +48,7 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <div className="group bg-[#FFFFFF] hover:bg-[#FAF9F6] rounded-xl border border-[#E2E6DC] hover:border-[#8BA889] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden relative transform hover:-translate-y-1">
+    <div className="group bg-[#FFFFFF] hover:bg-[#FAF9F6] rounded-xl border border-[#D5DDD2] hover:border-[#24532F] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden relative transform hover:-translate-y-1">
       {/* Badges: Discount & Featured */}
       <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1 items-start pointer-events-none">
         {hasDiscount && (
@@ -57,7 +57,7 @@ export default function ProductCard({ product }) {
           </span>
         )}
         {product.featured && (
-          <span className="bg-[#DCE8D5] text-[#294A30] border border-[#A8BFA3] text-[10px] font-bold px-2 py-0.5 rounded shadow-xs">
+          <span className="bg-[#DCE8D5] text-[#183D22] border border-[#356B3D] text-[10px] font-bold px-2 py-0.5 rounded shadow-xs">
             ★ Featured
           </span>
         )}
@@ -71,7 +71,7 @@ export default function ProductCard({ product }) {
         className={`absolute top-2.5 right-2.5 z-10 p-2 rounded-full transition-all shadow-xs ${
           isWishlisted
             ? 'bg-[#FFFFFF] text-[#B94343] border border-red-300 scale-105'
-            : 'bg-[#FFFFFF]/90 text-[#7A8277] hover:text-[#B94343] hover:bg-[#F3F0E6] border border-[#E2E6DC]'
+            : 'bg-[#FFFFFF]/90 text-[#596358] hover:text-[#B94343] hover:bg-[#F3F0E6] border border-[#D5DDD2]'
         }`}
       >
         <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
@@ -96,9 +96,9 @@ export default function ProductCard({ product }) {
           <button
             type="button"
             onClick={handleQuickView}
-            className="w-full py-2 px-3 rounded-lg bg-[#FFFFFF]/95 hover:bg-[#F3F0E6] text-[#26352A] hover:text-[#355E3B] font-bold text-xs flex items-center justify-center gap-1.5 border border-[#E2E6DC] hover:border-[#8BA889] shadow-md transition-all cursor-pointer backdrop-blur-xs"
+            className="w-full py-2 px-3 rounded-lg bg-[#FFFFFF]/95 hover:bg-[#F3F0E6] text-[#171C17] hover:text-[#24532F] font-bold text-xs flex items-center justify-center gap-1.5 border border-[#D5DDD2] hover:border-[#24532F] shadow-md transition-all cursor-pointer backdrop-blur-xs"
           >
-            <Eye className="w-3.5 h-3.5 text-[#355E3B]" />
+            <Eye className="w-3.5 h-3.5 text-[#24532F]" />
             <span>{t('quickView')}</span>
           </button>
         </div>
@@ -118,7 +118,7 @@ export default function ProductCard({ product }) {
         <div>
           {/* Brand & Stock Pill */}
           <div className="flex items-center justify-between text-[11px] mb-1.5">
-            <span className="font-bold text-[#355E3B] uppercase tracking-wider text-[10px]">
+            <span className="font-bold text-[#24532F] uppercase tracking-wider text-[10px]">
               {product.brand || 'Mahadev Electro Hub'}
             </span>
             {isLowStock && (
@@ -131,7 +131,7 @@ export default function ProductCard({ product }) {
           {/* Product Title */}
           <Link
             to={`/product/${product.slug || product.id}`}
-            className="block text-sm font-bold text-[#26352A] hover:text-[#355E3B] line-clamp-2 transition-colors mb-1.5 leading-snug"
+            className="block text-sm font-bold text-[#171C17] hover:text-[#24532F] line-clamp-2 transition-colors mb-1.5 leading-snug"
             title={title}
           >
             {title}
@@ -139,35 +139,35 @@ export default function ProductCard({ product }) {
 
           {/* Short description */}
           {shortDesc && (
-            <p className="text-xs text-[#50574F] line-clamp-2 mb-3 leading-relaxed">
+            <p className="text-xs text-[#252A25] line-clamp-2 mb-3 leading-relaxed">
               {shortDesc}
             </p>
           )}
         </div>
 
         {/* Pricing & Working Buttons */}
-        <div className="pt-3 border-t border-[#E2E6DC]">
+        <div className="pt-3 border-t border-[#D5DDD2]">
           <div className="flex items-baseline justify-between mb-3">
             <div className="flex items-baseline gap-2">
-              <span className="text-lg md:text-xl font-extrabold text-[#26352A] font-mono">
+              <span className="text-lg md:text-xl font-extrabold text-[#171C17] font-mono">
                 ₹{product.price.toLocaleString('en-IN')}
               </span>
               {hasDiscount && (
-                <span className="text-xs text-[#7A8277] line-through">
+                <span className="text-xs text-[#596358] line-through">
                   ₹{product.compareAtPrice.toLocaleString('en-IN')}
                 </span>
               )}
             </div>
-            <span className="text-[10px] text-[#7A8277] font-medium">{t('gstIncluded')}</span>
+            <span className="text-[10px] text-[#596358] font-medium">{t('gstIncluded')}</span>
           </div>
 
           <div className="grid grid-cols-2 gap-1.5 xs:gap-2">
             <button
               type="button"
               onClick={handleQuickView}
-              className="px-1.5 xs:px-2.5 py-2 text-[11px] xs:text-xs font-bold text-center border border-[#E2E6DC] rounded-lg bg-[#FFFFFF] hover:bg-[#F3F0E6] text-[#26352A] hover:border-[#8BA889] hover:text-[#355E3B] flex items-center justify-center gap-1 transition-colors cursor-pointer"
+              className="px-1.5 xs:px-2.5 py-2 text-[11px] xs:text-xs font-bold text-center border border-[#D5DDD2] rounded-lg bg-[#FFFFFF] hover:bg-[#F3F0E6] text-[#171C17] hover:border-[#24532F] hover:text-[#24532F] flex items-center justify-center gap-1 transition-colors cursor-pointer"
             >
-              <Eye className="w-3.5 h-3.5 text-[#7A8277] shrink-0" />
+              <Eye className="w-3.5 h-3.5 text-[#596358] shrink-0" />
               <span className="truncate">{t('quickView')}</span>
             </button>
 
@@ -177,10 +177,10 @@ export default function ProductCard({ product }) {
               onClick={handleAddToCart}
               className={`px-1.5 xs:px-2.5 py-2 text-[11px] xs:text-xs font-extrabold rounded-lg flex items-center justify-center gap-1 shadow-sm transition-all cursor-pointer ${
                 isOutOfStock
-                  ? 'bg-[#E2E6DC] text-[#7A8277] border border-[#E2E6DC] cursor-not-allowed'
+                  ? 'bg-[#D5DDD2] text-[#596358] border border-[#D5DDD2] cursor-not-allowed'
                   : justAdded
                   ? 'bg-[#2E7D46] text-white'
-                  : 'bg-[#355E3B] hover:bg-[#294A30] text-[#FFFFFF] active:scale-95'
+                  : 'bg-[#24532F] hover:bg-[#183D22] text-[#FFFFFF] active:scale-95'
               }`}
             >
               {justAdded ? (

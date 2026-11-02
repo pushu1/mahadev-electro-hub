@@ -76,19 +76,19 @@ export default function CustomerLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#50574F] selection:bg-[#DCE8D5] selection:text-[#26352A]">
+    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#252A25] selection:bg-[#DCE8D5] selection:text-[#171C17]">
       <Header />
 
       <main className="flex-1 max-w-md mx-auto px-4 py-12 sm:py-16 w-full">
-        <div className="bg-[#FFFFFF] p-6 sm:p-8 rounded-2xl border border-[#E2E6DC] shadow-sm space-y-6">
+        <div className="bg-[#FFFFFF] p-6 sm:p-8 rounded-2xl border border-[#D5DDD2] shadow-sm space-y-6">
           <div className="text-center">
-            <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#355E3B] bg-[#FAF9F6] mx-auto mb-3 p-1">
+            <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#24532F] bg-[#FAF9F6] mx-auto mb-3 p-1">
               <img src="/images/logo.png" alt="Logo" className="w-full h-full object-contain" />
             </div>
-            <h1 className="text-xl sm:text-2xl font-heading font-extrabold text-[#26352A]">
+            <h1 className="text-xl sm:text-2xl font-heading font-extrabold text-[#171C17]">
               {c.title}
             </h1>
-            <p className="text-xs sm:text-sm text-[#50574F] mt-1.5 leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#252A25] mt-1.5 leading-relaxed">
               {c.desc}
             </p>
           </div>
@@ -102,7 +102,7 @@ export default function CustomerLoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-[#26352A] mb-1.5">
+              <label className="block text-xs font-semibold text-[#171C17] mb-1.5">
                 {c.identifierLabel} *
               </label>
               <div className="relative">
@@ -112,14 +112,14 @@ export default function CustomerLoginPage() {
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
                   placeholder={c.identifierPlaceholder}
-                  className="w-full pl-9 pr-3.5 py-2.5 text-xs bg-[#FFFFFF] text-[#26352A] placeholder-[#7A8277] border border-[#E2E6DC] rounded-lg focus:outline-none focus:border-[#355E3B] transition-colors"
+                  className="w-full pl-9 pr-3.5 py-2.5 text-xs bg-[#FFFFFF] text-[#171C17] placeholder-[#596358] border border-[#D5DDD2] rounded-lg focus:outline-none focus:border-[#24532F] transition-colors"
                 />
-                <Phone className="w-4 h-4 text-[#355E3B] absolute left-3 top-3" />
+                <Phone className="w-4 h-4 text-[#24532F] absolute left-3 top-3" />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#26352A] mb-1.5">
+              <label className="block text-xs font-semibold text-[#171C17] mb-1.5">
                 {c.passwordLabel} *
               </label>
               <div className="relative">
@@ -129,16 +129,16 @@ export default function CustomerLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-9 pr-3.5 py-2.5 text-xs bg-[#FFFFFF] text-[#26352A] placeholder-[#7A8277] border border-[#E2E6DC] rounded-lg focus:outline-none focus:border-[#355E3B] transition-colors"
+                  className="w-full pl-9 pr-3.5 py-2.5 text-xs bg-[#FFFFFF] text-[#171C17] placeholder-[#596358] border border-[#D5DDD2] rounded-lg focus:outline-none focus:border-[#24532F] transition-colors"
                 />
-                <Lock className="w-4 h-4 text-[#355E3B] absolute left-3 top-3" />
+                <Lock className="w-4 h-4 text-[#24532F] absolute left-3 top-3" />
               </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-[#355E3B] hover:bg-[#294A30] text-white font-extrabold text-xs sm:text-sm rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer active:scale-95 disabled:opacity-50"
+              className="w-full py-3 bg-[#24532F] hover:bg-[#183D22] text-white font-extrabold text-xs sm:text-sm rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer active:scale-95 disabled:opacity-50"
             >
               {loading ? (
                 <span>{c.submitting}</span>
@@ -151,9 +151,9 @@ export default function CustomerLoginPage() {
             </button>
           </form>
 
-          <div className="pt-4 border-t border-[#E2E6DC] text-center text-xs text-[#50574F]">
+          <div className="pt-4 border-t border-[#D5DDD2] text-center text-xs text-[#252A25]">
             {c.noAccount}{' '}
-            <Link to="/register" className="text-[#355E3B] hover:text-[#294A30] font-bold hover:underline">
+            <Link to="/register" className="text-[#24532F] hover:text-[#183D22] font-bold hover:underline">
               {c.registerLink}
             </Link>
           </div>

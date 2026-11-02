@@ -249,7 +249,7 @@ export default function WhyChooseUs() {
       id="why-choose-us"
       ref={sectionRef}
       aria-label="Why Choose Mahadev Electro Hub"
-      className="relative py-16 sm:py-20 lg:py-28 bg-[#F3F0E6] border-t border-[#E2E6DC] overflow-hidden select-none"
+      className="relative py-16 sm:py-20 lg:py-28 bg-[#F3F0E6] border-t border-[#D5DDD2] overflow-hidden select-none"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-center">
@@ -264,34 +264,34 @@ export default function WhyChooseUs() {
             }`}
           >
             {/* Eyebrow */}
-            <div className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#355E3B] mb-3">
+            <div className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#24532F] mb-3">
               <span>{activeContent.eyebrow}</span>
             </div>
 
             {/* Main Heading */}
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-heading font-extrabold text-[#26352A] tracking-tight leading-[1.2] mb-3">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-heading font-extrabold text-[#171C17] tracking-tight leading-[1.2] mb-3">
               {activeContent.heading}
             </h2>
 
             {/* Subtle Animated Sage Underline */}
-            <div className="w-full h-[2.5px] bg-[#E2E6DC] rounded-full mb-5 overflow-hidden">
+            <div className="w-full h-[2.5px] bg-[#D5DDD2] rounded-full mb-5 overflow-hidden">
               <div
                 data-gold-underline="true"
-                className={`h-full bg-gradient-to-r from-[#355E3B] via-[#2E7D46] to-transparent transition-all duration-1000 ease-out rounded-full ${
+                className={`h-full bg-gradient-to-r from-[#24532F] via-[#2E7D46] to-transparent transition-all duration-1000 ease-out rounded-full ${
                   hasEntered || reducedMotion ? 'w-32 sm:w-44 opacity-100' : 'w-0 opacity-0'
                 }`}
               />
             </div>
 
             {/* Supporting Description */}
-            <p className="text-sm sm:text-base text-[#50574F] leading-relaxed mb-8 max-w-lg font-normal">
+            <p className="text-sm sm:text-base text-[#252A25] leading-relaxed mb-8 max-w-lg font-normal">
               {activeContent.description}
             </p>
 
             {/* Small CTA Button */}
             <Link
               to="/shop"
-              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-[#355E3B] hover:bg-[#294A30] active:scale-[0.98] transition-all duration-300 shadow-sm hover:shadow-md hover:shadow-[#355E3B]/20"
+              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-[#24532F] hover:bg-[#183D22] active:scale-[0.98] transition-all duration-300 shadow-sm hover:shadow-md hover:shadow-[#24532F]/20"
             >
               <span>{activeContent.cta}</span>
               <ArrowRight className="w-4 h-4 text-white transition-transform duration-300 group-hover:translate-x-1" />
@@ -321,7 +321,7 @@ export default function WhyChooseUs() {
             {/* Restrained Sage Ambient Glow */}
             <div
               className={`absolute -top-12 -right-12 w-72 sm:w-96 h-72 sm:h-96 rounded-full blur-3xl pointer-events-none -z-0 transition-opacity duration-700 ${
-                isExpanded ? 'bg-[#A8BFA3]/[0.15] opacity-100' : 'bg-[#A8BFA3]/[0.08] opacity-70'
+                isExpanded ? 'bg-[#356B3D]/[0.15] opacity-100' : 'bg-[#356B3D]/[0.08] opacity-70'
               }`}
               aria-hidden="true"
             />
@@ -346,26 +346,26 @@ export default function WhyChooseUs() {
                     <div
                       className={`w-full h-full min-h-[180px] sm:min-h-[200px] bg-[#FFFFFF] rounded-xl p-4 sm:p-6 border ${
                         isExpanded
-                          ? 'border-[#E2E6DC] hover:border-[#A8BFA3] shadow-sm hover:shadow-xl hover:shadow-[#A8BFA3]/15 hover:-translate-y-1.5'
+                          ? 'border-[#D5DDD2] hover:border-[#356B3D] shadow-sm hover:shadow-xl hover:shadow-[#356B3D]/15 hover:-translate-y-1.5'
                           : idx === 0
-                            ? 'border-[#E2E6DC] shadow-xl shadow-black/5'
-                            : 'border-[#E2E6DC] shadow-md shadow-black/5'
+                            ? 'border-[#D5DDD2] shadow-xl shadow-black/5'
+                            : 'border-[#D5DDD2] shadow-md shadow-black/5'
                       } transition-all duration-300 ease-out flex flex-col justify-between group/card`}
                     >
                       {/* Top: Icon & Indicator */}
                       <div>
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-[#F3F0E6] border border-[#E2E6DC] group-hover/card:border-[#A8BFA3] flex items-center justify-center mb-3 sm:mb-4 transition-all duration-300 group-hover/card:scale-105 shrink-0">
-                          <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#355E3B] transition-transform duration-300" />
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-[#F3F0E6] border border-[#D5DDD2] group-hover/card:border-[#356B3D] flex items-center justify-center mb-3 sm:mb-4 transition-all duration-300 group-hover/card:scale-105 shrink-0">
+                          <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#24532F] transition-transform duration-300" />
                         </div>
 
                         {/* Title */}
-                        <h3 className="font-heading font-bold text-sm sm:text-base lg:text-lg text-[#26352A] mb-1.5 group-hover/card:text-[#355E3B] transition-colors duration-200">
+                        <h3 className="font-heading font-bold text-sm sm:text-base lg:text-lg text-[#171C17] mb-1.5 group-hover/card:text-[#24532F] transition-colors duration-200">
                           {feature.title}
                         </h3>
                       </div>
 
                       {/* Bottom: Description */}
-                      <p className="text-[11px] sm:text-xs lg:text-sm text-[#50574F] leading-snug sm:leading-relaxed font-normal">
+                      <p className="text-[11px] sm:text-xs lg:text-sm text-[#252A25] leading-snug sm:leading-relaxed font-normal">
                         {feature.desc}
                       </p>
                     </div>
