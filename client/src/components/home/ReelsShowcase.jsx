@@ -102,8 +102,8 @@ export default function ReelsShowcase() {
         }
       },
       {
-        threshold: 0.15,
-        rootMargin: '100px 0px 100px 0px',
+        threshold: 0,
+        rootMargin: '150px 0px 150px 0px',
       }
     );
 
@@ -234,11 +234,7 @@ export default function ReelsShowcase() {
         {/* ====================================================================
             SECTION HEADING (Clean, Cinematic with Gold Expanding Underline)
             ==================================================================== */}
-        <div
-          className={`flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 transition-all duration-700 ease-out ${
-            hasEntered || reducedMotion ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`}
-        >
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 opacity-100">
           <div className="max-w-2xl text-left">
             {/* Eyebrow */}
             <div className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#D6A52A] mb-3">
@@ -343,11 +339,7 @@ export default function ReelsShowcase() {
                     aspectRatio: '9 / 16',
                     transitionDelay: reducedMotion ? '0ms' : `${idx * 80}ms`,
                   }}
-                  className={`snap-start shrink-0 w-[228px] sm:w-[calc((100%-32px)/3)] lg:w-[calc((100%-64px)/5)] aspect-[9/16] relative bg-[#202020] rounded-xl border border-white/10 hover:border-[#D6A52A]/80 transition-all duration-300 overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-[#D6A52A]/10 select-none ${
-                    hasEntered || reducedMotion
-                      ? 'opacity-100 translate-y-0'
-                      : 'opacity-0 translate-y-8'
-                  }`}
+                  className="snap-start shrink-0 w-[228px] sm:w-[calc((100%-32px)/3)] lg:w-[calc((100%-64px)/5)] aspect-[9/16] relative bg-[#202020] rounded-xl border border-white/10 hover:border-[#D6A52A]/80 transition-all duration-300 overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-[#D6A52A]/10 select-none opacity-100"
                   onClick={() => isVideoUrl && togglePlay(reel.id)}
                 >
                   {/* Base Poster Media Layer - Always visible for instant crisp render with zero blank cards */}
