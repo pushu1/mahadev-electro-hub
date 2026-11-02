@@ -320,6 +320,21 @@ export default function ReelsShowcase() {
                 reel.sourceType === 'url'
               );
 
+              // Authentic poster thumbnail fallback based on category
+              const getPoster = () => {
+                if (reel.thumbnailUrl && reel.thumbnailUrl.trim()) {
+                  return encodeURI(reel.thumbnailUrl.replace(/\.png$/, '.webp'));
+                }
+                const cat = (reel.category || '').toLowerCase();
+                if (cat.includes('zatka')) return '/images/categories/zatka-machines.webp';
+                if (cat.includes('solar street')) return '/images/categories/solar-street-lights.webp';
+                if (cat.includes('farming') || cat.includes('torch')) return '/images/categories/farming%20torch.webp';
+                if (cat.includes('headlamp')) return '/images/categories/headlamps.webp';
+                if (cat.includes('pocket')) return '/images/categories/small-pocket-torches.webp';
+                return '/images/categories/zatka-machines.webp';
+              };
+              const posterSrc = getPoster();
+
               return (
                 <div
                   key={reel.id}
@@ -335,12 +350,21 @@ export default function ReelsShowcase() {
                   }`}
                   onClick={() => isVideoUrl && togglePlay(reel.id)}
                 >
-                  {/* Video or Thumbnail Media Layer - 100% of Card (width: 100%, height: 100%, object-fit: cover) */}
-                  {isVideoUrl && hasEntered ? (
+                  {/* Base Poster Media Layer - Always visible for instant crisp render with zero blank cards */}
+                  <img
+                    src={posterSrc}
+                    alt={reel.category || 'Reel Media'}
+                    loading="lazy"
+                    decoding="async"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    className="w-full h-full object-cover rounded-xl transition-transform duration-700 group-hover:scale-105"
+                  />
+
+                  {/* Dynamic Video Layer - Mounted on viewport entry, crossfades smoothly when playing */}
+                  {isVideoUrl && hasEntered && (
                     <video
                       ref={el => videoRefs.current[reel.id] = el}
                       src={reel.videoUrl}
-                      poster={reel.thumbnailUrl || '/images/categories/zatka-machines.png'}
                       autoPlay={isInViewport}
                       muted={reelState.isMuted}
                       loop
@@ -349,16 +373,9 @@ export default function ReelsShowcase() {
                       onPlay={() => setMediaState(p => ({ ...p, [reel.id]: { ...(p[reel.id] || {}), isPlaying: true } }))}
                       onPause={() => setMediaState(p => ({ ...p, [reel.id]: { ...(p[reel.id] || {}), isPlaying: false } }))}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      className="w-full h-full object-cover rounded-xl"
-                    />
-                  ) : (
-                    <img
-                      src={reel.thumbnailUrl || '/images/categories/zatka-machines.png'}
-                      alt={reel.category || 'Reel Media'}
-                      loading="lazy"
-                      decoding="async"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      className="w-full h-full object-cover rounded-xl transition-transform duration-700 group-hover:scale-105"
+                      className={`absolute inset-0 w-full h-full object-cover rounded-xl transition-opacity duration-300 ${
+                        reelState.isPlaying ? 'opacity-100' : 'opacity-0'
+                      }`}
                     />
                   )}
 
