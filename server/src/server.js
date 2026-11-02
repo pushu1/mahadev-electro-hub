@@ -68,8 +68,9 @@ app.get(['/', '/api'], (req, res) => {
 // Health & Database Diagnostics Endpoint
 app.get('/api/health', (req, res) => {
   const dbStatus = getDatabaseStatus();
-  res.json({
-    status: 'ONLINE',
+  const isHealthy = config.nodeEnv !== 'production' || dbStatus.isPostgresConnected;
+  res.status(isHealthy ? 200 : 503).json({
+    status: isHealthy ? 'ONLINE' : 'DEGRADED_DATABASE_UNAVAILABLE',
     business: 'Mahadev Electro Hub',
     location: 'Pali, Rajasthan, India',
     timestamp: new Date().toISOString(),

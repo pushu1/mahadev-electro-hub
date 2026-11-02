@@ -36,11 +36,16 @@ export async function initializeDatabase() {
     } catch (err) {
       isPostgresConnected = false;
       postgresErrorReason = err.message;
-      console.warn(`⚠️ [Database Status] PostgreSQL is unavailable: ${err.message}`);
-      console.info('ℹ️ [Database Status] Operating on resilient persistent store (server/data/store.json). All product CRUD, cart, orders, and bilingual features are 100% active.');
+      if (config.nodeEnv === 'production') {
+        console.error(`🚨 [CRITICAL DATABASE ERROR - PRODUCTION] PostgreSQL is unreachable: ${err.message}`);
+        console.error('🚨 Production mode strictly requires Neon PostgreSQL. Running on local JSON in production is NOT permitted.');
+      } else {
+        console.warn(`⚠️ [Database Status] PostgreSQL is unavailable: ${err.message}`);
+        console.info('ℹ️ [Database Status] Development mode: operating on resilient persistent store (server/data/store.json).');
+      }
     }
 
-    // Pre-load local store in all cases
+    // Pre-load local store
     localStore.get();
   })();
 
@@ -48,13 +53,18 @@ export async function initializeDatabase() {
 }
 
 export function getDatabaseStatus() {
+  const isProd = config.nodeEnv === 'production';
   return {
     isPostgresConnected,
-    provider: isPostgresConnected ? 'PostgreSQL (Prisma)' : 'Local Persisted Store (Zero-Dependency)',
+    mode: config.nodeEnv,
+    provider: isPostgresConnected 
+      ? 'PostgreSQL (Prisma)' 
+      : (isProd ? 'ERROR: PostgreSQL Offline in Production' : 'Local Persisted Store (Development Fallback)'),
     databaseUrl: isPostgresConnected ? config.databaseUrl.replace(/:[^:@]+@/, ':****@') : null,
     reason: postgresErrorReason,
+    productionDatabaseEnforced: isProd,
     instructions: !isPostgresConnected
-      ? 'To connect to managed PostgreSQL (e.g. Neon.tech), set DATABASE_URL="postgresql://user:password@endpoint.neon.tech/dbname?sslmode=require" in server/.env and run: npx prisma db push'
+      ? 'To connect to managed PostgreSQL (e.g. Neon.tech), configure DATABASE_URL="postgresql://user:password@endpoint.neon.tech/dbname?sslmode=require" in server/.env and in production hosting environment variables.'
       : 'PostgreSQL is fully active.'
   };
 }
