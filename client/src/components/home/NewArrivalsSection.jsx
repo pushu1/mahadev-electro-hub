@@ -8,7 +8,7 @@ import { DEFAULT_NEW_ARRIVALS } from '../../data/defaultProducts.js';
 
 export default function NewArrivalsSection({ initialProducts = [] }) {
   const { t, language } = useLanguage();
-  const [products, setProducts] = useState(initialProducts.length > 0 ? initialProducts : DEFAULT_NEW_ARRIVALS);
+  const [products, setProducts] = useState(initialProducts);
   const [config, setConfig] = useState({
     title_en: 'New Arrivals',
     title_hi: 'नए उत्पाद',
@@ -50,7 +50,7 @@ export default function NewArrivalsSection({ initialProducts = [] }) {
           if (res.config) {
             setConfig(prev => ({ ...prev, ...res.config }));
           }
-          if (Array.isArray(res.products) && res.products.length > 0) {
+          if (Array.isArray(res.products)) {
             const activeOnly = res.products.filter(p => p.status !== 'INACTIVE' && p.newArrivalEnabled !== false);
             if (activeOnly.length > 0) {
               setProducts(activeOnly);
@@ -62,12 +62,12 @@ export default function NewArrivalsSection({ initialProducts = [] }) {
         return api.getProducts({ sort: 'newest', limit: 12 });
       })
       .then(res => {
-        if (res && res.success && Array.isArray(res.products) && res.products.length > 0) {
+        if (res && res.success && Array.isArray(res.products)) {
           setProducts(res.products.filter(p => p.status !== 'INACTIVE'));
         }
       })
       .catch((err) => {
-        console.warn('Could not load new arrivals config, falling back to initial data:', err);
+        console.warn('Could not load new arrivals config:', err);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -77,27 +77,28 @@ export default function NewArrivalsSection({ initialProducts = [] }) {
 
     // Dynamically update when changed in Admin Panel or when tab gains focus
     window.addEventListener('meh_new_arrivals_updated', fetchNewArrivals);
+    window.addEventListener('meh_products_updated', fetchNewArrivals);
+    window.addEventListener('meh_data_synced', fetchNewArrivals);
     window.addEventListener('focus', fetchNewArrivals);
     window.addEventListener('storage', fetchNewArrivals);
 
     return () => {
       window.removeEventListener('meh_new_arrivals_updated', fetchNewArrivals);
+      window.removeEventListener('meh_products_updated', fetchNewArrivals);
+      window.removeEventListener('meh_data_synced', fetchNewArrivals);
       window.removeEventListener('focus', fetchNewArrivals);
       window.removeEventListener('storage', fetchNewArrivals);
     };
   }, [fetchNewArrivals]);
 
-  // Sync initialProducts if passed later
+  // Sync initialProducts if passed from parent
   useEffect(() => {
-    if (initialProducts.length > 0 && products.length === 0) {
+    if (Array.isArray(initialProducts) && initialProducts.length > 0) {
       setProducts(initialProducts);
-      setLoading(false);
     }
-  }, [initialProducts, products.length]);
+  }, [initialProducts]);
 
-  const fallbackList = initialProducts.length > 0 ? initialProducts : DEFAULT_NEW_ARRIVALS;
-  const activeProducts = products.length > 0 ? products : fallbackList;
-  const rawActive = activeProducts.filter(p => p.status !== 'INACTIVE');
+  const rawActive = (products || []).filter(p => p.status !== 'INACTIVE');
   if (!loading && rawActive.length === 0) {
     return null;
   }

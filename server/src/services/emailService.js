@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import { config } from '../config/index.js';
-import { localStore } from '../database/store.js';
+import { prisma } from '../database/connection.js';
 
 let transporter = null;
 
@@ -270,10 +270,16 @@ Contact Customer: tel:${order.customerPhone}
     });
 
     // Mark notification sent to prevent duplicates
-    if (result.success) {
+    if (result.success && order.id) {
       order.emailNotificationSent = true;
       order.emailNotificationSentAt = new Date().toISOString();
-      localStore.saveOrder?.(order);
+      await prisma.order.update({
+        where: { id: order.id },
+        data: {
+          emailNotificationSent: true,
+          emailNotificationSentAt: new Date()
+        }
+      }).catch(e => console.warn('Could not flag email sent in database:', e.message));
     }
 
     return result;

@@ -2,7 +2,7 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { config } from '../config/index.js';
-import { localStore } from '../database/store.js';
+import { prisma } from '../database/connection.js';
 import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -15,7 +15,10 @@ router.post('/admin/login', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Email and password are required.' });
     }
 
-    const admin = localStore.getAdminByEmail(email);
+    const admin = await prisma.admin.findUnique({
+      where: { email: email.toLowerCase().trim() }
+    });
+
     if (!admin) {
       return res.status(401).json({ success: false, message: 'Invalid admin credentials.' });
     }
@@ -42,13 +45,22 @@ router.post('/admin/login', async (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error during admin login in database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Admin Me
-router.get('/admin/me', authenticateToken, (req, res) => {
-  res.json({ success: true, admin: req.user });
+router.get('/admin/me', authenticateToken, async (req, res) => {
+  try {
+    const admin = await prisma.admin.findUnique({
+      where: { id: req.user.id },
+      select: { id: true, email: true, name: true, role: true }
+    });
+    res.json({ success: true, admin: admin || req.user });
+  } catch (err) {
+    res.json({ success: true, admin: req.user });
+  }
 });
 
 // Customer Register
@@ -59,18 +71,30 @@ router.post('/customer/register', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Name, phone number, and password are required.' });
     }
 
-    const existing = localStore.getCustomerByPhoneOrEmail(phone);
+    const cleanPhone = phone.trim();
+    const cleanEmail = email ? email.toLowerCase().trim() : null;
+
+    const existing = await prisma.customer.findFirst({
+      where: {
+        OR: [
+          { phone: cleanPhone },
+          ...(cleanEmail ? [{ email: cleanEmail }] : [])
+        ]
+      }
+    });
+
     if (existing) {
-      return res.status(400).json({ success: false, message: 'A customer account with this phone number already exists.' });
+      return res.status(400).json({ success: false, message: 'A customer account with this phone or email already exists.' });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const newCustomer = localStore.saveCustomer({
-      name,
-      phone,
-      email: email || null,
-      passwordHash,
-      role: 'CUSTOMER'
+    const newCustomer = await prisma.customer.create({
+      data: {
+        name: name.trim(),
+        phone: cleanPhone,
+        email: cleanEmail,
+        passwordHash,
+      }
     });
 
     const token = jwt.sign(
@@ -90,7 +114,8 @@ router.post('/customer/register', async (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error during customer register in database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
@@ -102,7 +127,16 @@ router.post('/customer/login', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Mobile number/email and password are required.' });
     }
 
-    const customer = localStore.getCustomerByPhoneOrEmail(identifier);
+    const cleanId = identifier.trim();
+    const customer = await prisma.customer.findFirst({
+      where: {
+        OR: [
+          { phone: cleanId },
+          { email: cleanId.toLowerCase() }
+        ]
+      }
+    });
+
     if (!customer) {
       return res.status(401).json({ success: false, message: 'Account not found. Please register.' });
     }
@@ -130,35 +164,50 @@ router.post('/customer/login', async (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error during customer login in database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Customer Profile
-router.get('/customer/profile', authenticateToken, (req, res) => {
+router.get('/customer/profile', authenticateToken, async (req, res) => {
   try {
-    const customer = localStore.getCustomerByPhoneOrEmail(req.user.phone || req.user.email);
+    const customer = await prisma.customer.findUnique({
+      where: { id: req.user.id }
+    });
+
     if (!customer) {
       return res.status(404).json({ success: false, message: 'Customer not found.' });
     }
+
     const { passwordHash, ...safeCustomer } = customer;
     res.json({ success: true, customer: safeCustomer });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error fetching customer profile from database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Customer Update Profile / Wishlist
-router.put('/customer/profile', authenticateToken, (req, res) => {
+router.put('/customer/profile', authenticateToken, async (req, res) => {
   try {
-    const updated = localStore.saveCustomer({
-      id: req.user.id,
-      ...req.body
+    const { name, email, addresses, wishlist } = req.body;
+    const data = {};
+    if (name) data.name = name.trim();
+    if (email) data.email = email.toLowerCase().trim();
+    if (addresses) data.addresses = addresses;
+    if (wishlist) data.wishlist = wishlist;
+
+    const updated = await prisma.customer.update({
+      where: { id: req.user.id },
+      data
     });
+
     const { passwordHash, ...safeCustomer } = updated;
     res.json({ success: true, customer: safeCustomer });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error updating customer profile in database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 

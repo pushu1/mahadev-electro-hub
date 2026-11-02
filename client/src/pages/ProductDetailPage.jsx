@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ShoppingCart,
@@ -43,27 +43,43 @@ export default function ProductDetailPage() {
   const [reviewSubmitting, setReviewSubmitting] = useState(false);
   const [reviewSuccess, setReviewSuccess] = useState('');
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    setLoading(true);
-    setQuantity(1);
-
+  const fetchProduct = useCallback(() => {
     api.getProduct(slug)
       .then(res => {
-        if (res.success && res.product) {
+        if (res && res.success && res.product) {
           setProduct(res.product);
-          setSelectedImage(res.product.mainImage);
+          setSelectedImage(prev => prev || res.product.mainImage);
           if (Array.isArray(res.related)) setRelatedProducts(res.related);
           if (Array.isArray(res.reviews)) setReviews(res.reviews);
+        } else {
+          setProduct(null);
         }
       })
       .catch(err => {
         console.error('Error fetching product details:', err);
+        setProduct(null);
       })
       .finally(() => {
         setLoading(false);
       });
   }, [slug]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setLoading(true);
+    setQuantity(1);
+    fetchProduct();
+
+    window.addEventListener('meh_data_synced', fetchProduct);
+    window.addEventListener('meh_products_updated', fetchProduct);
+    window.addEventListener('focus', fetchProduct);
+
+    return () => {
+      window.removeEventListener('meh_data_synced', fetchProduct);
+      window.removeEventListener('meh_products_updated', fetchProduct);
+      window.removeEventListener('focus', fetchProduct);
+    };
+  }, [slug, fetchProduct]);
 
   if (loading) {
     return (

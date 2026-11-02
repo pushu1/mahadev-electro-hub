@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Volume2, VolumeX, Play, Pause } from 'lucide-react';
 import { api } from '../../services/api.js';
 import { useLanguage } from '../../context/LanguageContext.jsx';
@@ -38,32 +38,49 @@ export default function ReelsShowcase() {
   }, []);
 
   // Fetch active reels from backend
-  useEffect(() => {
-    let isMounted = true;
+  const fetchReels = useCallback(() => {
     api.getReels()
       .then((res) => {
-        if (isMounted && res && res.success && Array.isArray(res.reels)) {
+        if (res && res.success && Array.isArray(res.reels)) {
           // Filter to active reels with valid video or thumbnail
           const activeReels = res.reels.filter(r => r.isActive !== false && (r.videoUrl || r.thumbnailUrl));
           setReels(activeReels);
 
           // Initialize media states: all start muted by default for browser autoplay compliance
-          const initialStates = {};
-          activeReels.forEach((r) => {
-            initialStates[r.id] = { isPlaying: true, isMuted: true };
+          setMediaState(prev => {
+            const nextStates = { ...prev };
+            activeReels.forEach((r) => {
+              if (!nextStates[r.id]) {
+                nextStates[r.id] = { isPlaying: true, isMuted: true };
+              }
+            });
+            return nextStates;
           });
-          setMediaState(initialStates);
         }
       })
       .catch((err) => {
-        console.warn('Could not load reels from API, falling back:', err.message);
+        console.warn('Could not load reels from API:', err.message);
       })
       .finally(() => {
-        if (isMounted) setLoading(false);
+        setLoading(false);
       });
-
-    return () => { isMounted = false; };
   }, []);
+
+  useEffect(() => {
+    fetchReels();
+
+    window.addEventListener('meh_data_synced', fetchReels);
+    window.addEventListener('meh_reels_updated', fetchReels);
+    window.addEventListener('focus', fetchReels);
+    window.addEventListener('storage', fetchReels);
+
+    return () => {
+      window.removeEventListener('meh_data_synced', fetchReels);
+      window.removeEventListener('meh_reels_updated', fetchReels);
+      window.removeEventListener('focus', fetchReels);
+      window.removeEventListener('storage', fetchReels);
+    };
+  }, [fetchReels]);
 
   // IntersectionObserver: auto-play videos when section enters viewport, pause when outside
   useEffect(() => {

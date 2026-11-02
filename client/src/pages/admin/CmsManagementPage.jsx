@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   Palette,
@@ -126,7 +126,7 @@ export default function CmsManagementPage() {
 
   const [savedMsg, setSavedMsg] = useState('');
 
-  useEffect(() => {
+  const fetchCmsData = useCallback(() => {
     Promise.all([
       api.getAnnouncement(),
       api.getSettings(),
@@ -159,6 +159,16 @@ export default function CmsManagementPage() {
       }
     }).catch(console.error);
   }, []);
+
+  useEffect(() => {
+    fetchCmsData();
+    window.addEventListener('meh_data_synced', fetchCmsData);
+    window.addEventListener('focus', fetchCmsData);
+    return () => {
+      window.removeEventListener('meh_data_synced', fetchCmsData);
+      window.removeEventListener('focus', fetchCmsData);
+    };
+  }, [fetchCmsData]);
 
   const handleSaveTranslations = async (e) => {
     e.preventDefault();

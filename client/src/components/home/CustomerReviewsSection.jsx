@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Star, MapPin, CheckCircle2, ChevronLeft, ChevronRight, Quote, ShoppingBag } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext.jsx';
 import { api } from '../../services/api.js';
-import { DEFAULT_REVIEWS } from '../../data/defaultProducts.js';
 
 export default function CustomerReviewsSection() {
   const { language } = useLanguage();
   const sliderRef = useRef(null);
 
-  const [reviews, setReviews] = useState(DEFAULT_REVIEWS);
-  const [loading, setLoading] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [tappedId, setTappedId] = useState(null);
   const [hoveredId, setHoveredId] = useState(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
@@ -25,29 +24,39 @@ export default function CustomerReviewsSection() {
   }, []);
 
   // Fetch approved customer reviews from live API
-  useEffect(() => {
-    let isMounted = true;
+  const fetchReviews = useCallback(() => {
     api.getStorefrontReviews()
       .then((res) => {
-        if (isMounted && res && res.success && Array.isArray(res.reviews) && res.reviews.length > 0) {
+        if (res && res.success && Array.isArray(res.reviews)) {
           const approved = res.reviews.filter((r) => r.status === 'APPROVED' && r.isActive !== false);
-          if (approved.length > 0) {
-            setReviews(approved);
-          }
+          setReviews(approved);
         }
       })
       .catch((err) => {
-        console.warn('API notice (using authentic reviews fallback):', err.message);
+        console.warn('API notice (reviews):', err.message);
       })
       .finally(() => {
-        if (isMounted) setLoading(false);
+        setLoading(false);
       });
-
-    return () => { isMounted = false; };
   }, []);
 
-  const displayReviews = reviews.length > 0 ? reviews : DEFAULT_REVIEWS;
-  if (!loading && displayReviews.length === 0) return null;
+  useEffect(() => {
+    fetchReviews();
+
+    window.addEventListener('meh_data_synced', fetchReviews);
+    window.addEventListener('meh_reviews_updated', fetchReviews);
+    window.addEventListener('focus', fetchReviews);
+    window.addEventListener('storage', fetchReviews);
+
+    return () => {
+      window.removeEventListener('meh_data_synced', fetchReviews);
+      window.removeEventListener('meh_reviews_updated', fetchReviews);
+      window.removeEventListener('focus', fetchReviews);
+      window.removeEventListener('storage', fetchReviews);
+    };
+  }, [fetchReviews]);
+
+  if (!loading && reviews.length === 0) return null;
 
   // Horizontal scroll controls
   const scrollLeft = () => {
@@ -169,7 +178,7 @@ export default function CustomerReviewsSection() {
           className="flex items-stretch gap-5 overflow-x-auto scroll-smooth no-scrollbar pb-4 pt-1 snap-x snap-mandatory"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {displayReviews.map((rev) => {
+          {reviews.map((rev) => {
             const isRevealed = tappedId === rev.id || hoveredId === rev.id;
             const hasPhoto = !!rev.customerPhoto;
 

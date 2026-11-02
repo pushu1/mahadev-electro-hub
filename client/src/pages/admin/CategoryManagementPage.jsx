@@ -52,6 +52,12 @@ export default function CategoryManagementPage() {
 
   useEffect(() => {
     fetchCategories();
+    window.addEventListener('meh_data_synced', fetchCategories);
+    window.addEventListener('focus', fetchCategories);
+    return () => {
+      window.removeEventListener('meh_data_synced', fetchCategories);
+      window.removeEventListener('focus', fetchCategories);
+    };
   }, []);
 
   const openAddCategory = () => {

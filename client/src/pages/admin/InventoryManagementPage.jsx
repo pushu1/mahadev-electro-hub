@@ -29,6 +29,12 @@ export default function InventoryManagementPage() {
 
   useEffect(() => {
     fetchProducts();
+    window.addEventListener('meh_data_synced', fetchProducts);
+    window.addEventListener('focus', fetchProducts);
+    return () => {
+      window.removeEventListener('meh_data_synced', fetchProducts);
+      window.removeEventListener('focus', fetchProducts);
+    };
   }, []);
 
   const handleStockUpdate = async (productId) => {

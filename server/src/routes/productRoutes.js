@@ -1,11 +1,22 @@
 import express from 'express';
-import { localStore } from '../database/store.js';
+import { prisma } from '../database/connection.js';
 import { requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
+function formatProduct(p) {
+  if (!p) return null;
+  return {
+    ...p,
+    categorySlug: p.category?.slug || null,
+    categoryName: p.category?.name_en || null,
+    subcategorySlug: p.subcategory?.slug || null,
+    subcategoryName: p.subcategory?.name_en || null,
+  };
+}
+
 // Get all products (Public with filters & search)
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const {
       q,
@@ -23,130 +34,183 @@ router.get('/', (req, res) => {
       limit = 24
     } = req.query;
 
-    let products = localStore.getProducts();
+    const where = {};
 
     // Filter by status (default ACTIVE for storefront unless specified or admin)
     if (status) {
-      products = products.filter(p => p.status === status);
+      where.status = status;
     } else {
-      products = products.filter(p => p.status === 'ACTIVE');
+      where.status = 'ACTIVE';
     }
 
-    // Category filter (supports single category or comma-separated list like "torches,headlamps")
+    // Category filter
     if (category) {
       const catTokens = category.split(',').map(c => c.trim()).filter(Boolean);
-      const targetIdsOrSlugs = new Set();
-      catTokens.forEach(tok => {
-        const catObj = localStore.getCategoryByIdOrSlug(tok);
-        if (catObj) {
-          targetIdsOrSlugs.add(catObj.id);
-          targetIdsOrSlugs.add(catObj.slug);
-        }
-        targetIdsOrSlugs.add(tok);
-      });
-      products = products.filter(p => targetIdsOrSlugs.has(p.categoryId) || targetIdsOrSlugs.has(p.categorySlug));
+      where.OR = [
+        { categoryId: { in: catTokens } },
+        { category: { slug: { in: catTokens } } }
+      ];
     }
 
     // Subcategory filter
     if (subcategory) {
-      products = products.filter(p => p.subcategoryId === subcategory || p.subcategorySlug === subcategory);
+      const subFilter = [
+        { subcategoryId: subcategory },
+        { subcategory: { slug: subcategory } }
+      ];
+      if (where.OR) {
+        where.AND = [{ OR: where.OR }, { OR: subFilter }];
+        delete where.OR;
+      } else {
+        where.OR = subFilter;
+      }
     }
 
     // Search query in English & Hindi
     if (q && q.trim()) {
-      const query = q.trim().toLowerCase();
-      products = products.filter(p => {
-        const titleEn = (p.title_en || '').toLowerCase();
-        const titleHi = (p.title_hi || '').toLowerCase();
-        const descEn = (p.description_en || '').toLowerCase();
-        const descHi = (p.description_hi || '').toLowerCase();
-        const sku = (p.sku || '').toLowerCase();
-        return titleEn.includes(query) || titleHi.includes(query) || descEn.includes(query) || descHi.includes(query) || sku.includes(query);
-      });
+      const query = q.trim();
+      const searchConditions = [
+        { title_en: { contains: query, mode: 'insensitive' } },
+        { title_hi: { contains: query, mode: 'insensitive' } },
+        { description_en: { contains: query, mode: 'insensitive' } },
+        { description_hi: { contains: query, mode: 'insensitive' } },
+        { sku: { contains: query, mode: 'insensitive' } },
+      ];
+      if (where.AND) {
+        where.AND.push({ OR: searchConditions });
+      } else if (where.OR) {
+        where.AND = [{ OR: where.OR }, { OR: searchConditions }];
+        delete where.OR;
+      } else {
+        where.OR = searchConditions;
+      }
     }
 
     // Price range
-    if (minPrice) {
-      products = products.filter(p => p.price >= Number(minPrice));
+    if (minPrice !== undefined && minPrice !== '') {
+      where.price = { ...(where.price || {}), gte: Number(minPrice) };
     }
-    if (maxPrice) {
-      products = products.filter(p => p.price <= Number(maxPrice));
+    if (maxPrice !== undefined && maxPrice !== '') {
+      where.price = { ...(where.price || {}), lte: Number(maxPrice) };
     }
 
     // In-stock only
     if (inStock === 'true') {
-      products = products.filter(p => (p.stockQuantity || 0) > 0);
+      where.stockQuantity = { gt: 0 };
     }
 
     // Flags
     if (featured === 'true') {
-      products = products.filter(p => p.featured);
+      where.featured = true;
     }
     if (newArrival === 'true') {
-      products = products.filter(p => p.newArrival);
+      where.newArrival = true;
     }
     if (bestSeller === 'true') {
-      products = products.filter(p => p.bestSeller);
+      where.bestSeller = true;
     }
 
     // Sorting
+    let orderBy = [{ featured: 'desc' }, { createdAt: 'desc' }];
     switch (sort) {
       case 'price_asc':
-        products.sort((a, b) => a.price - b.price);
+        orderBy = [{ price: 'asc' }];
         break;
       case 'price_desc':
-        products.sort((a, b) => b.price - a.price);
+        orderBy = [{ price: 'desc' }];
         break;
       case 'newest':
-        products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        orderBy = [{ createdAt: 'desc' }];
         break;
       default:
-        // Relevance / Featured first
-        products.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+        orderBy = [{ featured: 'desc' }, { createdAt: 'desc' }];
         break;
     }
 
-    // Pagination
-    const total = products.length;
     const pageNum = Math.max(1, parseInt(page, 10));
     const limitNum = Math.max(1, parseInt(limit, 10));
-    const startIndex = (pageNum - 1) * limitNum;
-    const paginatedProducts = products.slice(startIndex, startIndex + limitNum);
+    const skip = (pageNum - 1) * limitNum;
+
+    const [total, rawProducts] = await Promise.all([
+      prisma.product.count({ where }),
+      prisma.product.findMany({
+        where,
+        orderBy,
+        skip,
+        take: limitNum,
+        include: {
+          category: { select: { id: true, slug: true, name_en: true, name_hi: true } },
+          subcategory: { select: { id: true, slug: true, name_en: true, name_hi: true } }
+        }
+      })
+    ]);
+
+    const formattedProducts = rawProducts.map(formatProduct);
 
     res.json({
       success: true,
       total,
       page: pageNum,
       totalPages: Math.ceil(total / limitNum),
-      products: paginatedProducts
+      products: formattedProducts
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error fetching products:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Get single product by ID or Slug
-router.get('/:idOrSlug', (req, res) => {
+router.get('/:idOrSlug', async (req, res) => {
   try {
-    const product = localStore.getProductByIdOrSlug(req.params.idOrSlug);
-    if (!product) {
+    const rawProduct = await prisma.product.findFirst({
+      where: {
+        OR: [
+          { id: req.params.idOrSlug },
+          { slug: req.params.idOrSlug }
+        ]
+      },
+      include: {
+        category: true,
+        subcategory: true,
+        reviews: {
+          where: { status: 'APPROVED', isActive: true },
+          orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }]
+        }
+      }
+    });
+
+    if (!rawProduct) {
       return res.status(404).json({ success: false, message: 'Product not found.' });
     }
 
-    // Attach related products
-    const related = localStore.getProducts(p => p.categoryId === product.categoryId && p.id !== product.id).slice(0, 4);
+    const product = formatProduct(rawProduct);
 
-    // Attach reviews
-    const reviews = localStore.getReviews(product.id).filter(r => r.status === 'APPROVED');
+    // Attach related products from same category
+    const relatedRaw = await prisma.product.findMany({
+      where: {
+        categoryId: rawProduct.categoryId,
+        id: { not: rawProduct.id },
+        status: 'ACTIVE'
+      },
+      take: 4,
+      include: {
+        category: { select: { id: true, slug: true, name_en: true, name_hi: true } }
+      }
+    });
+
+    const related = relatedRaw.map(formatProduct);
+    const reviews = rawProduct.reviews || [];
 
     res.json({ success: true, product, related, reviews });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error fetching single product:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Admin: Create product
-router.post('/', requireAdmin, (req, res) => {
+router.post('/', requireAdmin, async (req, res) => {
   try {
     const {
       title_en,
@@ -179,100 +243,181 @@ router.post('/', requireAdmin, (req, res) => {
       });
     }
 
-    const generatedSlug = slug || title_en.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    // Verify category exists
+    const categoryExists = await prisma.category.findUnique({ where: { id: categoryId } });
+    if (!categoryExists) {
+      return res.status(400).json({ success: false, message: 'Selected Category ID does not exist in database.' });
+    }
+
+    const generatedSlug = (slug || title_en.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')) + '-' + Math.floor(100 + Math.random() * 900);
     const generatedSku = sku || `MEH-${Math.floor(1000 + Math.random() * 9000)}`;
 
-    const newProduct = localStore.saveProduct({
-      title_en,
-      title_hi,
-      slug: generatedSlug,
-      sku: generatedSku,
-      price: Number(price),
-      compareAtPrice: req.body.compareAtPrice ? Number(req.body.compareAtPrice) : null,
-      categoryId,
-      subcategoryId: subcategoryId || null,
-      stockQuantity: stockQuantity !== undefined ? Number(stockQuantity) : 0,
-      description_en: description_en || '',
-      description_hi: description_hi || '',
-      short_description_en: req.body.short_description_en || '',
-      short_description_hi: req.body.short_description_hi || '',
-      mainImage: mainImage || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80',
-      images: Array.isArray(images) && images.length ? images : [mainImage || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80'],
-      features_en: Array.isArray(features_en) ? features_en : [],
-      features_hi: Array.isArray(features_hi) ? features_hi : [],
-      specifications: specifications || {},
-      usage_instructions_en: req.body.usage_instructions_en || '',
-      usage_instructions_hi: req.body.usage_instructions_hi || '',
-      warranty: warranty || '1 Year Mahadev Hub Warranty',
-      shippingInfo: shippingInfo || 'Fast dispatch from Pali, Rajasthan.',
-      returnEligibility: returnEligibility || '7 Days Replacement for defects.',
-      brand: req.body.brand || 'Mahadev Electro Hub',
-      status: req.body.status || 'ACTIVE',
-      featured: Boolean(featured),
-      newArrival: Boolean(newArrival),
-      bestSeller: Boolean(bestSeller),
+    const newProduct = await prisma.product.create({
+      data: {
+        title_en: title_en.trim(),
+        title_hi: title_hi.trim(),
+        slug: generatedSlug,
+        sku: generatedSku,
+        price: Number(price),
+        compareAtPrice: req.body.compareAtPrice ? Number(req.body.compareAtPrice) : null,
+        categoryId,
+        subcategoryId: subcategoryId || null,
+        stockQuantity: stockQuantity !== undefined ? Number(stockQuantity) : 0,
+        description_en: description_en || '',
+        description_hi: description_hi || '',
+        short_description_en: req.body.short_description_en || null,
+        short_description_hi: req.body.short_description_hi || null,
+        mainImage: mainImage || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80',
+        images: Array.isArray(images) && images.length ? images : [mainImage || 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80'],
+        features_en: Array.isArray(features_en) ? features_en : [],
+        features_hi: Array.isArray(features_hi) ? features_hi : [],
+        specifications: specifications || {},
+        usage_instructions_en: req.body.usage_instructions_en || null,
+        usage_instructions_hi: req.body.usage_instructions_hi || null,
+        warranty: warranty || '1 Year Mahadev Hub Warranty',
+        shippingInfo: shippingInfo || 'Fast dispatch from Pali, Rajasthan.',
+        returnEligibility: returnEligibility || '7 Days Replacement for defects.',
+        brand: req.body.brand || 'Mahadev Electro Hub',
+        status: req.body.status || 'ACTIVE',
+        featured: Boolean(featured),
+        newArrival: Boolean(newArrival),
+        bestSeller: Boolean(bestSeller),
+      },
+      include: {
+        category: true,
+        subcategory: true
+      }
     });
 
-    res.status(201).json({ success: true, product: newProduct });
+    res.status(201).json({ success: true, product: formatProduct(newProduct) });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error creating product in database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Admin: Update product
-router.put('/:id', requireAdmin, (req, res) => {
+router.put('/:id', requireAdmin, async (req, res) => {
   try {
-    const existing = localStore.getProductByIdOrSlug(req.params.id);
+    const existing = await prisma.product.findUnique({ where: { id: req.params.id } });
     if (!existing) {
       return res.status(404).json({ success: false, message: 'Product not found.' });
     }
 
-    const updated = localStore.saveProduct({
-      ...existing,
-      ...req.body,
-      id: existing.id
+    const {
+      title_en,
+      title_hi,
+      slug,
+      sku,
+      price,
+      compareAtPrice,
+      categoryId,
+      subcategoryId,
+      stockQuantity,
+      description_en,
+      description_hi,
+      short_description_en,
+      short_description_hi,
+      mainImage,
+      images,
+      features_en,
+      features_hi,
+      specifications,
+      usage_instructions_en,
+      usage_instructions_hi,
+      warranty,
+      shippingInfo,
+      returnEligibility,
+      brand,
+      status,
+      featured,
+      newArrival,
+      bestSeller,
+    } = req.body;
+
+    const data = {};
+    if (title_en !== undefined) data.title_en = title_en.trim();
+    if (title_hi !== undefined) data.title_hi = title_hi.trim();
+    if (slug !== undefined) data.slug = slug.trim();
+    if (sku !== undefined) data.sku = sku.trim();
+    if (price !== undefined) data.price = Number(price);
+    if (compareAtPrice !== undefined) data.compareAtPrice = compareAtPrice ? Number(compareAtPrice) : null;
+    if (categoryId !== undefined) data.categoryId = categoryId;
+    if (subcategoryId !== undefined) data.subcategoryId = subcategoryId || null;
+    if (stockQuantity !== undefined) data.stockQuantity = Number(stockQuantity);
+    if (description_en !== undefined) data.description_en = description_en;
+    if (description_hi !== undefined) data.description_hi = description_hi;
+    if (short_description_en !== undefined) data.short_description_en = short_description_en;
+    if (short_description_hi !== undefined) data.short_description_hi = short_description_hi;
+    if (mainImage !== undefined) data.mainImage = mainImage;
+    if (images !== undefined) data.images = Array.isArray(images) ? images : [images];
+    if (features_en !== undefined) data.features_en = Array.isArray(features_en) ? features_en : [];
+    if (features_hi !== undefined) data.features_hi = Array.isArray(features_hi) ? features_hi : [];
+    if (specifications !== undefined) data.specifications = specifications;
+    if (usage_instructions_en !== undefined) data.usage_instructions_en = usage_instructions_en;
+    if (usage_instructions_hi !== undefined) data.usage_instructions_hi = usage_instructions_hi;
+    if (warranty !== undefined) data.warranty = warranty;
+    if (shippingInfo !== undefined) data.shippingInfo = shippingInfo;
+    if (returnEligibility !== undefined) data.returnEligibility = returnEligibility;
+    if (brand !== undefined) data.brand = brand;
+    if (status !== undefined) data.status = status;
+    if (featured !== undefined) data.featured = Boolean(featured);
+    if (newArrival !== undefined) data.newArrival = Boolean(newArrival);
+    if (bestSeller !== undefined) data.bestSeller = Boolean(bestSeller);
+
+    const updated = await prisma.product.update({
+      where: { id: req.params.id },
+      data,
+      include: {
+        category: true,
+        subcategory: true
+      }
     });
 
-    res.json({ success: true, product: updated });
+    res.json({ success: true, product: formatProduct(updated) });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error updating product in database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Admin: Delete product
-router.delete('/:id', requireAdmin, (req, res) => {
+router.delete('/:id', requireAdmin, async (req, res) => {
   try {
-    const deleted = localStore.deleteProduct(req.params.id);
-    if (!deleted) {
+    const existing = await prisma.product.findUnique({ where: { id: req.params.id } });
+    if (!existing) {
       return res.status(404).json({ success: false, message: 'Product not found.' });
     }
-    res.json({ success: true, message: 'Product deleted successfully.' });
+
+    // Delete related reviews and orderItem references (handled cleanly by schema or explicit deletion)
+    await prisma.review.deleteMany({ where: { productId: req.params.id } });
+    await prisma.product.delete({ where: { id: req.params.id } });
+
+    res.json({ success: true, message: 'Product deleted permanently from database.' });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error deleting product from database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Admin: Quick Stock Update
-router.patch('/:id/stock', requireAdmin, (req, res) => {
+router.patch('/:id/stock', requireAdmin, async (req, res) => {
   try {
     const { stockQuantity } = req.body;
     if (stockQuantity === undefined) {
       return res.status(400).json({ success: false, message: 'stockQuantity is required.' });
     }
 
-    const existing = localStore.getProductByIdOrSlug(req.params.id);
-    if (!existing) {
-      return res.status(404).json({ success: false, message: 'Product not found.' });
-    }
-
-    const updated = localStore.saveProduct({
-      ...existing,
-      stockQuantity: Number(stockQuantity)
+    const updated = await prisma.product.update({
+      where: { id: req.params.id },
+      data: { stockQuantity: Number(stockQuantity) },
+      include: { category: true, subcategory: true }
     });
 
-    res.json({ success: true, product: updated });
+    res.json({ success: true, product: formatProduct(updated) });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error updating stock in database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 

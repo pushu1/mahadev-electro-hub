@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useSearchParams, Link } from 'react-router-dom';
 import Header from '../components/common/Header.jsx';
 import Footer from '../components/common/Footer.jsx';
@@ -20,6 +20,36 @@ export default function CategoryPage() {
   const [activeSubcategory, setActiveSubcategory] = useState('');
   const [loading, setLoading] = useState(!fallbackCat);
 
+  const fetchCategoryData = useCallback(() => {
+    api.getCategory(slug)
+      .then(res => {
+        if (res && res.success && res.category) {
+          setCategory(res.category);
+          if (subParam && res.category.subcategories) {
+            const matched = res.category.subcategories.find(s => s.slug === subParam || s.id === subParam);
+            if (matched) setActiveSubcategory(matched.id);
+          }
+          return api.getProducts({ category: res.category.id });
+        } else {
+          setCategory(null);
+          setProducts([]);
+        }
+      })
+      .then(pRes => {
+        if (pRes && pRes.success && Array.isArray(pRes.products)) {
+          setProducts(pRes.products);
+        }
+      })
+      .catch(err => {
+        console.error('Error loading category:', err);
+        setCategory(null);
+        setProducts([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [slug, subParam]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
 
@@ -35,29 +65,20 @@ export default function CategoryPage() {
       setActiveSubcategory('');
     }
 
-    api.getCategory(slug)
-      .then(res => {
-        if (res.success && res.category) {
-          setCategory(res.category);
-          if (subParam && res.category.subcategories) {
-            const matched = res.category.subcategories.find(s => s.slug === subParam || s.id === subParam);
-            if (matched) setActiveSubcategory(matched.id);
-          }
-          return api.getProducts({ category: res.category.id });
-        }
-      })
-      .then(pRes => {
-        if (pRes && pRes.success && Array.isArray(pRes.products)) {
-          setProducts(pRes.products);
-        }
-      })
-      .catch(err => {
-        console.error('Error loading category:', err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [slug, subParam]);
+    fetchCategoryData();
+
+    window.addEventListener('meh_data_synced', fetchCategoryData);
+    window.addEventListener('meh_products_updated', fetchCategoryData);
+    window.addEventListener('meh_categories_updated', fetchCategoryData);
+    window.addEventListener('focus', fetchCategoryData);
+
+    return () => {
+      window.removeEventListener('meh_data_synced', fetchCategoryData);
+      window.removeEventListener('meh_products_updated', fetchCategoryData);
+      window.removeEventListener('meh_categories_updated', fetchCategoryData);
+      window.removeEventListener('focus', fetchCategoryData);
+    };
+  }, [slug, subParam, fetchCategoryData]);
 
   if (loading) {
     return (

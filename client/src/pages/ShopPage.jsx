@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { SlidersHorizontal, X, Search, RotateCcw } from 'lucide-react';
 import Header from '../components/common/Header.jsx';
@@ -37,7 +37,7 @@ export default function ShopPage() {
       .catch(() => {});
   }, []);
 
-  useEffect(() => {
+  const fetchShopProducts = useCallback(() => {
     setLoading(true);
     const params = {};
     if (categoryParam) params.category = categoryParam;
@@ -50,7 +50,7 @@ export default function ShopPage() {
 
     api.getProducts(params)
       .then(res => {
-        if (res.success && Array.isArray(res.products)) {
+        if (res && res.success && Array.isArray(res.products)) {
           setProducts(res.products);
           setTotalCount(res.total || res.products.length);
         }
@@ -62,6 +62,20 @@ export default function ShopPage() {
         setLoading(false);
       });
   }, [categoryParam, subcategoryParam, qParam, sortParam, inStockParam, minPriceParam, maxPriceParam]);
+
+  useEffect(() => {
+    fetchShopProducts();
+
+    window.addEventListener('meh_data_synced', fetchShopProducts);
+    window.addEventListener('meh_products_updated', fetchShopProducts);
+    window.addEventListener('focus', fetchShopProducts);
+
+    return () => {
+      window.removeEventListener('meh_data_synced', fetchShopProducts);
+      window.removeEventListener('meh_products_updated', fetchShopProducts);
+      window.removeEventListener('focus', fetchShopProducts);
+    };
+  }, [fetchShopProducts]);
 
   const updateFilter = (key, value) => {
     const newParams = new URLSearchParams(searchParams);

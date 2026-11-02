@@ -107,6 +107,12 @@ export default function ProductManagementPage() {
 
   useEffect(() => {
     fetchAll();
+    window.addEventListener('meh_data_synced', fetchAll);
+    window.addEventListener('focus', fetchAll);
+    return () => {
+      window.removeEventListener('meh_data_synced', fetchAll);
+      window.removeEventListener('focus', fetchAll);
+    };
   }, []);
 
   const openAddModal = () => {

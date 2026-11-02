@@ -1,43 +1,63 @@
 import express from 'express';
-import { localStore } from '../database/store.js';
+import { prisma } from '../database/connection.js';
 import { requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
 // Get all categories (Public)
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const { includeInactive } = req.query;
-    let categories = localStore.getCategories();
+    const where = includeInactive === 'true' ? {} : { isActive: true };
 
-    if (includeInactive !== 'true') {
-      categories = categories.filter(c => c.isActive);
-    }
-
-    // Sort by order ascending
-    categories.sort((a, b) => (a.order || 0) - (b.order || 0));
+    const categories = await prisma.category.findMany({
+      where,
+      include: {
+        subcategories: {
+          where: includeInactive === 'true' ? {} : { isActive: true },
+          orderBy: { order: 'asc' }
+        }
+      },
+      orderBy: { order: 'asc' }
+    });
 
     res.json({ success: true, count: categories.length, categories });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error fetching categories from database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Get category by ID or slug
-router.get('/:idOrSlug', (req, res) => {
+router.get('/:idOrSlug', async (req, res) => {
   try {
-    const category = localStore.getCategoryByIdOrSlug(req.params.idOrSlug);
+    const category = await prisma.category.findFirst({
+      where: {
+        OR: [
+          { id: req.params.idOrSlug },
+          { slug: req.params.idOrSlug }
+        ]
+      },
+      include: {
+        subcategories: {
+          orderBy: { order: 'asc' }
+        }
+      }
+    });
+
     if (!category) {
       return res.status(404).json({ success: false, message: 'Category not found.' });
     }
+
     res.json({ success: true, category });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error fetching single category:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Admin: Create category
-router.post('/', requireAdmin, (req, res) => {
+router.post('/', requireAdmin, async (req, res) => {
   try {
     const { name_en, name_hi, slug, description_en, description_hi, image, bannerImage, showInNav, order, isActive } = req.body;
     if (!name_en || !name_hi) {
@@ -45,73 +65,104 @@ router.post('/', requireAdmin, (req, res) => {
     }
 
     const generatedSlug = slug || name_en.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    const newCategory = localStore.saveCategory({
-      name_en,
-      name_hi,
-      slug: generatedSlug,
-      description_en: description_en || '',
-      description_hi: description_hi || '',
-      image: image || '',
-      bannerImage: bannerImage || '',
-      showInNav: showInNav !== undefined ? Boolean(showInNav) : true,
-      order: order !== undefined ? Number(order) : 0,
-      isActive: isActive !== undefined ? Boolean(isActive) : true,
-      subcategories: req.body.subcategories || [],
+
+    const newCategory = await prisma.category.create({
+      data: {
+        name_en: name_en.trim(),
+        name_hi: name_hi.trim(),
+        slug: generatedSlug,
+        description_en: description_en || null,
+        description_hi: description_hi || null,
+        image: image || null,
+        bannerImage: bannerImage || null,
+        showInNav: showInNav !== undefined ? Boolean(showInNav) : true,
+        order: order !== undefined ? Number(order) : 0,
+        isActive: isActive !== undefined ? Boolean(isActive) : true,
+      },
+      include: {
+        subcategories: true
+      }
     });
 
     res.status(201).json({ success: true, category: newCategory });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error creating category in database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Admin: Update category
-router.put('/:id', requireAdmin, (req, res) => {
+router.put('/:id', requireAdmin, async (req, res) => {
   try {
-    const existing = localStore.getCategoryByIdOrSlug(req.params.id);
+    const existing = await prisma.category.findUnique({ where: { id: req.params.id } });
     if (!existing) {
       return res.status(404).json({ success: false, message: 'Category not found.' });
     }
 
-    const updated = localStore.saveCategory({
-      ...existing,
-      ...req.body,
-      id: existing.id
+    const { name_en, name_hi, slug, description_en, description_hi, image, bannerImage, showInNav, order, isActive } = req.body;
+    const data = {};
+    if (name_en !== undefined) data.name_en = name_en.trim();
+    if (name_hi !== undefined) data.name_hi = name_hi.trim();
+    if (slug !== undefined) data.slug = slug.trim();
+    if (description_en !== undefined) data.description_en = description_en || null;
+    if (description_hi !== undefined) data.description_hi = description_hi || null;
+    if (image !== undefined) data.image = image || null;
+    if (bannerImage !== undefined) data.bannerImage = bannerImage || null;
+    if (showInNav !== undefined) data.showInNav = Boolean(showInNav);
+    if (order !== undefined) data.order = Number(order);
+    if (isActive !== undefined) data.isActive = Boolean(isActive);
+
+    const updated = await prisma.category.update({
+      where: { id: req.params.id },
+      data,
+      include: {
+        subcategories: {
+          orderBy: { order: 'asc' }
+        }
+      }
     });
 
     res.json({ success: true, category: updated });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error updating category in database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Admin: Delete category
-router.delete('/:id', requireAdmin, (req, res) => {
+router.delete('/:id', requireAdmin, async (req, res) => {
   try {
-    // Check if products exist in category
-    const products = localStore.getProducts(p => p.categoryId === req.params.id);
-    if (products.length > 0) {
-      return res.status(400).json({
-        success: false,
-        message: `Cannot delete category. ${products.length} product(s) are currently assigned to this category. Please reassign or delete them first.`
-      });
-    }
-
-    const deleted = localStore.deleteCategory(req.params.id);
-    if (!deleted) {
+    const existing = await prisma.category.findUnique({ where: { id: req.params.id } });
+    if (!existing) {
       return res.status(404).json({ success: false, message: 'Category not found.' });
     }
 
-    res.json({ success: true, message: 'Category deleted successfully.' });
+    // Check if products exist in category
+    const productsCount = await prisma.product.count({ where: { categoryId: req.params.id } });
+    if (productsCount > 0) {
+      return res.status(400).json({
+        success: false,
+        message: `Cannot delete category. ${productsCount} product(s) are currently assigned to this category. Please reassign or delete them first.`
+      });
+    }
+
+    await prisma.subcategory.deleteMany({ where: { categoryId: req.params.id } });
+    await prisma.category.delete({ where: { id: req.params.id } });
+
+    res.json({ success: true, message: 'Category deleted permanently from database.' });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error deleting category from database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Admin: Add subcategory
-router.post('/:id/subcategories', requireAdmin, (req, res) => {
+router.post('/:id/subcategories', requireAdmin, async (req, res) => {
   try {
-    const category = localStore.getCategoryByIdOrSlug(req.params.id);
+    const category = await prisma.category.findUnique({
+      where: { id: req.params.id },
+      include: { subcategories: true }
+    });
     if (!category) {
       return res.status(404).json({ success: false, message: 'Parent category not found.' });
     }
@@ -122,44 +173,48 @@ router.post('/:id/subcategories', requireAdmin, (req, res) => {
     }
 
     const subSlug = slug || name_en.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    const newSub = {
-      id: `sub-${Date.now()}`,
-      slug: subSlug,
-      name_en,
-      name_hi,
-      description_en: description_en || '',
-      description_hi: description_hi || '',
-      image: image || '',
-      order: (category.subcategories?.length || 0) + 1,
-      isActive: true,
-    };
+    const newSub = await prisma.subcategory.create({
+      data: {
+        categoryId: category.id,
+        slug: subSlug,
+        name_en: name_en.trim(),
+        name_hi: name_hi.trim(),
+        description_en: description_en || null,
+        description_hi: description_hi || null,
+        image: image || null,
+        order: (category.subcategories?.length || 0) + 1,
+        isActive: true,
+      }
+    });
 
-    if (!Array.isArray(category.subcategories)) {
-      category.subcategories = [];
-    }
-    category.subcategories.push(newSub);
-    localStore.saveCategory(category);
+    const updatedCategory = await prisma.category.findUnique({
+      where: { id: category.id },
+      include: { subcategories: { orderBy: { order: 'asc' } } }
+    });
 
-    res.status(201).json({ success: true, subcategory: newSub, category });
+    res.status(201).json({ success: true, subcategory: newSub, category: updatedCategory });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error adding subcategory to database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Admin: Delete subcategory
-router.delete('/:id/subcategories/:subId', requireAdmin, (req, res) => {
+router.delete('/:id/subcategories/:subId', requireAdmin, async (req, res) => {
   try {
-    const category = localStore.getCategoryByIdOrSlug(req.params.id);
-    if (!category) {
-      return res.status(404).json({ success: false, message: 'Parent category not found.' });
-    }
+    await prisma.subcategory.delete({
+      where: { id: req.params.subId }
+    });
 
-    category.subcategories = (category.subcategories || []).filter(s => s.id !== req.params.subId && s.slug !== req.params.subId);
-    localStore.saveCategory(category);
+    const updatedCategory = await prisma.category.findUnique({
+      where: { id: req.params.id },
+      include: { subcategories: { orderBy: { order: 'asc' } } }
+    });
 
-    res.json({ success: true, message: 'Subcategory deleted.', category });
+    res.json({ success: true, message: 'Subcategory deleted permanently.', category: updatedCategory });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error deleting subcategory from database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 

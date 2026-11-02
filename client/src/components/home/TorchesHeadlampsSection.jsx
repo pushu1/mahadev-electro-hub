@@ -8,7 +8,7 @@ import { DEFAULT_TORCHES_HEADLAMPS_PRODUCTS } from '../../data/defaultProducts.j
 
 export default function TorchesHeadlampsSection({ initialProducts = [] }) {
   const { t, language } = useLanguage();
-  const [products, setProducts] = useState(initialProducts.length > 0 ? initialProducts : DEFAULT_TORCHES_HEADLAMPS_PRODUCTS);
+  const [products, setProducts] = useState(initialProducts);
   const [loading, setLoading] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -32,7 +32,7 @@ export default function TorchesHeadlampsSection({ initialProducts = [] }) {
         }
       })
       .catch((err) => {
-        console.warn('Could not load torches & headlamps products, using fallback:', err);
+        console.warn('Could not load torches & headlamps products:', err);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -42,27 +42,26 @@ export default function TorchesHeadlampsSection({ initialProducts = [] }) {
 
     // Dynamically update when changed in Admin Panel, tab gains focus, or storage event
     window.addEventListener('meh_products_updated', fetchProducts);
+    window.addEventListener('meh_data_synced', fetchProducts);
     window.addEventListener('focus', fetchProducts);
     window.addEventListener('storage', fetchProducts);
 
     return () => {
       window.removeEventListener('meh_products_updated', fetchProducts);
+      window.removeEventListener('meh_data_synced', fetchProducts);
       window.removeEventListener('focus', fetchProducts);
       window.removeEventListener('storage', fetchProducts);
     };
   }, [fetchProducts]);
 
-  // Sync initialProducts if passed later
+  // Sync initialProducts if passed from parent
   useEffect(() => {
-    if (initialProducts.length > 0 && products.length === 0) {
+    if (Array.isArray(initialProducts) && initialProducts.length > 0) {
       setProducts(initialProducts);
-      setLoading(false);
     }
-  }, [initialProducts, products.length]);
+  }, [initialProducts]);
 
-  const fallbackList = initialProducts.length > 0 ? initialProducts : DEFAULT_TORCHES_HEADLAMPS_PRODUCTS;
-  const activeProducts = products.length > 0 ? products : fallbackList;
-  const rawActive = activeProducts.filter(p => p.status !== 'INACTIVE');
+  const rawActive = (products || []).filter(p => p.status !== 'INACTIVE');
   if (!loading && rawActive.length === 0) {
     return null;
   }

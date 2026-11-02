@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { api } from '../services/api.js';
 import Header from '../components/common/Header.jsx';
 import Footer from '../components/common/Footer.jsx';
@@ -31,9 +31,7 @@ export default function HomePage() {
   const [torchesHeadlampsProducts, setTorchesHeadlampsProducts] = useState(DEFAULT_TORCHES_HEADLAMPS_PRODUCTS);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-
+  const fetchHomeData = useCallback(() => {
     Promise.allSettled([
       api.getCategories(),
       api.getProducts({ featured: 'true' }),
@@ -42,29 +40,48 @@ export default function HomePage() {
       api.getProducts({ category: 'torches,headlamps' }),
     ])
       .then(([catsRes, featRes, newRes, zatkaRes, thRes]) => {
-        if (catsRes.status === 'fulfilled' && catsRes.value?.success && Array.isArray(catsRes.value.categories) && catsRes.value.categories.length > 0) {
+        if (catsRes.status === 'fulfilled' && catsRes.value?.success && Array.isArray(catsRes.value.categories)) {
           setCategories(catsRes.value.categories);
         }
-        if (featRes.status === 'fulfilled' && featRes.value?.success && Array.isArray(featRes.value.products) && featRes.value.products.length > 0) {
+        if (featRes.status === 'fulfilled' && featRes.value?.success && Array.isArray(featRes.value.products)) {
           setFeaturedProducts(featRes.value.products);
         }
-        if (newRes.status === 'fulfilled' && newRes.value?.success && Array.isArray(newRes.value.products) && newRes.value.products.length > 0) {
+        if (newRes.status === 'fulfilled' && newRes.value?.success && Array.isArray(newRes.value.products)) {
           setNewArrivals(newRes.value.products);
         }
-        if (zatkaRes.status === 'fulfilled' && zatkaRes.value?.success && Array.isArray(zatkaRes.value.products) && zatkaRes.value.products.length > 0) {
+        if (zatkaRes.status === 'fulfilled' && zatkaRes.value?.success && Array.isArray(zatkaRes.value.products)) {
           setZatkaProducts(zatkaRes.value.products);
         }
-        if (thRes.status === 'fulfilled' && thRes.value?.success && Array.isArray(thRes.value.products) && thRes.value.products.length > 0) {
+        if (thRes.status === 'fulfilled' && thRes.value?.success && Array.isArray(thRes.value.products)) {
           setTorchesHeadlampsProducts(thRes.value.products);
         }
       })
       .catch((err) => {
-        console.warn('API sync notice (using resilient authentic fallback):', err);
+        console.warn('API sync notice:', err);
       })
       .finally(() => {
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    fetchHomeData();
+
+    window.addEventListener('meh_data_synced', fetchHomeData);
+    window.addEventListener('meh_products_updated', fetchHomeData);
+    window.addEventListener('meh_categories_updated', fetchHomeData);
+    window.addEventListener('focus', fetchHomeData);
+    window.addEventListener('storage', fetchHomeData);
+
+    return () => {
+      window.removeEventListener('meh_data_synced', fetchHomeData);
+      window.removeEventListener('meh_products_updated', fetchHomeData);
+      window.removeEventListener('meh_categories_updated', fetchHomeData);
+      window.removeEventListener('focus', fetchHomeData);
+      window.removeEventListener('storage', fetchHomeData);
+    };
+  }, [fetchHomeData]);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#252A25] relative overflow-x-clip">

@@ -1,15 +1,21 @@
 import express from 'express';
-import { localStore } from '../database/store.js';
-import { getDatabaseStatus } from '../database/connection.js';
+import { prisma, getDatabaseStatus } from '../database/connection.js';
 import { requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/stats', requireAdmin, (req, res) => {
+router.get('/stats', requireAdmin, async (req, res) => {
   try {
-    const orders = localStore.getOrders();
-    const products = localStore.getProducts();
-    const customers = localStore.get().customers || [];
+    const [orders, products, customersCount] = await Promise.all([
+      prisma.order.findMany({
+        include: { items: true },
+        orderBy: { createdAt: 'desc' }
+      }),
+      prisma.product.findMany({
+        select: { id: true, status: true, stockQuantity: true }
+      }),
+      prisma.customer.count()
+    ]);
 
     const now = new Date();
     const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
@@ -50,8 +56,9 @@ router.get('/stats', requireAdmin, (req, res) => {
         // Aggregate top-selling products from order items
         if (Array.isArray(order.items)) {
           for (const item of order.items) {
-            if (!productSalesMap[item.productId]) {
-              productSalesMap[item.productId] = {
+            const pid = item.productId || item.productTitle_en;
+            if (!productSalesMap[pid]) {
+              productSalesMap[pid] = {
                 id: item.productId,
                 title: item.productTitle_en,
                 image: item.productImage,
@@ -59,8 +66,8 @@ router.get('/stats', requireAdmin, (req, res) => {
                 revenue: 0
               };
             }
-            productSalesMap[item.productId].unitsSold += (item.quantity || 1);
-            productSalesMap[item.productId].revenue += (item.total || 0);
+            productSalesMap[pid].unitsSold += (item.quantity || 1);
+            productSalesMap[pid].revenue += (item.total || 0);
           }
         }
       }
@@ -90,29 +97,22 @@ router.get('/stats', requireAdmin, (req, res) => {
         pendingOrders: pendingOrdersCount,
         deliveredOrders: deliveredOrdersCount,
         cancelledOrders: cancelledOrdersCount,
-        totalRevenue,
-        paidRevenue,
-        pendingDeliveryBalanceRevenue,
-        pendingCodRevenue: pendingDeliveryBalanceRevenue, // Backward compatibility alias
-        totalCustomers: customers.length,
+        totalRevenue: Number(totalRevenue.toFixed(2)),
+        paidRevenue: Number(paidRevenue.toFixed(2)),
+        pendingDeliveryBalanceRevenue: Number(pendingDeliveryBalanceRevenue.toFixed(2)),
+        pendingCodRevenue: Number(pendingDeliveryBalanceRevenue.toFixed(2)),
+        totalCustomers: customersCount,
         totalActiveProducts: activeProducts,
         lowStockCount: lowStockProducts.length,
         outOfStockCount: outOfStockProducts.length,
-      },
-      lowStockProducts: lowStockProducts.map(p => ({
-        id: p.id,
-        title_en: p.title_en,
-        title_hi: p.title_hi,
-        stockQuantity: p.stockQuantity,
-        price: p.price,
-        sku: p.sku
-      })),
-      recentOrders,
-      topSellingProducts,
-      database: dbStatus,
+        topSellingProducts,
+        recentOrders,
+        database: dbStatus
+      }
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Error calculating dashboard stats from database:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 

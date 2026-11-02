@@ -8,7 +8,7 @@ import { DEFAULT_ZATKA_PRODUCTS } from '../../data/defaultProducts.js';
 
 export default function ZatkaMachinesSection({ initialProducts = [] }) {
   const { t, language } = useLanguage();
-  const [products, setProducts] = useState(initialProducts.length > 0 ? initialProducts : DEFAULT_ZATKA_PRODUCTS);
+  const [products, setProducts] = useState(initialProducts);
   const [loading, setLoading] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -32,7 +32,7 @@ export default function ZatkaMachinesSection({ initialProducts = [] }) {
         }
       })
       .catch((err) => {
-        console.warn('Could not load zatka products, using fallback:', err);
+        console.warn('Could not load zatka products:', err);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -43,28 +43,27 @@ export default function ZatkaMachinesSection({ initialProducts = [] }) {
     // Dynamically update when changed in Admin Panel, tab gains focus, or storage event
     window.addEventListener('meh_zatka_products_updated', fetchZatkaProducts);
     window.addEventListener('meh_products_updated', fetchZatkaProducts);
+    window.addEventListener('meh_data_synced', fetchZatkaProducts);
     window.addEventListener('focus', fetchZatkaProducts);
     window.addEventListener('storage', fetchZatkaProducts);
 
     return () => {
       window.removeEventListener('meh_zatka_products_updated', fetchZatkaProducts);
       window.removeEventListener('meh_products_updated', fetchZatkaProducts);
+      window.removeEventListener('meh_data_synced', fetchZatkaProducts);
       window.removeEventListener('focus', fetchZatkaProducts);
       window.removeEventListener('storage', fetchZatkaProducts);
     };
   }, [fetchZatkaProducts]);
 
-  // Sync initialProducts if passed later
+  // Sync initialProducts if passed from parent
   useEffect(() => {
-    if (initialProducts.length > 0 && products.length === 0) {
+    if (Array.isArray(initialProducts) && initialProducts.length > 0) {
       setProducts(initialProducts);
-      setLoading(false);
     }
-  }, [initialProducts, products.length]);
+  }, [initialProducts]);
 
-  const fallbackList = initialProducts.length > 0 ? initialProducts : DEFAULT_ZATKA_PRODUCTS;
-  const activeProducts = products.length > 0 ? products : fallbackList;
-  const rawActive = activeProducts.filter(p => p.status !== 'INACTIVE');
+  const rawActive = (products || []).filter(p => p.status !== 'INACTIVE');
   if (!loading && rawActive.length === 0) {
     return null;
   }

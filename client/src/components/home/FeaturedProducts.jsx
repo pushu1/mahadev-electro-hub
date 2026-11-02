@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext.jsx';
 import ProductCard from '../common/ProductCard.jsx';
 import { api } from '../../services/api.js';
-import { DEFAULT_FEATURED_PRODUCTS } from '../../data/defaultProducts.js';
 
 export default function FeaturedProducts({ products: initialProducts = [] }) {
   const { t, language } = useLanguage();
-  const [products, setProducts] = useState(initialProducts.length > 0 ? initialProducts : DEFAULT_FEATURED_PRODUCTS);
+  const [products, setProducts] = useState(initialProducts);
   const [loading, setLoading] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isInView, setIsInView] = useState(false);
@@ -35,36 +34,42 @@ export default function FeaturedProducts({ products: initialProducts = [] }) {
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  useEffect(() => {
-    if (initialProducts.length > 0) {
-      setProducts(initialProducts);
-      setLoading(false);
-      return;
-    }
-
+  const fetchFeaturedProducts = useCallback(() => {
     api.getProducts({ featured: 'true' })
       .then(res => {
-        if (res && res.success && Array.isArray(res.products) && res.products.length > 0) {
-          setProducts(res.products);
-        } else {
-          // Fallback to general active products if no featured flag
-          return api.getProducts({ limit: 8 });
-        }
-      })
-      .then(res => {
         if (res && res.success && Array.isArray(res.products)) {
-          setProducts(res.products.slice(0, 8));
+          setProducts(res.products);
         }
       })
       .catch(err => {
         console.warn('Could not load featured products:', err);
       })
       .finally(() => setLoading(false));
-  }, [initialProducts]);
+  }, []);
 
-  const fallbackList = initialProducts.length > 0 ? initialProducts : DEFAULT_FEATURED_PRODUCTS;
-  const activeProducts = products.length > 0 ? products : fallbackList;
-  const rawActive = activeProducts.filter(p => p.status !== 'INACTIVE');
+  useEffect(() => {
+    if (Array.isArray(initialProducts) && initialProducts.length > 0) {
+      setProducts(initialProducts);
+    } else {
+      fetchFeaturedProducts();
+    }
+  }, [initialProducts, fetchFeaturedProducts]);
+
+  useEffect(() => {
+    window.addEventListener('meh_products_updated', fetchFeaturedProducts);
+    window.addEventListener('meh_data_synced', fetchFeaturedProducts);
+    window.addEventListener('focus', fetchFeaturedProducts);
+    window.addEventListener('storage', fetchFeaturedProducts);
+
+    return () => {
+      window.removeEventListener('meh_products_updated', fetchFeaturedProducts);
+      window.removeEventListener('meh_data_synced', fetchFeaturedProducts);
+      window.removeEventListener('focus', fetchFeaturedProducts);
+      window.removeEventListener('storage', fetchFeaturedProducts);
+    };
+  }, [fetchFeaturedProducts]);
+
+  const rawActive = (products || []).filter(p => p.status !== 'INACTIVE');
   if (!loading && rawActive.length === 0) {
     return null;
   }

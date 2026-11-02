@@ -196,8 +196,8 @@ model OrderItem {
   id              String   @id @default(uuid())
   orderId         String
   order           Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId       String
-  product         Product  @relation(fields: [productId], references: [id])
+  productId       String?
+  product         Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
   productTitle_en String
   productTitle_hi String
   productImage    String
@@ -241,12 +241,19 @@ model Banner {
 
 model Review {
   id            String       @id @default(uuid())
-  productId     String
-  product       Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId     String?
+  product       Product?     @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productName   String?
   customerName  String
   customerEmail String?
+  location      String?
+  customerPhoto String?
   rating        Int          @default(5)
+  title         String?
   comment       String
+  isVerified    Boolean      @default(true)
+  isActive      Boolean      @default(true)
+  sortOrder     Int          @default(0)
   status        ReviewStatus @default(PENDING)
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt

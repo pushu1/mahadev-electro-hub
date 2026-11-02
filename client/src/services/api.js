@@ -1,13 +1,42 @@
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
-// In-memory cache for GET requests & inflight request deduplication
+// Cross-tab synchronization channel
+let syncChannel = null;
+if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+  try {
+    syncChannel = new BroadcastChannel('meh_store_sync_v1');
+    syncChannel.onmessage = (event) => {
+      if (event.data === 'SYNC_REQUIRED') {
+        clearApiCache();
+        window.dispatchEvent(new CustomEvent('meh_data_synced'));
+      }
+    };
+  } catch (_) {}
+}
+
+// In-memory cache for concurrent inflight request deduplication (1.5s max to prevent redundant simultaneous mounts)
 const apiCache = new Map();
 const inflightRequests = new Map();
-const DEFAULT_TTL_MS = 60 * 1000; // 60 seconds
+const DEFAULT_TTL_MS = 1500; // 1.5 seconds maximum for simultaneous duplicate component mounts
 
 export function clearApiCache() {
   apiCache.clear();
   inflightRequests.clear();
+}
+
+function broadcastSync() {
+  clearApiCache();
+  if (syncChannel) {
+    try {
+      syncChannel.postMessage('SYNC_REQUIRED');
+    } catch (_) {}
+  }
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.setItem('meh_last_sync_timestamp', Date.now().toString());
+      window.dispatchEvent(new CustomEvent('meh_data_synced'));
+    } catch (_) {}
+  }
 }
 
 export async function request(endpoint, options = {}) {
@@ -30,13 +59,13 @@ export async function request(endpoint, options = {}) {
     options.body = JSON.stringify(options.body);
   }
 
-  // For state-mutating requests, invalidate all cached GET responses
+  // For state-mutating requests, invalidate all cached GET responses and notify all tabs
   if (method !== 'GET') {
-    clearApiCache();
+    broadcastSync();
   }
 
   // Cache & deduplication logic for GET requests
-  const isCacheableGet = method === 'GET' && !headers['Authorization'];
+  const isCacheableGet = method === 'GET' && !headers['Authorization'] && !options.skipCache;
   const cacheKey = url;
 
   if (isCacheableGet) {
@@ -53,6 +82,7 @@ export async function request(endpoint, options = {}) {
   const fetchPromise = (async () => {
     try {
       const response = await fetch(url, {
+        cache: 'no-cache',
         ...options,
         headers,
       });
@@ -86,7 +116,8 @@ export async function request(endpoint, options = {}) {
 }
 
 export const api = {
-  clearCache: clearApiCache,
+  clearCache: broadcastSync,
+  broadcastSync,
   // Health & DB diagnostics
   getHealth: () => request('/health'),
 

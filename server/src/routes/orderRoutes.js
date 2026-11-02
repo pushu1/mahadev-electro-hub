@@ -1,6 +1,6 @@
 import express from 'express';
 import crypto from 'crypto';
-import { localStore } from '../database/store.js';
+import { prisma } from '../database/connection.js';
 import { authenticateToken, requireAdmin } from '../middleware/auth.js';
 import { emailService } from '../services/emailService.js';
 import { config } from '../config/index.js';
@@ -63,12 +63,20 @@ router.post('/', async (req, res) => {
       });
     }
 
-    // Backend validation: Re-verify every product's live price and stock
+    // Backend validation: Re-verify every product's live price and stock from database
     let subtotal = 0;
     const validatedItems = [];
 
     for (const item of items) {
-      const product = localStore.getProductByIdOrSlug(item.productId);
+      const product = await prisma.product.findFirst({
+        where: {
+          OR: [
+            { id: item.productId },
+            { slug: item.productId }
+          ]
+        }
+      });
+
       if (!product) {
         return res.status(400).json({
           success: false,
@@ -85,7 +93,6 @@ router.post('/', async (req, res) => {
 
       const requestedQty = Math.max(1, parseInt(item.quantity, 10) || 1);
 
-      // Check stock
       if ((product.stockQuantity || 0) < requestedQty) {
         return res.status(400).json({
           success: false,
@@ -112,53 +119,79 @@ router.post('/', async (req, res) => {
     let discount = 0;
     let appliedCoupon = null;
     if (couponCode) {
-      const coupon = localStore.getCouponByCode(couponCode);
-      if (coupon) {
-        if (subtotal >= (coupon.minOrderValue || 0)) {
-          if (coupon.discountType === 'percentage') {
-            discount = (subtotal * coupon.discountValue) / 100;
-            if (coupon.maxDiscount && discount > coupon.maxDiscount) {
-              discount = coupon.maxDiscount;
+      const coupon = await prisma.coupon.findUnique({ where: { code: couponCode.toUpperCase().trim() } });
+      if (coupon && coupon.isActive) {
+        if (!coupon.expiresAt || new Date(coupon.expiresAt) >= new Date()) {
+          if (subtotal >= (coupon.minOrderValue || 0)) {
+            if (coupon.discountType === 'percentage') {
+              discount = (subtotal * coupon.discountValue) / 100;
+              if (coupon.maxDiscount && discount > coupon.maxDiscount) {
+                discount = coupon.maxDiscount;
+              }
+            } else {
+              discount = coupon.discountValue;
             }
-          } else {
-            discount = coupon.discountValue;
+            discount = Math.min(discount, subtotal);
+            appliedCoupon = coupon.code;
           }
-          discount = Math.min(discount, subtotal);
-          appliedCoupon = coupon.code;
         }
       }
     }
 
-    // Shipping fee
-    const settings = localStore.getSettings();
-    const freeShippingThreshold = settings.freeShippingThreshold || 1000;
-    const standardShippingFee = settings.standardShippingFee || 99;
-    const shippingFee = (subtotal - discount) >= freeShippingThreshold ? 0 : standardShippingFee;
+    // Shipping fee from settings
+    let freeShippingThreshold = 1000;
+    let standardShippingFee = 99;
+    try {
+      const settingRec = await prisma.setting.findUnique({ where: { key: 'store_settings' } });
+      if (settingRec && settingRec.value) {
+        const s = JSON.parse(settingRec.value);
+        if (s.freeShippingThreshold !== undefined) freeShippingThreshold = s.freeShippingThreshold;
+        if (s.standardShippingFee !== undefined) standardShippingFee = s.standardShippingFee;
+      }
+    } catch (e) {}
 
+    const shippingFee = (subtotal - discount) >= freeShippingThreshold ? 0 : standardShippingFee;
     const totalAmount = Number(Math.max(0, subtotal - discount + shippingFee).toFixed(2));
     const { percentage: advancePercentage, payableNow, remainingBalance } = calculatePlanAmounts(totalAmount, chosenPlan);
 
-    // Create Order with pending payment
-    const order = localStore.createOrder({
-      customerName,
-      customerPhone,
-      customerEmail: customerEmail || null,
-      shippingAddress,
-      items: validatedItems,
-      subtotal,
-      discount,
-      appliedCoupon,
-      shippingFee,
-      totalAmount,
-      paymentPlan: chosenPlan,
-      advancePercentage,
-      payableNow,
-      amountPaid: 0,
-      remainingBalance,
-      paymentMethod: chosenPlan,
-      paymentStatus: advancePercentage === 100 ? 'Payment Pending' : 'Advance Payment Pending',
-      status: 'PENDING',
-      notes: notes || '',
+    const generatedOrderNumber = `MEH-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    // Create Order with pending payment in Neon PostgreSQL
+    const order = await prisma.order.create({
+      data: {
+        orderNumber: generatedOrderNumber,
+        customerName: customerName.trim(),
+        customerPhone: customerPhone.trim(),
+        customerEmail: customerEmail ? customerEmail.trim() : null,
+        shippingAddress,
+        subtotal,
+        discount,
+        shippingFee,
+        totalAmount,
+        paymentPlan: chosenPlan,
+        advancePercentage,
+        payableNow,
+        amountPaid: 0,
+        remainingBalance,
+        paymentMethod: chosenPlan,
+        paymentStatus: advancePercentage === 100 ? 'Payment Pending' : 'Advance Payment Pending',
+        status: 'PENDING',
+        notes: notes || '',
+        items: {
+          create: validatedItems.map(item => ({
+            productId: item.productId,
+            productTitle_en: item.productTitle_en,
+            productTitle_hi: item.productTitle_hi,
+            productImage: item.productImage,
+            price: item.price,
+            quantity: item.quantity,
+            total: item.total
+          }))
+        }
+      },
+      include: {
+        items: true
+      }
     });
 
     // Check if live Razorpay credentials are configured
@@ -192,11 +225,10 @@ router.post('/', async (req, res) => {
         if (rzRes.ok) {
           const rzData = await rzRes.json();
           razorpayOrderId = rzData.id;
-          order.razorpayOrderId = razorpayOrderId;
-          localStore.saveOrder(order);
-        } else {
-          const errText = await rzRes.text();
-          console.warn('[OrderRoutes] Razorpay API response non-200:', errText);
+          await prisma.order.update({
+            where: { id: order.id },
+            data: { razorpayOrderId }
+          });
         }
       } catch (err) {
         console.error('[OrderRoutes] Razorpay order call exception:', err.message);
@@ -222,7 +254,7 @@ router.post('/', async (req, res) => {
     });
   } catch (err) {
     console.error('[OrderRoutes] Order creation error:', err);
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
@@ -238,7 +270,16 @@ router.post('/verify-payment', async (req, res) => {
       simulationToken
     } = req.body;
 
-    const order = localStore.getOrderByIdOrNumber(orderId || orderNumber);
+    const order = await prisma.order.findFirst({
+      where: {
+        OR: [
+          { id: orderId || '' },
+          { orderNumber: orderNumber || orderId || '' }
+        ]
+      },
+      include: { items: true }
+    });
+
     if (!order) {
       return res.status(404).json({ success: false, message: 'Order not found.' });
     }
@@ -269,8 +310,10 @@ router.post('/verify-payment', async (req, res) => {
         .digest('hex');
 
       if (expectedSignature !== razorpay_signature) {
-        order.paymentStatus = 'Payment Failed';
-        localStore.saveOrder(order);
+        await prisma.order.update({
+          where: { id: order.id },
+          data: { paymentStatus: 'Payment Failed' }
+        });
         return res.status(400).json({
           success: false,
           message: 'Payment verification failed: Invalid Razorpay cryptographic signature.'
@@ -290,83 +333,130 @@ router.post('/verify-payment', async (req, res) => {
       }
     }
 
-    // Payment Signature verified! Update financial fields on order
+    // Payment Signature verified! Update financial fields on order in Neon PostgreSQL
     const paidAmount = order.payableNow;
     const remainingBalance = Number((order.totalAmount - paidAmount).toFixed(2));
+    const txId = razorpay_payment_id || `PAY-SIM-${Date.now()}`;
 
-    order.amountPaid = paidAmount;
-    order.remainingBalance = remainingBalance;
-    order.advanceTransactionId = razorpay_payment_id || `PAY-SIM-${Date.now()}`;
-    order.paymentStatus = remainingBalance <= 0 ? 'Fully Paid' : 'Partially Paid';
-    order.status = 'CONFIRMED';
-    order.paidAt = new Date().toISOString();
-    order.updatedAt = new Date().toISOString();
+    const updatedOrder = await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        amountPaid: paidAmount,
+        remainingBalance,
+        advanceTransactionId: txId,
+        paymentStatus: remainingBalance <= 0 ? 'Fully Paid' : 'Partially Paid',
+        status: 'CONFIRMED',
+        paidAt: new Date(),
+      },
+      include: { items: true }
+    });
 
-    localStore.saveOrder(order);
+    // Deduct stock for ordered items
+    for (const item of updatedOrder.items) {
+      if (item.productId) {
+        await prisma.product.update({
+          where: { id: item.productId },
+          data: {
+            stockQuantity: { decrement: item.quantity }
+          }
+        }).catch(e => console.warn('Could not decrement stock for product:', item.productId, e.message));
+      }
+    }
 
-    // Asynchronously dispatch email notification to business inbox (non-blocking)
-    emailService.sendOrderNotification(order).catch((err) => {
+    // Dispatch email notification to business inbox (non-blocking)
+    emailService.sendOrderNotification(updatedOrder).catch((err) => {
       console.error('[OrderRoutes] Order notification dispatch failed:', err.message);
     });
 
     res.json({
       success: true,
       message: 'Payment verified and order confirmed successfully!',
-      order
+      order: updatedOrder
     });
   } catch (err) {
     console.error('[OrderRoutes] Payment verification error:', err);
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Customer / Gateway: Handle Failed Payment
-router.post('/payment-failed', (req, res) => {
+router.post('/payment-failed', async (req, res) => {
   try {
     const { orderId, orderNumber, reason } = req.body;
-    const order = localStore.getOrderByIdOrNumber(orderId || orderNumber);
+    const order = await prisma.order.findFirst({
+      where: {
+        OR: [
+          { id: orderId || '' },
+          { orderNumber: orderNumber || orderId || '' }
+        ]
+      }
+    });
+
     if (!order) {
       return res.status(404).json({ success: false, message: 'Order not found.' });
     }
 
-    order.paymentStatus = 'Payment Failed';
-    order.paymentNotes = reason || 'Payment cancelled or declined by customer/gateway.';
-    order.updatedAt = new Date().toISOString();
-    localStore.saveOrder(order);
+    const updated = await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        paymentStatus: 'Payment Failed',
+        notes: reason || 'Payment cancelled or declined by customer/gateway.'
+      },
+      include: { items: true }
+    });
 
-    res.json({ success: true, message: 'Payment failure recorded.', order });
+    res.json({ success: true, message: 'Payment failure recorded.', order: updated });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('[OrderRoutes] Payment failed update error:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Admin: Reconcile Remaining Delivery Balance
-router.patch('/:id/reconcile-balance', requireAdmin, (req, res) => {
+router.patch('/:id/reconcile-balance', requireAdmin, async (req, res) => {
   try {
     const { amountCollected, transactionRef, notes } = req.body;
-    const order = localStore.reconcileOrderBalance(req.params.id, {
-      amountCollected,
-      finalTransactionId: transactionRef,
-      notes,
-      reconciledBy: req.user?.email || 'Admin'
+    const order = await prisma.order.findUnique({
+      where: { id: req.params.id },
+      include: { items: true }
     });
 
     if (!order) {
       return res.status(404).json({ success: false, message: 'Order not found.' });
     }
 
+    const collected = Number(amountCollected) || order.remainingBalance || 0;
+    const newPaid = Number(((order.amountPaid || 0) + collected).toFixed(2));
+    const newRemaining = Math.max(0, Number(((order.remainingBalance || 0) - collected).toFixed(2)));
+
+    const updatedOrder = await prisma.order.update({
+      where: { id: req.params.id },
+      data: {
+        amountPaid: newPaid,
+        remainingBalance: newRemaining,
+        finalTransactionId: transactionRef || `BAL-RECON-${Date.now()}`,
+        balanceReconciledAt: new Date(),
+        balanceReconciledBy: req.user?.email || 'Admin',
+        balanceNotes: notes || order.balanceNotes || null,
+        paymentStatus: newRemaining <= 0 ? 'Fully Paid' : 'Partially Paid',
+        status: newRemaining <= 0 ? 'DELIVERED' : order.status
+      },
+      include: { items: true }
+    });
+
     res.json({
       success: true,
-      message: 'Remaining balance reconciled and order marked Fully Paid!',
-      order
+      message: 'Remaining balance reconciled and order updated in database!',
+      order: updatedOrder
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('[OrderRoutes] Reconcile balance error:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Customer / Public: Track Order by Order Number and Phone (GET or POST)
-router.all('/track', (req, res) => {
+router.all('/track', async (req, res) => {
   try {
     const orderNumber = req.query.orderNumber || req.body?.orderNumber;
     const phone = req.query.phone || req.body?.phone;
@@ -375,79 +465,102 @@ router.all('/track', (req, res) => {
       return res.status(400).json({ success: false, message: 'Order number is required.' });
     }
 
-    const order = localStore.getOrderByIdOrNumber(orderNumber);
+    const order = await prisma.order.findFirst({
+      where: {
+        OR: [
+          { orderNumber: orderNumber.trim() },
+          { id: orderNumber.trim() }
+        ]
+      },
+      include: { items: true }
+    });
+
     if (!order) {
       return res.status(404).json({ success: false, message: 'Order not found. Please verify your order number.' });
     }
 
-    // If phone is provided, verify match for privacy
     if (phone && phone.trim() !== order.customerPhone.trim()) {
       return res.status(403).json({ success: false, message: 'Phone number does not match this order.' });
     }
 
     res.json({ success: true, order });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('[OrderRoutes] Track order error:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Customer: My Orders
-router.get('/my-orders', authenticateToken, (req, res) => {
+router.get('/my-orders', authenticateToken, async (req, res) => {
   try {
-    const orders = localStore.getOrders().filter(o =>
-      (req.user.phone && o.customerPhone === req.user.phone) ||
-      (req.user.email && o.customerEmail === req.user.email) ||
-      (o.customerId === req.user.id)
-    );
+    const where = {
+      OR: [
+        { customerPhone: req.user.phone || '' },
+        { customerEmail: req.user.email || '' },
+        { customerId: req.user.id || '' }
+      ]
+    };
+
+    const orders = await prisma.order.findMany({
+      where,
+      include: { items: true },
+      orderBy: { createdAt: 'desc' }
+    });
+
     res.json({ success: true, count: orders.length, orders });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('[OrderRoutes] Customer orders error:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Admin: Get all orders with status/date filters
-router.get('/', requireAdmin, (req, res) => {
+router.get('/', requireAdmin, async (req, res) => {
   try {
     const { status, paymentStatus, paymentPlan, dateFrom, dateTo } = req.query;
-    let orders = localStore.getOrders();
+    const where = {};
 
-    if (status) {
-      orders = orders.filter(o => o.status === status);
+    if (status) where.status = status;
+    if (paymentStatus) where.paymentStatus = paymentStatus;
+    if (paymentPlan) where.paymentPlan = paymentPlan;
+
+    if (dateFrom || dateTo) {
+      where.createdAt = {};
+      if (dateFrom) where.createdAt.gte = new Date(dateFrom);
+      if (dateTo) where.createdAt.lte = new Date(dateTo);
     }
-    if (paymentStatus) {
-      orders = orders.filter(o => o.paymentStatus === paymentStatus);
-    }
-    if (paymentPlan) {
-      orders = orders.filter(o => o.paymentPlan === paymentPlan);
-    }
-    if (dateFrom) {
-      const from = new Date(dateFrom).getTime();
-      orders = orders.filter(o => new Date(o.createdAt).getTime() >= from);
-    }
-    if (dateTo) {
-      const to = new Date(dateTo).getTime();
-      orders = orders.filter(o => new Date(o.createdAt).getTime() <= to);
-    }
+
+    const orders = await prisma.order.findMany({
+      where,
+      include: { items: true },
+      orderBy: { createdAt: 'desc' }
+    });
 
     res.json({ success: true, count: orders.length, orders });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('[OrderRoutes] Admin orders error:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 
 // Admin: Update order status & payment status
-router.patch('/:id/status', requireAdmin, (req, res) => {
+router.patch('/:id/status', requireAdmin, async (req, res) => {
   try {
     const { status, paymentStatus } = req.body;
-    const order = localStore.updateOrderStatus(req.params.id, status, paymentStatus);
+    const data = {};
+    if (status) data.status = status;
+    if (paymentStatus) data.paymentStatus = paymentStatus;
 
-    if (!order) {
-      return res.status(404).json({ success: false, message: 'Order not found.' });
-    }
+    const order = await prisma.order.update({
+      where: { id: req.params.id },
+      data,
+      include: { items: true }
+    });
 
-    res.json({ success: true, message: 'Order status updated successfully.', order });
+    res.json({ success: true, message: 'Order status updated successfully in database.', order });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('[OrderRoutes] Update order status error:', err);
+    res.status(500).json({ success: false, message: 'Database error: ' + err.message });
   }
 });
 

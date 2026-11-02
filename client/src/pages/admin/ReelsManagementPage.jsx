@@ -74,6 +74,12 @@ export default function ReelsManagementPage() {
 
   useEffect(() => {
     fetchReels();
+    window.addEventListener('meh_data_synced', fetchReels);
+    window.addEventListener('focus', fetchReels);
+    return () => {
+      window.removeEventListener('meh_data_synced', fetchReels);
+      window.removeEventListener('focus', fetchReels);
+    };
   }, []);
 
   const showAlert = (type, message) => {

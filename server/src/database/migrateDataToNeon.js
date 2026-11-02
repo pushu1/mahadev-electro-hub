@@ -302,7 +302,52 @@ export async function migrateDataToNeon() {
     console.log(`✅ [Migration] Coupons verified (${store.coupons.length})`);
   }
 
-  // 8. Migrate Orders
+  // 8. Migrate Reviews
+  if (Array.isArray(store.reviews) && store.reviews.length > 0) {
+    const existingProducts = await prisma.product.findMany({ select: { id: true } });
+    const productIdsSet = new Set(existingProducts.map(p => p.id));
+
+    for (const rev of store.reviews) {
+      const validProductId = rev.productId && productIdsSet.has(rev.productId) ? rev.productId : null;
+      await prisma.review.upsert({
+        where: { id: rev.id },
+        update: {
+          productId: validProductId,
+          productName: rev.productName || null,
+          customerName: rev.customerName,
+          customerEmail: rev.customerEmail || null,
+          location: rev.location || null,
+          customerPhoto: rev.customerPhoto || null,
+          rating: parseInt(rev.rating || 5, 10),
+          title: rev.title || null,
+          comment: rev.comment,
+          isVerified: rev.isVerified !== false,
+          isActive: rev.isActive !== false,
+          sortOrder: parseInt(rev.sortOrder || 0, 10),
+          status: rev.status || 'APPROVED'
+        },
+        create: {
+          id: rev.id,
+          productId: validProductId,
+          productName: rev.productName || null,
+          customerName: rev.customerName,
+          customerEmail: rev.customerEmail || null,
+          location: rev.location || null,
+          customerPhoto: rev.customerPhoto || null,
+          rating: parseInt(rev.rating || 5, 10),
+          title: rev.title || null,
+          comment: rev.comment,
+          isVerified: rev.isVerified !== false,
+          isActive: rev.isActive !== false,
+          sortOrder: parseInt(rev.sortOrder || 0, 10),
+          status: rev.status || 'APPROVED'
+        }
+      });
+    }
+    console.log(`✅ [Migration] Reviews verified (${store.reviews.length})`);
+  }
+
+  // 9. Migrate Orders
   if (Array.isArray(store.orders) && store.orders.length > 0) {
     for (const ord of store.orders) {
       await prisma.order.upsert({

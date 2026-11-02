@@ -48,6 +48,12 @@ export default function OrderManagementPage() {
 
   useEffect(() => {
     fetchOrders();
+    window.addEventListener('meh_data_synced', fetchOrders);
+    window.addEventListener('focus', fetchOrders);
+    return () => {
+      window.removeEventListener('meh_data_synced', fetchOrders);
+      window.removeEventListener('focus', fetchOrders);
+    };
   }, [statusFilter, paymentFilter]);
 
   const handleStatusChange = async (orderId, newStatus, newPaymentStatus) => {
