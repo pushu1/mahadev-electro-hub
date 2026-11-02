@@ -22,11 +22,11 @@ export default function FloatingWhatsAppButton() {
     >
       {/* Tooltip on Desktop */}
       <div
-        className={`hidden sm:flex items-center px-3 py-1.5 rounded-full bg-[#141414] border border-[#333] shadow-xl text-white text-xs font-semibold whitespace-nowrap transition-all duration-300 pointer-events-none ${
+        className={`hidden sm:flex items-center px-3 py-1.5 rounded-full bg-[#FFFFFF] border border-[#E2E6DC] shadow-lg text-[#26352A] text-xs font-semibold whitespace-nowrap transition-all duration-300 pointer-events-none ${
           hovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2'
         }`}
       >
-        <span className="text-[#D6A52A] mr-1">💬</span>
+        <span className="text-[#355E3B] mr-1">💬</span>
         <span>WhatsApp Helpline</span>
       </div>
 

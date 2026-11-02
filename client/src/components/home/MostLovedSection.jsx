@@ -225,11 +225,11 @@ export default function MostLovedSection() {
     <section
       ref={trackRef}
       aria-label="Most Loved By People"
-      className="relative w-full h-[180vh] lg:h-[190vh] bg-[#0c0c0c]/90 select-none overflow-visible"
+      className="relative w-full h-[180vh] lg:h-[190vh] bg-[#FAF9F6] select-none overflow-visible"
     >
-      {/* Ambient Croma-style RGB glow accents */}
-      <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-[#501B28]/35 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-20 w-80 h-80 rounded-full bg-[#8A5A16]/25 blur-3xl pointer-events-none" />
+      {/* Ambient Sage and Mint glow accents */}
+      <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-[#A8BFA3]/25 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-20 w-80 h-80 rounded-full bg-[#DCE8D5]/35 blur-3xl pointer-events-none" />
 
       {/* ======================================================================
           STICKY VIEWPORT CONTAINER
@@ -247,18 +247,18 @@ export default function MostLovedSection() {
             1. SECTION HEADER: Centered Title & Subtitle
             ==================================================================== */}
         <div className="w-full text-center shrink-0 mb-3 sm:mb-5">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-black tracking-tight text-white">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-black tracking-tight text-[#26352A]">
             {titleText}
           </h2>
-          <p className="text-xs sm:text-sm text-[#B3B3B3] font-medium mt-1">
+          <p className="text-xs sm:text-sm text-[#50574F] font-medium mt-1">
             {subtitleText}
           </p>
         </div>
 
         {/* ====================================================================
             2. DESKTOP LAYOUT (>= 1024px)
-            Clean, Square-Box Rectangular Cards with Thin Elegant Gold Border
-            Inner image keeps rounded corners. Square-cornered gold buttons.
+            Clean, Square-Box Rectangular Cards with Sage Border
+            Inner image keeps rounded corners. Forest green buttons.
             Animated in sequence with page scroll!
             ==================================================================== */}
         <div className="hidden lg:grid grid-cols-4 gap-4 xl:gap-6 w-full max-w-7xl mx-auto my-auto items-stretch">
@@ -271,14 +271,14 @@ export default function MostLovedSection() {
                 style={motionStyle}
                 className="w-full h-full transition-transform will-change-transform"
               >
-                {/* Rectangular Square-Box Card Container: Croma Dark Theme + Gold Highlight */}
+                {/* Rectangular Card Container */}
                 <div
-                  className="relative w-full h-full p-3.5 sm:p-4 rounded-none bg-[#1e1e1e] border border-[#383838] hover:border-[#D6A52A] shadow-xl hover:shadow-2xl hover:shadow-[#D6A52A]/15 transition-all duration-300 ease-out flex flex-col justify-between group cursor-pointer hover:scale-[1.02]"
+                  className="relative w-full h-full p-3.5 sm:p-4 rounded-xl bg-[#FFFFFF] border border-[#E2E6DC] hover:border-[#355E3B] shadow-md hover:shadow-xl transition-all duration-300 ease-out flex flex-col justify-between group cursor-pointer hover:scale-[1.02]"
                 >
                   {/* Image Container with rounded corners ONLY on the product image */}
                   <Link
                     to={item.link}
-                    className="block relative aspect-square w-full rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-b from-[#141414] to-[#0a0a0a] border border-[#2e2e2e] mb-3.5 group-hover:border-[#D6A52A]/50 transition-colors"
+                    className="block relative aspect-square w-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#F3F0E6] border border-[#E2E6DC] mb-3.5 group-hover:border-[#8BA889] transition-colors"
                     title={item.title}
                   >
                     <img
@@ -290,10 +290,10 @@ export default function MostLovedSection() {
                     />
                   </Link>
 
-                  {/* Rectangular Square-Cornered Gold Button: "EXPLORE NOW →" */}
+                  {/* Rectangular Forest Green Button: "EXPLORE NOW →" */}
                   <Link
                     to={item.link}
-                    className="w-full h-11 inline-flex items-center justify-center gap-2 px-4 rounded-none bg-gradient-to-r from-[#D6A52A] to-[#E5B85C] hover:from-[#E5B85C] hover:to-[#D6A52A] text-[#080808] font-heading font-extrabold text-xs tracking-wider uppercase shadow-sm hover:shadow-md hover:shadow-[#D6A52A]/25 hover:brightness-105 transition-all duration-300 active:scale-95 group/btn"
+                    className="w-full h-11 inline-flex items-center justify-center gap-2 px-4 rounded-lg bg-[#355E3B] hover:bg-[#294A30] text-[#FFFFFF] font-heading font-extrabold text-xs tracking-wider uppercase shadow-sm hover:shadow-md transition-all duration-300 active:scale-95 group/btn"
                   >
                     <span>{ctaButtonText}</span>
                     <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />
@@ -307,7 +307,6 @@ export default function MostLovedSection() {
         {/* ====================================================================
             3. MOBILE LAYOUT (< 1024px)
             One Image at a Time: Stage 1 -> 2 -> 3 -> 4
-            Rectangular Square-Box Card Frame, Inner Rounded Image, Square Button
             ==================================================================== */}
         <div className="lg:hidden relative w-full max-w-[320px] xs:max-w-[350px] sm:max-w-[400px] mx-auto my-auto min-h-[400px] xs:min-h-[440px] flex items-center justify-center">
           {PRODUCTS.map((item, idx) => {
@@ -330,12 +329,12 @@ export default function MostLovedSection() {
                 className={`absolute inset-0 w-full h-full transition-all duration-500 ease-out ${motionClass}`}
                 aria-hidden={!isActive}
               >
-                {/* Mobile Rectangular Square-Box Card Frame */}
-                <div className="w-full h-full p-3.5 xs:p-4 rounded-none bg-[#1e1e1e] border border-[#383838] shadow-xl flex flex-col justify-between">
-                  {/* Product Image Container with rounded corners ONLY on the image */}
+                {/* Mobile Rectangular Card Frame */}
+                <div className="w-full h-full p-3.5 xs:p-4 rounded-xl bg-[#FFFFFF] border border-[#E2E6DC] shadow-lg flex flex-col justify-between">
+                  {/* Product Image Container */}
                   <Link
                     to={item.link}
-                    className="block relative aspect-square w-full rounded-xl xs:rounded-2xl overflow-hidden bg-gradient-to-b from-[#141414] to-[#0a0a0a] border border-[#2e2e2e] mb-3.5"
+                    className="block relative aspect-square w-full rounded-xl xs:rounded-2xl overflow-hidden bg-[#F3F0E6] border border-[#E2E6DC] mb-3.5"
                     title={item.title}
                   >
                     <img
@@ -347,10 +346,10 @@ export default function MostLovedSection() {
                     />
                   </Link>
 
-                  {/* Full-Width Mobile Rectangular Square-Cornered Gold Button */}
+                  {/* Full-Width Mobile Forest Green Button */}
                   <Link
                     to={item.link}
-                    className="w-full h-11 inline-flex items-center justify-center gap-2 px-4 rounded-none bg-gradient-to-r from-[#D6A52A] to-[#E5B85C] text-[#080808] font-heading font-extrabold text-xs tracking-wider uppercase shadow-md active:scale-95"
+                    className="w-full h-11 inline-flex items-center justify-center gap-2 px-4 rounded-lg bg-[#355E3B] hover:bg-[#294A30] text-[#FFFFFF] font-heading font-extrabold text-xs tracking-wider uppercase shadow-sm active:scale-95"
                   >
                     <span>{ctaButtonText}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -362,8 +361,8 @@ export default function MostLovedSection() {
         </div>
 
         {/* Scroll hint & stage progress indicator */}
-        <div className="text-center shrink-0 pt-1 flex items-center justify-center gap-2 text-[11px] text-[#B3B3B3] font-medium">
-          <span className="inline-block animate-bounce">↓</span>
+        <div className="text-center shrink-0 pt-1 flex items-center justify-center gap-2 text-[11px] text-[#7A8277] font-medium">
+          <span className="inline-block animate-bounce text-[#355E3B]">↓</span>
           <span>Scroll to explore best sellers ({Math.round(scrollProgress * 100)}%)</span>
         </div>
       </div>

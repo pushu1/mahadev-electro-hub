@@ -181,7 +181,7 @@ export default function HeroSlider() {
       />
 
       <div
-        className="relative w-full overflow-hidden rounded-[14px] sm:rounded-[18px] md:rounded-[24px] lg:rounded-[28px] border border-[#383838]/80 shadow-2xl select-none bg-[#0a0a0a]"
+        className="relative w-full overflow-hidden rounded-[14px] sm:rounded-[18px] md:rounded-[24px] lg:rounded-[28px] border border-[#E2E6DC] shadow-lg select-none bg-[#FFFFFF]"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -252,7 +252,7 @@ export default function HeroSlider() {
           type="button"
           onClick={prevSlide}
           aria-label="Previous Banner Slide"
-          className="absolute left-2.5 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-[6px] bg-black/45 hover:bg-[#D6A52A] hover:border-[#D6A52A] hover:text-[#000000] border border-white/20 text-white flex items-center justify-center transition-all shadow-md backdrop-blur-xs active:scale-95 group cursor-pointer"
+          className="absolute left-2.5 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-[6px] bg-white/80 hover:bg-[#355E3B] hover:border-[#355E3B] hover:text-[#FFFFFF] border border-[#E2E6DC] text-[#26352A] flex items-center justify-center transition-all shadow-md backdrop-blur-xs active:scale-95 group cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 transition-transform group-hover:-translate-x-0.5" />
         </button>
@@ -262,7 +262,7 @@ export default function HeroSlider() {
           type="button"
           onClick={nextSlide}
           aria-label="Next Banner Slide"
-          className="absolute right-2.5 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-[6px] bg-black/45 hover:bg-[#D6A52A] hover:border-[#D6A52A] hover:text-[#000000] border border-white/20 text-white flex items-center justify-center transition-all shadow-md backdrop-blur-xs active:scale-95 group cursor-pointer"
+          className="absolute right-2.5 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-[6px] bg-white/80 hover:bg-[#355E3B] hover:border-[#355E3B] hover:text-[#FFFFFF] border border-[#E2E6DC] text-[#26352A] flex items-center justify-center transition-all shadow-md backdrop-blur-xs active:scale-95 group cursor-pointer"
         >
           <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 transition-transform group-hover:translate-x-0.5" />
         </button>

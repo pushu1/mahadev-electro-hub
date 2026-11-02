@@ -138,28 +138,28 @@ export default function NewArrivalsSection({ initialProducts = [] }) {
     <section
       ref={sectionRef}
       aria-label="New Arrivals"
-      className="py-12 md:py-16 bg-[#0e0e0e]/95 border-t border-b border-[#383838] select-none relative overflow-hidden"
+      className="py-12 md:py-16 bg-[#F3F0E6] border-t border-b border-[#E2E6DC] select-none relative overflow-hidden"
     >
       {/* Subtle Ambient Glow */}
-      <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#8A5A16]/20 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#501B28]/20 blur-3xl pointer-events-none" />
+      <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#A8BFA3]/20 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#DCE8D5]/25 blur-3xl pointer-events-none" />
 
       {/* Main Container: Exact same max-w-7xl, margins, and padding as Shop by Category */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header: Aligned with Shop by Category header boundaries */}
-        <div className="flex items-center justify-between pb-4 mb-6 md:mb-8 border-b border-[#383838]">
+        <div className="flex items-center justify-between pb-4 mb-6 md:mb-8 border-b border-[#E2E6DC]">
           <div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-heading font-extrabold text-white tracking-tight">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-heading font-extrabold text-[#26352A] tracking-tight">
               {headingTitle}
             </h2>
-            <p className="text-xs sm:text-sm text-[#B3B3B3] mt-1 font-medium">
+            <p className="text-xs sm:text-sm text-[#50574F] mt-1 font-medium">
               {subtitleText}
             </p>
           </div>
 
           <Link
             to="/shop?sort=newest"
-            className="text-xs md:text-sm font-bold text-[#D6A52A] hover:text-[#E5B93B] flex items-center gap-1.5 transition-colors group shrink-0"
+            className="text-xs md:text-sm font-bold text-[#355E3B] hover:text-[#294A30] flex items-center gap-1.5 transition-colors group shrink-0"
           >
             <span>{t('viewAll') || 'View All'}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
@@ -175,8 +175,8 @@ export default function NewArrivalsSection({ initialProducts = [] }) {
           onTouchEnd={handleTouchEnd}
         >
           {/* Edge gradient masks inside the container boundaries */}
-          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-[#0e0e0e]/80 to-transparent" />
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-l from-[#0e0e0e]/80 to-transparent" />
+          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-[#F3F0E6] to-transparent" />
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-l from-[#F3F0E6] to-transparent" />
 
           {/* Marquee Track: Translates continuously from 0% to -50% without jump */}
           <div

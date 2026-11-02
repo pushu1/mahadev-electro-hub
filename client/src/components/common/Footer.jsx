@@ -41,7 +41,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#0B0B0B] text-white border-t border-white/10 select-none">
+    <footer className="bg-[#F3F0E6] text-[#50574F] border-t border-[#E2E6DC] select-none">
       {/* Main 4-Column Layout */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0">
@@ -49,15 +49,15 @@ export default function Footer() {
           {/* ====================================================================
               COLUMN 1 — CONNECT WITH US
               ==================================================================== */}
-          <div className="lg:pr-8 lg:border-r lg:border-white/10 flex flex-col justify-between">
+          <div className="lg:pr-8 lg:border-r lg:border-[#E2E6DC] flex flex-col justify-between">
             <div>
-              <h3 className="font-heading font-extrabold text-sm uppercase tracking-wider text-white mb-4">
+              <h3 className="font-heading font-extrabold text-sm uppercase tracking-wider text-[#26352A] mb-4">
                 {t('connectWithUs')}
               </h3>
 
-              {/* Newsletter Input matching Croma aesthetic */}
+              {/* Newsletter Input */}
               <form onSubmit={handleNewsletterSubmit} className="mb-4">
-                <div className="relative flex items-center bg-white rounded-md p-1 shadow-inner focus-within:ring-2 focus-within:ring-[#D6A52A] transition-all">
+                <div className="relative flex items-center bg-[#FFFFFF] rounded-lg p-1 border border-[#E2E6DC] shadow-inner focus-within:ring-2 focus-within:ring-[#8BA889] transition-all">
                   <input
                     type="email"
                     value={email}
@@ -67,14 +67,14 @@ export default function Footer() {
                     }}
                     placeholder={t('newsletterPlaceholder')}
                     aria-label={t('newsletterPlaceholder')}
-                    className="w-full pl-3 pr-10 py-2 text-xs text-black placeholder-gray-500 bg-transparent focus:outline-none"
+                    className="w-full pl-3 pr-10 py-2 text-xs text-[#26352A] placeholder-[#7A8277] bg-transparent focus:outline-none"
                     disabled={newsletterStatus === 'loading'}
                   />
                   <button
                     type="submit"
                     disabled={newsletterStatus === 'loading'}
                     aria-label="Subscribe to newsletter"
-                    className="absolute right-1 w-8 h-8 rounded bg-[#181818] hover:bg-[#D6A52A] text-white hover:text-black flex items-center justify-center transition-all duration-200 active:scale-95 disabled:opacity-50 shrink-0 cursor-pointer"
+                    className="absolute right-1 w-8 h-8 rounded-md bg-[#355E3B] hover:bg-[#294A30] text-[#FFFFFF] flex items-center justify-center transition-all duration-200 active:scale-95 disabled:opacity-50 shrink-0 cursor-pointer shadow-xs"
                   >
                     <ArrowRight className="w-4 h-4" />
                   </button>
@@ -82,20 +82,20 @@ export default function Footer() {
 
                 {/* Status Feedback Messages */}
                 {newsletterStatus === 'success' && (
-                  <p className="mt-2 text-xs text-emerald-400 font-medium flex items-center gap-1.5 animate-fadeIn">
+                  <p className="mt-2 text-xs text-[#2E7D46] font-medium flex items-center gap-1.5 animate-fadeIn">
                     <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
                     <span>{newsletterMessage}</span>
                   </p>
                 )}
                 {newsletterStatus === 'error' && (
-                  <p className="mt-2 text-xs text-amber-400 font-medium flex items-center gap-1.5 animate-fadeIn">
+                  <p className="mt-2 text-xs text-[#B94343] font-medium flex items-center gap-1.5 animate-fadeIn">
                     <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                     <span>{newsletterMessage}</span>
                   </p>
                 )}
               </form>
 
-              {/* Authentic Brand Social Media Icons */}
+              {/* Social Media Icons */}
               <div className="pt-2">
                 <div className="flex items-center gap-4">
                   {/* Instagram */}
@@ -104,7 +104,7 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Follow Mahadev Electro Hub on Instagram"
-                    className="w-9 h-9 rounded-full bg-[#181818] border border-white/10 hover:border-[#D6A52A] text-white hover:text-[#D6A52A] flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 group shadow-sm"
+                    className="w-9 h-9 rounded-full bg-[#FFFFFF] border border-[#E2E6DC] hover:border-[#355E3B] text-[#26352A] hover:text-[#355E3B] flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 group shadow-xs"
                     title="Instagram"
                   >
                     <svg
@@ -122,7 +122,7 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Follow Mahadev Electro Hub on Facebook"
-                    className="w-9 h-9 rounded-full bg-[#181818] border border-white/10 hover:border-[#D6A52A] text-white hover:text-[#D6A52A] flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 group shadow-sm"
+                    className="w-9 h-9 rounded-full bg-[#FFFFFF] border border-[#E2E6DC] hover:border-[#355E3B] text-[#26352A] hover:text-[#355E3B] flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 group shadow-xs"
                     title="Facebook"
                   >
                     <svg
@@ -140,7 +140,7 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Connect with Mahadev Electro Hub on WhatsApp"
-                    className="w-9 h-9 rounded-full bg-[#181818] border border-white/10 hover:border-[#D6A52A] text-white hover:text-[#25D366] flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 group shadow-sm"
+                    className="w-9 h-9 rounded-full bg-[#FFFFFF] border border-[#E2E6DC] hover:border-[#25D366] text-[#26352A] hover:text-[#25D366] flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 group shadow-xs"
                     title="WhatsApp (+91 70142 48415)"
                   >
                     <svg
@@ -156,7 +156,7 @@ export default function Footer() {
             </div>
 
             {/* Copyright Note */}
-            <div className="pt-6 mt-6 border-t border-white/5 lg:border-none lg:pt-0 lg:mt-0 text-[11px] text-[#A8A8A8]">
+            <div className="pt-6 mt-6 border-t border-[#E2E6DC] lg:border-none lg:pt-0 lg:mt-0 text-[11px] text-[#7A8277]">
               {t('allRightsReserved')}
             </div>
           </div>
@@ -164,43 +164,43 @@ export default function Footer() {
           {/* ====================================================================
               COLUMN 2 — USEFUL LINKS
               ==================================================================== */}
-          <div className="lg:px-8 lg:border-r lg:border-white/10">
-            <h3 className="font-heading font-extrabold text-sm uppercase tracking-wider text-white mb-4">
+          <div className="lg:px-8 lg:border-r lg:border-[#E2E6DC]">
+            <h3 className="font-heading font-extrabold text-sm uppercase tracking-wider text-[#26352A] mb-4">
               {t('usefulLinks')}
             </h3>
-            <ul className="space-y-2.5 text-xs text-[#B3B3B3]">
+            <ul className="space-y-2.5 text-xs text-[#50574F]">
               <li>
-                <Link to="/about" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/about" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('aboutUs')}
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/contact" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('contactUs')}
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/faq" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('faqs')}
                 </Link>
               </li>
               <li>
-                <Link to="/shipping-policy" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/shipping-policy" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('shippingPolicy')}
                 </Link>
               </li>
               <li>
-                <Link to="/return-refund-policy" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/return-refund-policy" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('returnRefundPolicy')}
                 </Link>
               </li>
               <li>
-                <Link to="/terms-conditions" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/terms-conditions" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('termsConditions')}
                 </Link>
               </li>
               <li>
-                <Link to="/privacy-policy" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/privacy-policy" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('privacyPolicy')}
                 </Link>
               </li>
@@ -210,53 +210,53 @@ export default function Footer() {
           {/* ====================================================================
               COLUMN 3 — PRODUCTS
               ==================================================================== */}
-          <div className="lg:px-8 lg:border-r lg:border-white/10">
-            <h3 className="font-heading font-extrabold text-sm uppercase tracking-wider text-white mb-4">
+          <div className="lg:px-8 lg:border-r lg:border-[#E2E6DC]">
+            <h3 className="font-heading font-extrabold text-sm uppercase tracking-wider text-[#26352A] mb-4">
               {t('productsHeading')}
             </h3>
-            <ul className="space-y-2.5 text-xs text-[#B3B3B3]">
+            <ul className="space-y-2.5 text-xs text-[#50574F]">
               <li>
-                <Link to="/shop" className="hover:text-[#D6A52A] transition-colors block py-0.5 font-semibold text-white">
+                <Link to="/shop" className="hover:text-[#355E3B] transition-colors block py-0.5 font-bold text-[#26352A]">
                   {t('allProducts')}
                 </Link>
               </li>
               <li>
-                <Link to="/category/torches" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/category/torches" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('cat_torches')}
                 </Link>
               </li>
               <li>
-                <Link to="/category/zatka-machines" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/category/zatka-machines" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('cat_zatka_machines')}
                 </Link>
               </li>
               <li>
-                <Link to="/category/solar-street-lights" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/category/solar-street-lights" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('cat_solar_street_lights')}
                 </Link>
               </li>
               <li>
-                <Link to="/category/headlamps" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/category/headlamps" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('cat_headlamps')}
                 </Link>
               </li>
               <li>
-                <Link to="/category/small-pocket-torches" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/category/small-pocket-torches" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('cat_small_pocket_torches')}
                 </Link>
               </li>
               <li>
-                <Link to="/category/rechargeable-fans" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/category/rechargeable-fans" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('cat_rechargeable_fans')}
                 </Link>
               </li>
               <li>
-                <Link to="/category/bike-lights" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/category/bike-lights" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('cat_bike_lights')}
                 </Link>
               </li>
               <li>
-                <Link to="/category/solar-dc-products" className="hover:text-[#D6A52A] transition-colors block py-0.5">
+                <Link to="/category/solar-dc-products" className="hover:text-[#355E3B] transition-colors block py-0.5">
                   {t('cat_solar_dc_products')}
                 </Link>
               </li>
@@ -268,37 +268,37 @@ export default function Footer() {
               ==================================================================== */}
           <div className="lg:pl-8 flex flex-col justify-between">
             <div>
-              <h3 className="font-heading font-extrabold text-sm uppercase tracking-wider text-white mb-4">
+              <h3 className="font-heading font-extrabold text-sm uppercase tracking-wider text-[#26352A] mb-4">
                 {t('contactUsHeading')}
               </h3>
               
-              <div className="space-y-3 text-xs text-[#B3B3B3] mb-5">
+              <div className="space-y-3 text-xs text-[#50574F] mb-5">
                 <div>
-                  <span className="block text-white font-bold text-sm">
+                  <span className="block text-[#26352A] font-bold text-sm">
                     Mahadev Electro Hub
                   </span>
-                  <div className="flex items-center gap-1.5 text-xs text-[#A8A8A8] mt-1">
-                    <MapPin className="w-3.5 h-3.5 text-[#D6A52A] shrink-0" />
+                  <div className="flex items-center gap-1.5 text-xs text-[#7A8277] mt-1">
+                    <MapPin className="w-3.5 h-3.5 text-[#355E3B] shrink-0" />
                     <span>{t('paliLocation')}</span>
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-white/5 space-y-2">
+                <div className="pt-2 border-t border-[#E2E6DC] space-y-2">
                   <div className="flex items-center gap-2">
-                    <Phone className="w-3.5 h-3.5 text-[#D6A52A] shrink-0" />
+                    <Phone className="w-3.5 h-3.5 text-[#355E3B] shrink-0" />
                     <a
                       href="tel:+917014248415"
-                      className="text-white hover:text-[#D6A52A] transition-colors font-medium"
+                      className="text-[#26352A] hover:text-[#355E3B] transition-colors font-semibold"
                     >
                       +91 70142 48415
                     </a>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Mail className="w-3.5 h-3.5 text-[#D6A52A] shrink-0" />
+                    <Mail className="w-3.5 h-3.5 text-[#355E3B] shrink-0" />
                     <a
                       href="mailto:mahadevelectohub@gmail.com"
-                      className="text-white hover:text-[#D6A52A] transition-colors truncate"
+                      className="text-[#26352A] hover:text-[#355E3B] transition-colors truncate font-semibold"
                       title="mahadevelectohub@gmail.com"
                     >
                       mahadevelectohub@gmail.com
@@ -307,13 +307,13 @@ export default function Footer() {
                 </div>
               </div>
 
-              {/* Action Buttons: Authentic White WhatsApp Logo & Email Us */}
+              {/* Action Buttons: WhatsApp & Email Us */}
               <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
                 <a
                   href="https://wa.me/917014248415?text=Namaste%20Mahadev%20Electro%20Hub%2C%20mujhe%20products%20ke%20baare%20mein%20jankari%20chahiye."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-md bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs transition-all duration-200 shadow-sm active:scale-95"
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs transition-all duration-200 shadow-xs active:scale-95"
                 >
                   <svg
                     className="w-4 h-4 fill-white shrink-0 drop-shadow-xs"
@@ -327,28 +327,28 @@ export default function Footer() {
 
                 <a
                   href="mailto:mahadevelectohub@gmail.com?subject=Inquiry%20from%20Mahadev%20Electro%20Hub%20Website"
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-md bg-[#181818] border border-white/20 hover:border-[#D6A52A] text-white hover:text-[#D6A52A] font-bold text-xs transition-colors shadow-sm"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[#FFFFFF] border border-[#E2E6DC] hover:border-[#355E3B] text-[#26352A] hover:text-[#355E3B] font-bold text-xs transition-colors shadow-xs"
                 >
-                  <Mail className="w-3.5 h-3.5" />
+                  <Mail className="w-3.5 h-3.5 text-[#355E3B]" />
                   <span>{t('emailUs')}</span>
                 </a>
               </div>
             </div>
 
             {/* Language Switcher in Column 4 */}
-            <div className="pt-6 mt-6 border-t border-white/5">
-              <span className="block text-[11px] text-[#888888] mb-2 font-medium flex items-center gap-1.5">
-                <Globe className="w-3 h-3 text-[#D6A52A]" />
+            <div className="pt-6 mt-6 border-t border-[#E2E6DC]">
+              <span className="block text-[11px] text-[#7A8277] mb-2 font-medium flex items-center gap-1.5">
+                <Globe className="w-3 h-3 text-[#355E3B]" />
                 <span>{t('websiteLanguage')}:</span>
               </span>
               <div className="flex gap-1.5">
                 <button
                   type="button"
                   onClick={() => setLanguage('en')}
-                  className={`px-2.5 py-1 rounded text-[11px] font-bold transition-all cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
                     language === 'en'
-                      ? 'bg-[#D6A52A] text-black shadow'
-                      : 'bg-[#181818] text-[#888888] hover:text-white border border-white/10'
+                      ? 'bg-[#355E3B] text-white shadow-xs'
+                      : 'bg-[#FFFFFF] text-[#50574F] hover:text-[#26352A] border border-[#E2E6DC]'
                   }`}
                 >
                   English
@@ -356,10 +356,10 @@ export default function Footer() {
                 <button
                   type="button"
                   onClick={() => setLanguage('hinglish')}
-                  className={`px-2.5 py-1 rounded text-[11px] font-bold transition-all cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
                     language === 'hinglish'
-                      ? 'bg-[#D6A52A] text-black shadow'
-                      : 'bg-[#181818] text-[#888888] hover:text-white border border-white/10'
+                      ? 'bg-[#355E3B] text-white shadow-xs'
+                      : 'bg-[#FFFFFF] text-[#50574F] hover:text-[#26352A] border border-[#E2E6DC]'
                   }`}
                 >
                   Hinglish
@@ -367,10 +367,10 @@ export default function Footer() {
                 <button
                   type="button"
                   onClick={() => setLanguage('hi')}
-                  className={`px-2.5 py-1 rounded text-[11px] font-bold transition-all font-devanagari cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all font-devanagari cursor-pointer ${
                     language === 'hi'
-                      ? 'bg-[#D6A52A] text-black shadow'
-                      : 'bg-[#181818] text-[#888888] hover:text-white border border-white/10'
+                      ? 'bg-[#355E3B] text-white shadow-xs'
+                      : 'bg-[#FFFFFF] text-[#50574F] hover:text-[#26352A] border border-[#E2E6DC]'
                   }`}
                 >
                   हिंदी
@@ -383,14 +383,14 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Sub-Footer Bottom Bar (No public Admin Portal link) */}
-      <div className="border-t border-white/5 bg-[#080808]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#777777]">
+      {/* Sub-Footer Bottom Bar */}
+      <div className="border-t border-[#E2E6DC] bg-[#FAF9F6]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#7A8277]">
           <div className="flex items-center gap-3">
             <span>{t('subFooterTagline')}</span>
           </div>
           <div className="flex items-center gap-4">
-            <Link to="/track-order" className="hover:text-[#D6A52A] transition-colors">
+            <Link to="/track-order" className="hover:text-[#355E3B] transition-colors font-medium">
               {t('trackOrder')}
             </Link>
           </div>

@@ -320,10 +320,10 @@ export default function ProductManagementPage() {
         {/* Title bar */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-2xl font-heading font-extrabold text-white">
+            <h1 className="text-2xl font-heading font-extrabold text-[#26352A]">
               Product Management
             </h1>
-            <p className="text-xs text-[#B3B3B3] mt-0.5">
+            <p className="text-xs text-[#50574F] mt-0.5">
               Bilingual catalog, pricing, computer se image upload aur stock control.
             </p>
           </div>
@@ -331,7 +331,7 @@ export default function ProductManagementPage() {
           <button
             type="button"
             onClick={openAddModal}
-            className="px-4 py-2.5 bg-[#D6A52A] hover:bg-[#E5B93B] text-[#000000] font-bold text-xs rounded-xl shadow-md shadow-[#D6A52A]/25 flex items-center gap-2"
+            className="px-4 py-2.5 bg-[#355E3B] hover:bg-[#294A30] text-white font-bold text-xs rounded-xl shadow-sm flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
             <span>Product Add Karein</span>
@@ -339,23 +339,23 @@ export default function ProductManagementPage() {
         </div>
 
         {/* Filters */}
-        <div className="bg-[#242424] p-4 rounded-xl border border-[#383838] shadow-md text-white flex flex-col sm:flex-row gap-3 items-center justify-between">
+        <div className="bg-white p-4 rounded-xl border border-[#E2E6DC] shadow-sm text-[#50574F] flex flex-col sm:flex-row gap-3 items-center justify-between">
           <div className="relative w-full sm:w-80">
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Title ya SKU se product search karein..."
-              className="w-full pl-9 pr-3 py-2 text-xs border border-[#444444] bg-[#181818] text-white rounded-lg focus:outline-none focus:border-[#D6A52A]"
+              className="w-full pl-9 pr-3 py-2 text-xs border border-[#E2E6DC] bg-white text-[#26352A] placeholder-[#7A8277] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889]"
             />
-            <Search className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-[#7A8277] absolute left-3 top-2.5" />
           </div>
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <select
               value={selectedCat}
               onChange={(e) => setSelectedCat(e.target.value)}
-              className="w-full sm:w-auto px-3 py-2 text-xs border border-[#444444] rounded-lg bg-[#181818] text-white"
+              className="w-full sm:w-auto px-3 py-2 text-xs border border-[#E2E6DC] rounded-xl bg-white text-[#26352A] focus:outline-none focus:border-[#355E3B]"
             >
               <option value="">Sabhi Categories</option>
               {categories.map(c => (
@@ -366,10 +366,10 @@ export default function ProductManagementPage() {
         </div>
 
         {/* Product Table */}
-        <div className="bg-[#242424] rounded-2xl border border-[#383838] shadow-md overflow-hidden text-white">
+        <div className="bg-white rounded-2xl border border-[#E2E6DC] shadow-sm overflow-hidden text-[#50574F]">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-gray-50 border-b border-[#383838] text-[#B3B3B3] uppercase text-[10px]">
+              <thead className="bg-[#F3F0E6] border-b border-[#E2E6DC] text-[#7A8277] uppercase text-[10px]">
                 <tr>
                   <th className="py-3 px-4">Product Details</th>
                   <th className="py-3 px-4">Hindi Title (हिंदी)</th>
@@ -379,26 +379,26 @@ export default function ProductManagementPage() {
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#383838]">
+              <tbody className="divide-y divide-[#E2E6DC]">
                 {loading ? (
                   <tr>
-                    <td colSpan="6" className="py-12 text-center text-xs text-[#B3B3B3]">
+                    <td colSpan="6" className="py-12 text-center text-xs text-[#7A8277]">
                       <div className="flex flex-col items-center justify-center gap-2.5">
-                        <div className="w-7 h-7 border-2 border-[#D6A52A] border-t-transparent rounded-full animate-spin"></div>
-                        <span className="font-semibold text-[#B3B3B3]">Products load ho rahe hain...</span>
+                        <div className="w-7 h-7 border-2 border-[#355E3B] border-t-transparent rounded-full animate-spin"></div>
+                        <span className="font-semibold text-[#7A8277]">Products load ho rahe hain...</span>
                       </div>
                     </td>
                   </tr>
                 ) : fetchError ? (
                   <tr>
                     <td colSpan="6" className="py-12 text-center text-xs">
-                      <div className="flex flex-col items-center justify-center gap-3 max-w-md mx-auto text-red-600">
-                        <AlertCircle className="w-8 h-8 text-red-500" />
+                      <div className="flex flex-col items-center justify-center gap-3 max-w-md mx-auto text-[#B94343]">
+                        <AlertCircle className="w-8 h-8 text-[#B94343]" />
                         <p className="font-semibold">{fetchError}</p>
                         <button
                           type="button"
                           onClick={fetchAll}
-                          className="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-lg font-bold text-xs transition-colors flex items-center gap-2"
+                          className="px-4 py-2 bg-[#B94343]/10 hover:bg-[#B94343]/20 text-[#B94343] rounded-xl font-bold text-xs transition-colors flex items-center gap-2"
                         >
                           <RefreshCw className="w-3.5 h-3.5" />
                           <span>Dobara Koshish Karein (Retry)</span>
@@ -408,17 +408,17 @@ export default function ProductManagementPage() {
                   </tr>
                 ) : filteredProducts.length === 0 ? (
                   <tr>
-                    <td colSpan="6" className="py-12 text-center text-xs text-[#B3B3B3]">
+                    <td colSpan="6" className="py-12 text-center text-xs text-[#7A8277]">
                       <div className="flex flex-col items-center justify-center gap-2.5">
-                        <Package className="w-10 h-10 text-gray-300" />
-                        <span className="font-medium text-[#B3B3B3] text-sm">
+                        <Package className="w-10 h-10 text-[#7A8277]/50" />
+                        <span className="font-medium text-[#7A8277] text-sm">
                           {search || selectedCat ? 'Aapke search filter ke according koi product nahi mila.' : 'Abhi koi product uplabdh nahi hai.'}
                         </span>
                         {!search && !selectedCat && (
                           <button
                             type="button"
                             onClick={openAddModal}
-                            className="mt-2 px-4 py-2 bg-[#D6A52A] hover:bg-[#E5B93B] text-[#000000] text-xs font-bold rounded-lg shadow-sm"
+                            className="mt-2 px-4 py-2 bg-[#355E3B] hover:bg-[#294A30] text-white text-xs font-bold rounded-xl shadow-sm"
                           >
                             Pehla Product Add Karein
                           </button>
@@ -428,50 +428,50 @@ export default function ProductManagementPage() {
                   </tr>
                 ) : (
                   filteredProducts.map(p => (
-                    <tr key={p.id} className="hover:bg-[#2D2D2D]">
+                    <tr key={p.id} className="hover:bg-[#FAF9F6]">
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-3">
                           <img
                             src={p.mainImage || '/images/logo.png'}
                             alt=""
-                            className="w-12 h-12 rounded-lg object-cover bg-[#1E1E1E] border border-[#383838] shrink-0"
+                            className="w-12 h-12 rounded-xl object-cover bg-[#FAF9F6] border border-[#E2E6DC] shrink-0"
                           />
                           <div>
-                            <span className="font-bold text-white block line-clamp-1 max-w-[220px]">
+                            <span className="font-bold text-[#26352A] block line-clamp-1 max-w-[220px]">
                               {p.title_en || 'Untitled Product'}
                             </span>
-                            <span className="text-[10px] text-gray-400 block">
+                            <span className="text-[10px] text-[#7A8277] block">
                               SKU: {p.sku || 'N/A'}
                             </span>
                           </div>
                         </div>
                       </td>
 
-                      <td className="py-3 px-4 text-[#B3B3B3] font-devanagari max-w-[180px] truncate">
+                      <td className="py-3 px-4 text-[#50574F] font-devanagari max-w-[180px] truncate">
                         {p.title_hi || '—'}
                       </td>
 
                       <td className="py-3 px-4">
-                        <span className="font-extrabold text-white block">₹{Number(p.price || 0).toLocaleString('en-IN')}</span>
+                        <span className="font-extrabold text-[#26352A] block">₹{Number(p.price || 0).toLocaleString('en-IN')}</span>
                         {p.compareAtPrice && (
-                          <span className="text-[10px] text-gray-400 line-through">₹{Number(p.compareAtPrice).toLocaleString('en-IN')}</span>
+                          <span className="text-[10px] text-[#7A8277] line-through">₹{Number(p.compareAtPrice).toLocaleString('en-IN')}</span>
                         )}
                       </td>
 
                       <td className="py-3 px-4">
-                        <span className={`px-2 py-0.5 rounded text-[11px] font-bold ${
+                        <span className={`px-2 py-0.5 rounded-lg text-[11px] font-bold ${
                           (Number(p.stockQuantity) || 0) <= 0
-                            ? 'bg-red-100 text-red-700'
+                            ? 'bg-[#B94343]/15 text-[#B94343]'
                             : (Number(p.stockQuantity) || 0) <= 5
-                            ? 'bg-amber-100 text-amber-800'
-                            : 'bg-emerald-100 text-emerald-800'
+                            ? 'bg-[#FAF9F6] text-[#B7791F] border border-[#B7791F]/30'
+                            : 'bg-[#DCE8D5] text-[#294A30]'
                         }`}>
                           {p.stockQuantity ?? 0} Stock Mein
                         </span>
                       </td>
 
                       <td className="py-3 px-4">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-100 text-[#B3B3B3] uppercase">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#F3F0E6] text-[#50574F] uppercase">
                           {p.status || 'ACTIVE'}
                         </span>
                       </td>
@@ -482,7 +482,7 @@ export default function ProductManagementPage() {
                             to={`/product/${p.slug || p.id}`}
                             target="_blank"
                             title="Live Storefront Par Dekhein"
-                            className="p-1.5 text-gray-400 hover:text-white"
+                            className="p-1.5 text-[#7A8277] hover:text-[#355E3B] transition-colors"
                           >
                             <ExternalLink className="w-4 h-4" />
                           </Link>
@@ -490,7 +490,7 @@ export default function ProductManagementPage() {
                             type="button"
                             onClick={() => openEditModal(p)}
                             title="Product Edit Karein"
-                            className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"
+                            className="p-1.5 text-[#355E3B] hover:bg-[#DCE8D5]/60 rounded-lg transition-colors"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
@@ -498,7 +498,7 @@ export default function ProductManagementPage() {
                             type="button"
                             onClick={() => handleDeleteProduct(p.id, p.title_en)}
                             title="Product Delete Karein"
-                            className="p-1.5 text-red-600 hover:bg-red-50 rounded"
+                            className="p-1.5 text-[#B94343] hover:bg-[#B94343]/10 rounded-lg transition-colors"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -514,68 +514,68 @@ export default function ProductManagementPage() {
 
         {/* Add/Edit Product Modal */}
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-            <div className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl border border-[#383838]">
+          <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl border border-[#E2E6DC]">
               {/* Modal Header */}
-              <div className="p-5 border-b border-[#383838] flex items-center justify-between">
+              <div className="p-5 border-b border-[#E2E6DC] flex items-center justify-between">
                 <div>
-                  <h3 className="font-heading font-extrabold text-lg text-white">
+                  <h3 className="font-heading font-extrabold text-lg text-[#26352A]">
                     {editingProduct ? 'Product Update Karein' : 'Product Add Karein'}
                   </h3>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-[#7A8277]">
                     English aur Hindi bilingual data. Website par turant live update hota hai.
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="p-1.5 text-gray-400 hover:text-[#B3B3B3]"
+                  className="p-1.5 text-[#7A8277] hover:text-[#26352A]"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               {/* Modal Tabs */}
-              <div className="flex border-b border-[#383838] bg-gray-50 text-xs font-bold px-4 overflow-x-auto">
+              <div className="flex border-b border-[#E2E6DC] bg-[#FAF9F6] text-xs font-bold px-4 overflow-x-auto">
                 <button
                   type="button"
                   onClick={() => setModalTab('en')}
-                  className={`py-3 px-4 border-b-2 whitespace-nowrap ${modalTab === 'en' ? 'border-[#D6A52A] text-[#D6A52A] bg-white' : 'border-transparent text-[#B3B3B3]'}`}
+                  className={`py-3 px-4 border-b-2 whitespace-nowrap ${modalTab === 'en' ? 'border-[#355E3B] text-[#294A30] bg-white' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'}`}
                 >
                   English Content
                 </button>
                 <button
                   type="button"
                   onClick={() => setModalTab('hinglish')}
-                  className={`py-3 px-4 border-b-2 whitespace-nowrap ${modalTab === 'hinglish' ? 'border-[#D6A52A] text-[#D6A52A] bg-white' : 'border-transparent text-[#B3B3B3]'}`}
+                  className={`py-3 px-4 border-b-2 whitespace-nowrap ${modalTab === 'hinglish' ? 'border-[#355E3B] text-[#294A30] bg-white' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'}`}
                 >
                   Hinglish (Roman Hindi)
                 </button>
                 <button
                   type="button"
                   onClick={() => setModalTab('hi')}
-                  className={`py-3 px-4 border-b-2 font-devanagari whitespace-nowrap ${modalTab === 'hi' ? 'border-[#D6A52A] text-[#D6A52A] bg-white' : 'border-transparent text-[#B3B3B3]'}`}
+                  className={`py-3 px-4 border-b-2 font-devanagari whitespace-nowrap ${modalTab === 'hi' ? 'border-[#355E3B] text-[#294A30] bg-white' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'}`}
                 >
                   हिंदी विवरण (Hindi)
                 </button>
                 <button
                   type="button"
                   onClick={() => setModalTab('pricing')}
-                  className={`py-3 px-4 border-b-2 whitespace-nowrap ${modalTab === 'pricing' ? 'border-[#D6A52A] text-[#D6A52A] bg-white' : 'border-transparent text-[#B3B3B3]'}`}
+                  className={`py-3 px-4 border-b-2 whitespace-nowrap ${modalTab === 'pricing' ? 'border-[#355E3B] text-[#294A30] bg-white' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'}`}
                 >
                   Pricing & Stock
                 </button>
                 <button
                   type="button"
                   onClick={() => setModalTab('specs')}
-                  className={`py-3 px-4 border-b-2 whitespace-nowrap ${modalTab === 'specs' ? 'border-[#D6A52A] text-[#D6A52A] bg-white' : 'border-transparent text-[#B3B3B3]'}`}
+                  className={`py-3 px-4 border-b-2 whitespace-nowrap ${modalTab === 'specs' ? 'border-[#355E3B] text-[#294A30] bg-white' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'}`}
                 >
                   Specs & Instructions
                 </button>
                 <button
                   type="button"
                   onClick={() => setModalTab('images')}
-                  className={`py-3 px-4 border-b-2 whitespace-nowrap ${modalTab === 'images' ? 'border-[#D6A52A] text-[#D6A52A] bg-white' : 'border-transparent text-[#B3B3B3]'}`}
+                  className={`py-3 px-4 border-b-2 whitespace-nowrap ${modalTab === 'images' ? 'border-[#355E3B] text-[#294A30] bg-white' : 'border-transparent text-[#7A8277] hover:text-[#26352A]'}`}
                 >
                   Image Upload Karein
                 </button>
@@ -594,7 +594,7 @@ export default function ProductManagementPage() {
                 {modalTab === 'en' && (
                   <div className="space-y-4 text-xs">
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         English Product Title *
                       </label>
                       <input
@@ -603,12 +603,12 @@ export default function ProductManagementPage() {
                         value={formData.title_en}
                         onChange={(e) => setFormData({ ...formData, title_en: e.target.value })}
                         placeholder="e.g. Mahadev 100W Long Range Kisan Laser Torch"
-                        className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg focus:outline-none focus:border-[#D6A52A] text-xs"
+                        className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                       />
                     </div>
 
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         Short Description (English)
                       </label>
                       <input
@@ -616,12 +616,12 @@ export default function ProductManagementPage() {
                         value={formData.short_description_en}
                         onChange={(e) => setFormData({ ...formData, short_description_en: e.target.value })}
                         placeholder="Brief 1-sentence product summary"
-                        className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                        className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                       />
                     </div>
 
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         Full Product Description (English)
                       </label>
                       <textarea
@@ -629,12 +629,12 @@ export default function ProductManagementPage() {
                         value={formData.description_en}
                         onChange={(e) => setFormData({ ...formData, description_en: e.target.value })}
                         placeholder="Detailed specifications, usage, applications..."
-                        className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                        className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                       />
                     </div>
 
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         Key Features (One feature per line)
                       </label>
                       <textarea
@@ -642,7 +642,7 @@ export default function ProductManagementPage() {
                         value={formData.features_en}
                         onChange={(e) => setFormData({ ...formData, features_en: e.target.value })}
                         placeholder="1.5 km focused beam&#10;Massive 10000 mAh battery&#10;Solar charging support"
-                        className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs font-mono"
+                        className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs font-mono placeholder-[#7A8277]"
                       />
                     </div>
                   </div>
@@ -652,7 +652,7 @@ export default function ProductManagementPage() {
                 {modalTab === 'hinglish' && (
                   <div className="space-y-4 text-xs">
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         Hinglish Product Title (Roman Hindi)
                       </label>
                       <input
@@ -660,12 +660,12 @@ export default function ProductManagementPage() {
                         value={formData.title_hinglish}
                         onChange={(e) => setFormData({ ...formData, title_hinglish: e.target.value })}
                         placeholder="e.g. Mahadev 100W Long Range Kisan Laser Farming Torch"
-                        className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg focus:outline-none focus:border-[#D6A52A] text-xs"
+                        className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                       />
                     </div>
 
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         Short Description (Hinglish)
                       </label>
                       <input
@@ -673,12 +673,12 @@ export default function ProductManagementPage() {
                         value={formData.short_description_hinglish}
                         onChange={(e) => setFormData({ ...formData, short_description_hinglish: e.target.value })}
                         placeholder="Kisan fields ke liye heavy duty rechargeable torch..."
-                        className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                        className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                       />
                     </div>
 
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         Full Product Description (Hinglish)
                       </label>
                       <textarea
@@ -686,12 +686,12 @@ export default function ProductManagementPage() {
                         value={formData.description_hinglish}
                         onChange={(e) => setFormData({ ...formData, description_hinglish: e.target.value })}
                         placeholder="Rajasthan ke kisano ke liye specially designed torch..."
-                        className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                        className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                       />
                     </div>
 
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         Key Features (One per line in Hinglish)
                       </label>
                       <textarea
@@ -699,7 +699,7 @@ export default function ProductManagementPage() {
                         value={formData.features_hinglish}
                         onChange={(e) => setFormData({ ...formData, features_hinglish: e.target.value })}
                         placeholder="1.5 km focused laser beam throw&#10;10,000 mAh heavy battery&#10;Solar charging port"
-                        className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs font-mono"
+                        className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs font-mono placeholder-[#7A8277]"
                       />
                     </div>
                   </div>
@@ -709,7 +709,7 @@ export default function ProductManagementPage() {
                 {modalTab === 'hi' && (
                   <div className="space-y-4 text-xs font-devanagari">
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         हिंदी प्रोडक्ट शीर्षक (Hindi Title) *
                       </label>
                       <input
@@ -718,12 +718,12 @@ export default function ProductManagementPage() {
                         value={formData.title_hi}
                         onChange={(e) => setFormData({ ...formData, title_hi: e.target.value })}
                         placeholder="उदा. महादेव 100W लॉन्ग रेंज किसान लेजर फार्मिंग टॉर्च"
-                        className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg focus:outline-none focus:border-[#D6A52A] text-xs"
+                        className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                       />
                     </div>
 
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         संक्षिप्त विवरण (Short Description in Hindi)
                       </label>
                       <input
@@ -731,12 +731,12 @@ export default function ProductManagementPage() {
                         value={formData.short_description_hi}
                         onChange={(e) => setFormData({ ...formData, short_description_hi: e.target.value })}
                         placeholder="संक्षिप्त विवरण..."
-                        className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                        className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                       />
                     </div>
 
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         सम्पूर्ण प्रोडक्ट विवरण (Full Description in Hindi)
                       </label>
                       <textarea
@@ -744,12 +744,12 @@ export default function ProductManagementPage() {
                         value={formData.description_hi}
                         onChange={(e) => setFormData({ ...formData, description_hi: e.target.value })}
                         placeholder="विस्तारपूर्वक विवरण..."
-                        className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                        className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                       />
                     </div>
 
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         मुख्य विशेषताएं (प्रत्येक लाइन में एक विशेषता)
                       </label>
                       <textarea
@@ -757,7 +757,7 @@ export default function ProductManagementPage() {
                         value={formData.features_hi}
                         onChange={(e) => setFormData({ ...formData, features_hi: e.target.value })}
                         placeholder="1.5 किमी लेजर बीम&#10;10000 mAh बैटरी&#10;सोलर चार्जिंग सपोर्ट"
-                        className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                        className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                       />
                     </div>
                   </div>
@@ -768,7 +768,7 @@ export default function ProductManagementPage() {
                   <div className="space-y-4 text-xs">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block font-semibold text-[#B3B3B3] mb-1">
+                        <label className="block font-semibold text-[#26352A] mb-1">
                           Selling Price (₹) *
                         </label>
                         <input
@@ -777,12 +777,12 @@ export default function ProductManagementPage() {
                           value={formData.price}
                           onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                           placeholder="e.g. 1850"
-                          className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg"
+                          className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889]"
                         />
                       </div>
 
                       <div>
-                        <label className="block font-semibold text-[#B3B3B3] mb-1">
+                        <label className="block font-semibold text-[#26352A] mb-1">
                           Original Price / M.R.P (₹)
                         </label>
                         <input
@@ -790,14 +790,14 @@ export default function ProductManagementPage() {
                           value={formData.compareAtPrice}
                           onChange={(e) => setFormData({ ...formData, compareAtPrice: e.target.value })}
                           placeholder="e.g. 2400"
-                          className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg"
+                          className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block font-semibold text-[#B3B3B3] mb-1">
+                        <label className="block font-semibold text-[#26352A] mb-1">
                           Stock Quantity *
                         </label>
                         <input
@@ -806,32 +806,32 @@ export default function ProductManagementPage() {
                           value={formData.stockQuantity}
                           onChange={(e) => setFormData({ ...formData, stockQuantity: e.target.value })}
                           placeholder="e.g. 30"
-                          className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg"
+                          className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889]"
                         />
                       </div>
 
                       <div>
-                        <label className="block font-semibold text-[#B3B3B3] mb-1">
+                        <label className="block font-semibold text-[#26352A] mb-1">
                           SKU Code
                         </label>
                         <input
                           type="text"
                           value={formData.sku}
                           onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
-                          className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg uppercase"
+                          className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl uppercase focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block font-semibold text-[#B3B3B3] mb-1">
+                        <label className="block font-semibold text-[#26352A] mb-1">
                           Category *
                         </label>
                         <select
                           value={formData.categoryId}
                           onChange={(e) => setFormData({ ...formData, categoryId: e.target.value, subcategoryId: '' })}
-                          className="w-full px-3 py-2 border border-[#444444] rounded-lg bg-[#181818] text-white"
+                          className="w-full px-3 py-2 border border-[#E2E6DC] rounded-xl bg-white text-[#26352A] focus:outline-none focus:border-[#355E3B]"
                         >
                           {categories.map(c => (
                             <option key={c.id} value={c.id}>{c.name_en} ({c.name_hi})</option>
@@ -840,13 +840,13 @@ export default function ProductManagementPage() {
                       </div>
 
                       <div>
-                        <label className="block font-semibold text-[#B3B3B3] mb-1">
+                        <label className="block font-semibold text-[#26352A] mb-1">
                           Subcategory (Optional)
                         </label>
                         <select
                           value={formData.subcategoryId}
                           onChange={(e) => setFormData({ ...formData, subcategoryId: e.target.value })}
-                          className="w-full px-3 py-2 border border-[#444444] rounded-lg bg-[#181818] text-white"
+                          className="w-full px-3 py-2 border border-[#E2E6DC] rounded-xl bg-white text-[#26352A] focus:outline-none focus:border-[#355E3B]"
                         >
                           <option value="">None / All Category</option>
                           {selectedCategoryObj?.subcategories?.map(s => (
@@ -863,27 +863,27 @@ export default function ProductManagementPage() {
                           type="checkbox"
                           checked={formData.featured}
                           onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                          className="rounded text-[#D6A52A]"
+                          className="rounded text-[#355E3B] focus:ring-[#8BA889]"
                         />
-                        <span>Featured Product</span>
+                        <span className="text-[#26352A] font-medium">Featured Product</span>
                       </label>
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
                           type="checkbox"
                           checked={formData.newArrival}
                           onChange={(e) => setFormData({ ...formData, newArrival: e.target.checked })}
-                          className="rounded text-[#D6A52A]"
+                          className="rounded text-[#355E3B] focus:ring-[#8BA889]"
                         />
-                        <span>New Arrival</span>
+                        <span className="text-[#26352A] font-medium">New Arrival</span>
                       </label>
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
                           type="checkbox"
                           checked={formData.bestSeller}
                           onChange={(e) => setFormData({ ...formData, bestSeller: e.target.checked })}
-                          className="rounded text-[#D6A52A]"
+                          className="rounded text-[#355E3B] focus:ring-[#8BA889]"
                         />
-                        <span>Best Seller</span>
+                        <span className="text-[#26352A] font-medium">Best Seller</span>
                       </label>
                     </div>
                   </div>
@@ -894,7 +894,7 @@ export default function ProductManagementPage() {
                   <div className="space-y-4 text-xs">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block font-semibold text-[#B3B3B3] mb-1">
+                        <label className="block font-semibold text-[#26352A] mb-1">
                           Technical Specifications (English)
                         </label>
                         <textarea
@@ -902,11 +902,11 @@ export default function ProductManagementPage() {
                           value={formData.specifications_en}
                           onChange={(e) => setFormData({ ...formData, specifications_en: e.target.value })}
                           placeholder="e.g. Battery: 10000mAh, Range: 1.5KM, LED: 100W"
-                          className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                          className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                         />
                       </div>
                       <div className="font-devanagari">
-                        <label className="block font-semibold text-[#B3B3B3] mb-1">
+                        <label className="block font-semibold text-[#26352A] mb-1">
                           तकनीकी विवरण (Hindi Specifications)
                         </label>
                         <textarea
@@ -914,14 +914,14 @@ export default function ProductManagementPage() {
                           value={formData.specifications_hi}
                           onChange={(e) => setFormData({ ...formData, specifications_hi: e.target.value })}
                           placeholder="उदा. बैटरी: 10000mAh, रेंज: 1.5 किमी, क्षमता: 100W"
-                          className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                          className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block font-semibold text-[#B3B3B3] mb-1">
+                        <label className="block font-semibold text-[#26352A] mb-1">
                           Usage & Safety Instructions (English)
                         </label>
                         <textarea
@@ -929,11 +929,11 @@ export default function ProductManagementPage() {
                           value={formData.usage_instructions_en}
                           onChange={(e) => setFormData({ ...formData, usage_instructions_en: e.target.value })}
                           placeholder="Charging guide, installation advice, earthing directions..."
-                          className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                          className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                         />
                       </div>
                       <div className="font-devanagari">
-                        <label className="block font-semibold text-[#B3B3B3] mb-1">
+                        <label className="block font-semibold text-[#26352A] mb-1">
                           उपयोग एवं सुरक्षा निर्देश (Hindi Instructions)
                         </label>
                         <textarea
@@ -941,14 +941,14 @@ export default function ProductManagementPage() {
                           value={formData.usage_instructions_hi}
                           onChange={(e) => setFormData({ ...formData, usage_instructions_hi: e.target.value })}
                           placeholder="चार्जिंग विधि, इंस्टॉलेशन व अर्थिंग निर्देश..."
-                          className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                          className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block font-semibold text-[#B3B3B3] mb-1">
+                        <label className="block font-semibold text-[#26352A] mb-1">
                           Warranty Details (English)
                         </label>
                         <input
@@ -956,11 +956,11 @@ export default function ProductManagementPage() {
                           value={formData.warranty_en}
                           onChange={(e) => setFormData({ ...formData, warranty_en: e.target.value })}
                           placeholder="e.g. 1 Year Mahadev Warranty on battery & solar panel"
-                          className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                          className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                         />
                       </div>
                       <div className="font-devanagari">
-                        <label className="block font-semibold text-[#B3B3B3] mb-1">
+                        <label className="block font-semibold text-[#26352A] mb-1">
                           वारंटी विवरण (Hindi Warranty)
                         </label>
                         <input
@@ -968,7 +968,7 @@ export default function ProductManagementPage() {
                           value={formData.warranty_hi}
                           onChange={(e) => setFormData({ ...formData, warranty_hi: e.target.value })}
                           placeholder="उदा. बैटरी और सोलर पैनल पर 1 वर्ष की वारंटी"
-                          className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                          className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                         />
                       </div>
                     </div>
@@ -979,10 +979,10 @@ export default function ProductManagementPage() {
                 {modalTab === 'images' && (
                   <div className="space-y-4 text-xs">
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         Computer Se Image Upload Karein
                       </label>
-                      <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-[#D6A52A] transition-colors">
+                      <div className="border-2 border-dashed border-[#E2E6DC] hover:border-[#355E3B] bg-[#FAF9F6] rounded-xl p-6 text-center transition-colors">
                         <input
                           type="file"
                           accept="image/*"
@@ -992,11 +992,11 @@ export default function ProductManagementPage() {
                           id="prod-file-upload"
                         />
                         <label htmlFor="prod-file-upload" className="cursor-pointer block">
-                          <Upload className="w-8 h-8 text-[#D6A52A] mx-auto mb-2" />
-                          <span className="font-bold text-[#B3B3B3] block">
+                          <Upload className="w-8 h-8 text-[#355E3B] mx-auto mb-2" />
+                          <span className="font-bold text-[#26352A] block">
                             {uploadingImage ? 'Image Upload Ho Rahi Hai...' : 'Computer Se Image File Chunein'}
                           </span>
-                          <span className="text-[11px] text-gray-400">
+                          <span className="text-[11px] text-[#7A8277]">
                             PNG, JPG, JPEG, WebP files supported
                           </span>
                         </label>
@@ -1004,7 +1004,7 @@ export default function ProductManagementPage() {
                     </div>
 
                     <div>
-                      <label className="block font-semibold text-[#B3B3B3] mb-1">
+                      <label className="block font-semibold text-[#26352A] mb-1">
                         Ya Image URL Link Dalein
                       </label>
                       <input
@@ -1012,14 +1012,14 @@ export default function ProductManagementPage() {
                         value={formData.mainImage}
                         onChange={(e) => setFormData({ ...formData, mainImage: e.target.value })}
                         placeholder="https://..."
-                        className="w-full px-3 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-xs"
+                        className="w-full px-3 py-2 border border-[#E2E6DC] bg-white text-[#26352A] rounded-xl focus:outline-none focus:border-[#355E3B] focus:ring-1 focus:ring-[#8BA889] text-xs placeholder-[#7A8277]"
                       />
                     </div>
 
                     {formData.mainImage && (
                       <div>
-                        <span className="block font-semibold text-[#B3B3B3] mb-1">Image Preview:</span>
-                        <div className="w-32 h-32 rounded-lg border border-[#383838] overflow-hidden bg-gray-50">
+                        <span className="block font-semibold text-[#26352A] mb-1">Image Preview:</span>
+                        <div className="w-32 h-32 rounded-xl border border-[#E2E6DC] overflow-hidden bg-[#FAF9F6]">
                           <img src={formData.mainImage} alt="" className="w-full h-full object-cover" />
                         </div>
                       </div>
@@ -1028,18 +1028,18 @@ export default function ProductManagementPage() {
                 )}
 
                 {/* Modal Footer */}
-                <div className="pt-4 border-t border-[#383838] flex justify-end gap-3">
+                <div className="pt-4 border-t border-[#E2E6DC] flex justify-end gap-3">
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-4 py-2 border border-[#444444] bg-[#181818] text-white rounded-lg text-[#B3B3B3] hover:bg-[#2D2D2D] text-xs font-semibold"
+                    className="px-4 py-2 border border-[#E2E6DC] bg-white text-[#50574F] hover:bg-[#FAF9F6] rounded-xl text-xs font-semibold transition-colors"
                   >
                     Cancel Karein
                   </button>
                   <button
                     type="submit"
                     disabled={saveLoading}
-                    className="px-6 py-2 bg-[#D6A52A] hover:bg-[#E5B93B] text-[#000000] font-bold rounded-lg shadow text-xs"
+                    className="px-6 py-2 bg-[#355E3B] hover:bg-[#294A30] text-white font-bold rounded-xl shadow-sm text-xs transition-colors"
                   >
                     {saveLoading ? 'Save Ho Raha Hai...' : editingProduct ? 'Product Update Karein' : 'Product Save Karein'}
                   </button>

@@ -48,16 +48,16 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <div className="group bg-[#242424] hover:bg-[#2D2D2D] rounded-xl border border-[#383838] hover:border-[#D6A52A] shadow-md hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden relative transform hover:-translate-y-1">
+    <div className="group bg-[#FFFFFF] hover:bg-[#FAF9F6] rounded-xl border border-[#E2E6DC] hover:border-[#8BA889] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden relative transform hover:-translate-y-1">
       {/* Badges: Discount & Featured */}
       <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1 items-start pointer-events-none">
         {hasDiscount && (
-          <span className="bg-[#E53935] text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 rounded shadow-sm tracking-wide">
+          <span className="bg-[#B94343] text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 rounded shadow-xs tracking-wide">
             {discountPercent}% OFF
           </span>
         )}
         {product.featured && (
-          <span className="bg-[#000000]/85 text-[#D6A52A] border border-[#D6A52A]/40 text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">
+          <span className="bg-[#DCE8D5] text-[#294A30] border border-[#A8BFA3] text-[10px] font-bold px-2 py-0.5 rounded shadow-xs">
             ★ Featured
           </span>
         )}
@@ -68,17 +68,17 @@ export default function ProductCard({ product }) {
         type="button"
         onClick={handleWishlistToggle}
         aria-label="Wishlist Mein Add Karein"
-        className={`absolute top-2.5 right-2.5 z-10 p-2 rounded-full transition-all shadow-md ${
+        className={`absolute top-2.5 right-2.5 z-10 p-2 rounded-full transition-all shadow-xs ${
           isWishlisted
-            ? 'bg-[#202020] text-[#E53935] border border-red-500/50 scale-105'
-            : 'bg-[#202020]/90 text-white hover:text-[#D6A52A] hover:bg-[#2A2A2A] border border-[#383838]'
+            ? 'bg-[#FFFFFF] text-[#B94343] border border-red-300 scale-105'
+            : 'bg-[#FFFFFF]/90 text-[#7A8277] hover:text-[#B94343] hover:bg-[#F3F0E6] border border-[#E2E6DC]'
         }`}
       >
         <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
       </button>
 
       {/* Product Image Link with Hover Zoom & Floating Quick-View Pill */}
-      <div className="relative aspect-square overflow-hidden bg-[#1E1E1E]">
+      <div className="relative aspect-square overflow-hidden bg-[#F3F0E6]">
         <Link to={`/product/${product.slug || product.id}`} className="block w-full h-full">
           <img
             src={product.mainImage || '/images/logo.png'}
@@ -96,17 +96,17 @@ export default function ProductCard({ product }) {
           <button
             type="button"
             onClick={handleQuickView}
-            className="w-full py-2 px-3 rounded-lg bg-[#242424]/95 hover:bg-[#2D2D2D] text-white hover:text-[#D6A52A] font-bold text-xs flex items-center justify-center gap-1.5 border border-[#444444] hover:border-[#D6A52A] shadow-lg transition-all cursor-pointer backdrop-blur-xs"
+            className="w-full py-2 px-3 rounded-lg bg-[#FFFFFF]/95 hover:bg-[#F3F0E6] text-[#26352A] hover:text-[#355E3B] font-bold text-xs flex items-center justify-center gap-1.5 border border-[#E2E6DC] hover:border-[#8BA889] shadow-md transition-all cursor-pointer backdrop-blur-xs"
           >
-            <Eye className="w-3.5 h-3.5 text-[#D6A52A]" />
+            <Eye className="w-3.5 h-3.5 text-[#355E3B]" />
             <span>{t('quickView')}</span>
           </button>
         </div>
 
         {/* Out of Stock Overlay */}
         {isOutOfStock && (
-          <div className="absolute inset-0 bg-black/75 flex items-center justify-center z-10">
-            <span className="bg-[#D92D20] text-white font-extrabold text-xs uppercase px-3 py-1 rounded shadow-md tracking-wider">
+          <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-10">
+            <span className="bg-[#B94343] text-white font-extrabold text-xs uppercase px-3 py-1 rounded shadow-md tracking-wider">
               {t('outOfStock')}
             </span>
           </div>
@@ -118,56 +118,56 @@ export default function ProductCard({ product }) {
         <div>
           {/* Brand & Stock Pill */}
           <div className="flex items-center justify-between text-[11px] mb-1.5">
-            <span className="font-bold text-[#D6A52A] uppercase tracking-wider text-[10px]">
+            <span className="font-bold text-[#355E3B] uppercase tracking-wider text-[10px]">
               {product.brand || 'Mahadev Electro Hub'}
             </span>
             {isLowStock && (
-              <span className="text-amber-300 font-bold text-[10px] bg-amber-950/60 border border-amber-600/40 px-1.5 py-0.5 rounded">
+              <span className="text-[#B7791F] font-bold text-[10px] bg-amber-50 border border-amber-300 px-1.5 py-0.5 rounded">
                 {t('onlyLeft').replace('{count}', product.stockQuantity)}
               </span>
             )}
           </div>
 
-          {/* Product Title: White text */}
+          {/* Product Title */}
           <Link
             to={`/product/${product.slug || product.id}`}
-            className="block text-sm font-bold text-white hover:text-[#D6A52A] line-clamp-2 transition-colors mb-1.5 leading-snug"
+            className="block text-sm font-bold text-[#26352A] hover:text-[#355E3B] line-clamp-2 transition-colors mb-1.5 leading-snug"
             title={title}
           >
             {title}
           </Link>
 
-          {/* Short description: Light grey text */}
+          {/* Short description */}
           {shortDesc && (
-            <p className="text-xs text-[#B3B3B3] line-clamp-2 mb-3 leading-relaxed">
+            <p className="text-xs text-[#50574F] line-clamp-2 mb-3 leading-relaxed">
               {shortDesc}
             </p>
           )}
         </div>
 
         {/* Pricing & Working Buttons */}
-        <div className="pt-3 border-t border-[#383838]">
+        <div className="pt-3 border-t border-[#E2E6DC]">
           <div className="flex items-baseline justify-between mb-3">
             <div className="flex items-baseline gap-2">
-              <span className="text-lg md:text-xl font-extrabold text-white font-mono">
+              <span className="text-lg md:text-xl font-extrabold text-[#26352A] font-mono">
                 ₹{product.price.toLocaleString('en-IN')}
               </span>
               {hasDiscount && (
-                <span className="text-xs text-[#888888] line-through">
+                <span className="text-xs text-[#7A8277] line-through">
                   ₹{product.compareAtPrice.toLocaleString('en-IN')}
                 </span>
               )}
             </div>
-            <span className="text-[10px] text-[#888888] font-medium">{t('gstIncluded')}</span>
+            <span className="text-[10px] text-[#7A8277] font-medium">{t('gstIncluded')}</span>
           </div>
 
           <div className="grid grid-cols-2 gap-1.5 xs:gap-2">
             <button
               type="button"
               onClick={handleQuickView}
-              className="px-1.5 xs:px-2.5 py-2 text-[11px] xs:text-xs font-bold text-center border border-[#444444] rounded-lg bg-[#242424] hover:bg-[#2D2D2D] text-white hover:border-[#D6A52A] hover:text-[#D6A52A] flex items-center justify-center gap-1 transition-colors cursor-pointer"
+              className="px-1.5 xs:px-2.5 py-2 text-[11px] xs:text-xs font-bold text-center border border-[#E2E6DC] rounded-lg bg-[#FFFFFF] hover:bg-[#F3F0E6] text-[#26352A] hover:border-[#8BA889] hover:text-[#355E3B] flex items-center justify-center gap-1 transition-colors cursor-pointer"
             >
-              <Eye className="w-3.5 h-3.5 text-[#B3B3B3] shrink-0" />
+              <Eye className="w-3.5 h-3.5 text-[#7A8277] shrink-0" />
               <span className="truncate">{t('quickView')}</span>
             </button>
 
@@ -175,12 +175,12 @@ export default function ProductCard({ product }) {
               type="button"
               disabled={isOutOfStock}
               onClick={handleAddToCart}
-              className={`px-1.5 xs:px-2.5 py-2 text-[11px] xs:text-xs font-extrabold rounded-lg flex items-center justify-center gap-1 shadow-md transition-all cursor-pointer ${
+              className={`px-1.5 xs:px-2.5 py-2 text-[11px] xs:text-xs font-extrabold rounded-lg flex items-center justify-center gap-1 shadow-sm transition-all cursor-pointer ${
                 isOutOfStock
-                  ? 'bg-[#333333] text-gray-500 border border-[#444444] cursor-not-allowed'
+                  ? 'bg-[#E2E6DC] text-[#7A8277] border border-[#E2E6DC] cursor-not-allowed'
                   : justAdded
-                  ? 'bg-[#16803D] text-white'
-                  : 'bg-[#D6A52A] hover:bg-[#E5B93B] text-[#000000] active:scale-95'
+                  ? 'bg-[#2E7D46] text-white'
+                  : 'bg-[#355E3B] hover:bg-[#294A30] text-[#FFFFFF] active:scale-95'
               }`}
             >
               {justAdded ? (
@@ -190,7 +190,7 @@ export default function ProductCard({ product }) {
                 </>
               ) : (
                 <>
-                  <ShoppingCart className="w-3.5 h-3.5 shrink-0 text-[#000000]" />
+                  <ShoppingCart className="w-3.5 h-3.5 shrink-0 text-[#FFFFFF]" />
                   <span className="truncate">{t('addToCart')}</span>
                 </>
               )}

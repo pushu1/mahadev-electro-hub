@@ -228,36 +228,36 @@ export default function ReelsShowcase() {
       id="reels-showcase"
       ref={sectionRef}
       aria-label="Reels Showcase"
-      className="relative py-10 sm:py-12 md:py-14 lg:py-16 bg-[#0B0B0B] border-t border-[#202020] overflow-hidden select-none"
+      className="relative py-10 sm:py-12 md:py-14 lg:py-16 bg-[#FAF9F6] border-t border-[#E2E6DC] overflow-hidden select-none"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         
         {/* ====================================================================
-            SECTION HEADING (Clean, Cinematic with Gold Expanding Underline)
+            SECTION HEADING (Clean, Organic with Forest Green Underline)
             ==================================================================== */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 opacity-100">
           <div className="max-w-2xl text-left">
             {/* Eyebrow */}
-            <div className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#D6A52A] mb-3">
+            <div className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#355E3B] mb-3">
               <span>{activeHeading.eyebrow}</span>
             </div>
 
             {/* Main Heading */}
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-heading font-extrabold text-[#FFFFFF] tracking-tight leading-[1.2] mb-3">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-heading font-extrabold text-[#26352A] tracking-tight leading-[1.2] mb-3">
               {activeHeading.heading}
             </h2>
 
-            {/* Subtle Animated Gold Underline */}
-            <div className="w-full h-[2.5px] bg-[#202020] rounded-full mb-4 overflow-hidden">
+            {/* Subtle Animated Sage Underline */}
+            <div className="w-full h-[2.5px] bg-[#E2E6DC] rounded-full mb-4 overflow-hidden">
               <div
-                className={`h-full bg-gradient-to-r from-[#D6A52A] via-[#F2C75C] to-transparent transition-all duration-1000 ease-out rounded-full ${
+                className={`h-full bg-gradient-to-r from-[#355E3B] via-[#2E7D46] to-transparent transition-all duration-1000 ease-out rounded-full ${
                   hasEntered || reducedMotion ? 'w-32 sm:w-44 opacity-100' : 'w-0 opacity-0'
                 }`}
               />
             </div>
 
             {/* Description */}
-            <p className="text-sm sm:text-base text-[#B5B5B5] leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-[#50574F] leading-relaxed font-normal">
               {activeHeading.description}
             </p>
           </div>
@@ -268,7 +268,7 @@ export default function ReelsShowcase() {
               type="button"
               onClick={scrollLeft}
               aria-label="Previous Reels"
-              className="w-10 h-10 rounded-none bg-[#1c1c1c] border border-white/10 hover:border-[#D6A52A] text-white hover:text-[#D6A52A] flex items-center justify-center transition-all duration-200 active:scale-95 shadow-md"
+              className="w-10 h-10 rounded-lg bg-[#FFFFFF] border border-[#E2E6DC] hover:border-[#355E3B] text-[#26352A] hover:text-[#355E3B] flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -276,7 +276,7 @@ export default function ReelsShowcase() {
               type="button"
               onClick={scrollRight}
               aria-label="Next Reels"
-              className="w-10 h-10 rounded-none bg-[#1c1c1c] border border-white/10 hover:border-[#D6A52A] text-white hover:text-[#D6A52A] flex items-center justify-center transition-all duration-200 active:scale-95 shadow-md"
+              className="w-10 h-10 rounded-lg bg-[#FFFFFF] border border-[#E2E6DC] hover:border-[#355E3B] text-[#26352A] hover:text-[#355E3B] flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -285,17 +285,6 @@ export default function ReelsShowcase() {
 
         {/* ====================================================================
             REELS 9:16 PORTRAIT CARDS SLIDER
-            - Tall portrait layout: aspect-ratio: 9 / 16 (aspect-[9/16])
-            - Desktop target: ~228px - 230px wide × ~400px - 410px high
-            - Desktop layout: 5 cards per row aligned with content container
-            - Tablet: 3 cards per row in horizontal slider
-            - Mobile: 1–2 cards visible in horizontally scrollable slider
-            - Subtle border radius (rounded-xl) and overflow: hidden
-            - Videos fill entire card: width: 100%, height: 100%, object-fit: cover
-            - Top-Left: Category label only
-            - Bottom-Right: Mute/Unmute control only
-            - All other text overlays/titles/descriptions and controls removed
-            - AutoPlay muted, loop, playsInline, IntersectionObserver
             ==================================================================== */}
         <div
           onMouseEnter={() => setIsPausedHover(true)}
@@ -340,7 +329,7 @@ export default function ReelsShowcase() {
                     aspectRatio: '9 / 16',
                     transitionDelay: reducedMotion ? '0ms' : `${idx * 80}ms`,
                   }}
-                  className="snap-start shrink-0 w-[228px] sm:w-[calc((100%-32px)/3)] lg:w-[calc((100%-64px)/5)] aspect-[9/16] relative bg-[#202020] rounded-xl border border-white/10 hover:border-[#D6A52A]/80 transition-all duration-300 overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-[#D6A52A]/10 select-none opacity-100"
+                  className="snap-start shrink-0 w-[228px] sm:w-[calc((100%-32px)/3)] lg:w-[calc((100%-64px)/5)] aspect-[9/16] relative bg-[#FAF9F6] rounded-xl border border-[#E2E6DC] hover:border-[#355E3B] transition-all duration-300 overflow-hidden group cursor-pointer shadow-sm hover:shadow-xl hover:shadow-[#A8BFA3]/15 select-none opacity-100"
                   onClick={() => isVideoUrl && togglePlay(reel.id)}
                 >
                   {/* Base Poster Media Layer - Always visible for instant crisp render with zero blank cards */}
@@ -384,7 +373,7 @@ export default function ReelsShowcase() {
                   {/* Top-Left: Category Label Only */}
                   {reel.category && (
                     <div className="absolute top-3 left-3 z-20 pointer-events-none">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-black/60 text-[#D6A52A] border border-[#D6A52A]/40 backdrop-blur-md shadow-md">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-white/90 text-[#294A30] border border-[#A8BFA3]/50 backdrop-blur-md shadow-sm">
                         {reel.category}
                       </span>
                     </div>
@@ -397,12 +386,12 @@ export default function ReelsShowcase() {
                         type="button"
                         onClick={(e) => toggleMute(reel.id, e)}
                         aria-label={reelState.isMuted ? 'Unmute video' : 'Mute video'}
-                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/70 hover:bg-[#D6A52A] text-white hover:text-black border border-white/20 hover:border-[#D6A52A] flex items-center justify-center transition-all duration-200 backdrop-blur-md shadow-lg active:scale-95"
+                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-[#355E3B] text-white border border-white/20 hover:border-[#355E3B] flex items-center justify-center transition-all duration-200 backdrop-blur-md shadow-lg active:scale-95"
                       >
                         {reelState.isMuted ? (
                           <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
                         ) : (
-                          <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D6A52A] hover:text-black" />
+                          <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#DCE8D5]" />
                         )}
                       </button>
                     </div>

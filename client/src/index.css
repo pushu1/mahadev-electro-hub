@@ -84,34 +84,38 @@
   --font-site: var(--font-en);
   --font-heading: var(--font-en);
 
-  --color-navbar: #000000;
-  --color-announcement: #000000;
-  --color-background: #181818;
-  --color-secondary-bg: #202020;
-  --color-card: #242424;
-  --color-card-hover: #2D2D2D;
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #B3B3B3;
-  --color-border: #383838;
-  --color-primary: #D6A52A;
-  --color-primary-hover: #E5B93B;
-  --color-input-bg: #242424;
-  --color-input-border: #444444;
-  --color-sale: #E53935;
-  --color-success: #16803D;
-  --color-error: #D92D20;
-  --color-footer-bg: #000000;
-  --color-footer-text: #FFFFFF;
-  --color-accent: #D6A52A;
-  --color-surface: #242424;
+  /* Official Premium Natural Palette */
+  --color-page: #FAF9F6;          /* Warm Off-White (Main page background) */
+  --color-cream: #F3F0E6;         /* Soft Cream (Secondary section background) */
+  --color-surface: #FFFFFF;       /* Pure Warm White (Cards & surfaces) */
+  --color-sage: #A8BFA3;          /* Soft Sage Green (Primary accent) */
+  --color-mint: #DCE8D5;          /* Light Mint Green (Secondary accent) */
+  --color-primary: #355E3B;       /* Forest Green (Primary buttons) */
+  --color-primary-hover: #294A30; /* Deep Forest Green (Button hover) */
+  --color-heading: #26352A;       /* Deep Charcoal Green (Main headings) */
+  --color-text: #50574F;          /* Soft Dark Grey (Body text) */
+  --color-muted: #7A8277;         /* Grey Sage (Muted text) */
+  --color-border: #E2E6DC;        /* Light Sage Grey (Borders & dividers) */
+  --color-input-bg: #FFFFFF;      /* Warm White (Input background) */
+  --color-input-border: #E2E6DC;  /* Input border */
+  --color-input-focus: #8BA889;   /* Sage Green focus */
+  --color-success: #2E7D46;       /* Green (Success states) */
+  --color-warning: #B7791F;       /* Warm Amber (Warning states) */
+  --color-error: #B94343;         /* Muted Red (Error states) */
 
-  /* Croma-Inspired Cinematic RGB Gradient Palette */
-  --rgb-black: #000000;
-  --rgb-charcoal: #111111;
-  --rgb-burgundy: #501B28;
-  --rgb-purple: #28162C;
-  --rgb-amber: #6B451B;
-  --rgb-golden-orange: #8A5A16;
+  /* Compatibility Aliases */
+  --color-navbar: #FAF9F6;
+  --color-announcement: #F3F0E6;
+  --color-background: #FAF9F6;
+  --color-secondary-bg: #F3F0E6;
+  --color-card: #FFFFFF;
+  --color-card-hover: #F3F0E6;
+  --color-text-primary: #26352A;
+  --color-text-secondary: #50574F;
+  --color-sale: #B94343;
+  --color-footer-bg: #F3F0E6;
+  --color-footer-text: #50574F;
+  --color-accent: #A8BFA3;
 }
 
 /* ==========================================================================
@@ -158,27 +162,28 @@ body.admin-body,
   html {
     scroll-behavior: smooth;
     font-family: var(--font-site);
-    color-scheme: dark;
+    color-scheme: light;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    background-color: #0b0b0b !important;
-    color: #FFFFFF;
+    background-color: #FAF9F6 !important;
+    color: #50574F;
     overflow-x: clip;
     font-family: var(--font-site);
   }
 
   #root {
     min-height: 100vh;
-    background-color: #0b0b0b !important;
-    color: #FFFFFF;
+    background-color: #FAF9F6 !important;
+    color: #50574F;
     font-family: var(--font-site);
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
+    color: #26352A;
   }
 
   button, input, textarea, select {
@@ -186,8 +191,8 @@ body.admin-body,
   }
 
   ::selection {
-    background-color: #D6A52A;
-    color: #000000;
+    background-color: #DCE8D5;
+    color: #26352A;
   }
 }
 
@@ -213,85 +218,99 @@ body.admin-body,
 }
 
 /* ==========================================================================
-   PREMIUM CROMA-INSPIRED DARK THEME SURFACES & BUTTONS
+   PREMIUM OFF-WHITE & SAGE THEME SURFACES & BUTTONS
    ========================================================================== */
 
-/* Navbar & Mega Menu Surfaces */
+/* Navbar & Surfaces */
 .bg-navbar {
-  background-color: #000000;
+  background-color: #FAF9F6;
 }
 
 .border-titanium {
-  border-color: #383838;
+  border-color: #E2E6DC;
 }
 
 .text-champagne {
-  color: #D6A52A;
+  color: #355E3B;
 }
 
 .text-electric {
-  color: #D6A52A;
+  color: #355E3B;
 }
 
 /* Dropdown & Modal Surfaces */
 .glass-dropdown {
-  background: #202020;
-  border: 1px solid #383838;
-  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.6);
-  color: #FFFFFF;
+  background: #FFFFFF;
+  border: 1px solid #E2E6DC;
+  box-shadow: 0 10px 30px -5px rgba(38, 53, 42, 0.08);
+  color: #50574F;
 }
 
 .glass-titanium {
-  background: #242424;
-  border: 1px solid #383838;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+  background: #FFFFFF;
+  border: 1px solid #E2E6DC;
+  box-shadow: 0 4px 20px -2px rgba(38, 53, 42, 0.05);
 }
 
 .glass-luxury-dark {
-  background: #202020;
-  border: 1px solid #383838;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  background: #F3F0E6;
+  border: 1px solid #E2E6DC;
+  box-shadow: 0 10px 25px rgba(38, 53, 42, 0.06);
 }
 
 .glass-luxury-light {
-  background: #242424;
-  border: 1px solid #383838;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background: #FFFFFF;
+  border: 1px solid #E2E6DC;
+  box-shadow: 0 4px 15px rgba(38, 53, 42, 0.04);
 }
 
 /* Global Button Classes */
 .btn-primary {
-  background-color: #D6A52A;
-  color: #000000;
+  background-color: #355E3B;
+  color: #FFFFFF;
   font-weight: 700;
   transition: all 0.2s ease-in-out;
 }
 .btn-primary:hover {
-  background-color: #E5B93B;
+  background-color: #294A30;
 }
 
 .btn-secondary {
-  background-color: #242424;
-  color: #FFFFFF;
-  border: 1px solid #444444;
+  background-color: #DCE8D5;
+  color: #294A30;
+  border: 1px solid #A8BFA3;
   font-weight: 700;
   transition: all 0.2s ease-in-out;
 }
 .btn-secondary:hover {
-  background-color: #2D2D2D;
-  border-color: #D6A52A;
+  background-color: #C9DCC3;
+  border-color: #355E3B;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #355E3B;
+  border: 1px solid #A8BFA3;
+  font-weight: 700;
+  transition: all 0.2s ease-in-out;
+}
+.btn-outline:hover {
+  background-color: #F3F0E6;
+  border-color: #355E3B;
+  color: #294A30;
 }
 
 /* Input Styles */
 input, textarea, select {
-  background-color: #242424;
-  color: #FFFFFF;
-  border-color: #444444;
+  background-color: #FFFFFF;
+  color: #26352A;
+  border-color: #E2E6DC;
 }
 
 input:focus, textarea:focus, select:focus {
-  border-color: #D6A52A !important;
+  border-color: #8BA889 !important;
   outline: none;
+  box-shadow: 0 0 0 2px rgba(139, 168, 137, 0.2);
 }
 
 /* ==========================================================================
@@ -436,63 +455,59 @@ input:focus, textarea:focus, select:focus {
 }
 
 /* ==========================================================================
-   CROMA-INSPIRED ANIMATED RGB GRADIENT ATMOSPHERE
-   Left: Subtle dark burgundy (#501B28) & red glow
-   Center: Deep black (#000000) & charcoal (#111111)
-   Right: Warm amber (#6B451B) & golden orange (#8A5A16)
-   Bottom: Subtle purple (#28162C) & reddish tones
+   AMBIENT ORGANIC SAGE & WARM CREAM GLOW ATMOSPHERE
    ========================================================================== */
 
 @keyframes cromaAuraShiftLeft {
   0% {
     transform: translate(0, 0) scale(1);
-    opacity: 0.38;
+    opacity: 0.45;
   }
   33% {
     transform: translate(35px, 25px) scale(1.08);
-    opacity: 0.48;
+    opacity: 0.55;
   }
   66% {
     transform: translate(15px, -30px) scale(0.96);
-    opacity: 0.34;
+    opacity: 0.40;
   }
   100% {
     transform: translate(-25px, 20px) scale(1.04);
-    opacity: 0.44;
+    opacity: 0.50;
   }
 }
 
 @keyframes cromaAuraShiftRight {
   0% {
     transform: translate(0, 0) scale(1);
-    opacity: 0.32;
+    opacity: 0.40;
   }
   33% {
     transform: translate(-30px, -20px) scale(1.10);
-    opacity: 0.42;
+    opacity: 0.50;
   }
   66% {
     transform: translate(-10px, 35px) scale(0.95);
-    opacity: 0.28;
+    opacity: 0.35;
   }
   100% {
     transform: translate(25px, -15px) scale(1.05);
-    opacity: 0.38;
+    opacity: 0.45;
   }
 }
 
 @keyframes cromaAuraShiftBottom {
   0% {
     transform: translate(0, 0) scale(1);
-    opacity: 0.35;
+    opacity: 0.40;
   }
   50% {
     transform: translate(30px, -25px) scale(1.06);
-    opacity: 0.46;
+    opacity: 0.55;
   }
   100% {
     transform: translate(-20px, 15px) scale(0.97);
-    opacity: 0.30;
+    opacity: 0.38;
   }
 }
 
@@ -502,7 +517,7 @@ input:focus, textarea:focus, select:focus {
     transform: scale(0.98);
   }
   50% {
-    opacity: 0.58;
+    opacity: 0.60;
     transform: scale(1.02);
   }
   100% {
@@ -511,11 +526,11 @@ input:focus, textarea:focus, select:focus {
   }
 }
 
-/* Ambient RGB Floating Orbs */
+/* Ambient Soft Sage & Warm Cream Floating Orbs */
 .croma-rgb-orb-left {
   position: absolute;
   border-radius: 9999px;
-  background: radial-gradient(circle, #501B28 0%, rgba(80, 27, 40, 0.45) 45%, transparent 75%);
+  background: radial-gradient(circle, rgba(168, 191, 163, 0.45) 0%, rgba(220, 232, 213, 0.25) 45%, transparent 75%);
   filter: blur(90px);
   pointer-events: none;
   animation: cromaAuraShiftLeft 22s ease-in-out infinite alternate;
@@ -525,7 +540,7 @@ input:focus, textarea:focus, select:focus {
 .croma-rgb-orb-right {
   position: absolute;
   border-radius: 9999px;
-  background: radial-gradient(circle, #8A5A16 0%, rgba(138, 90, 22, 0.4) 45%, transparent 75%);
+  background: radial-gradient(circle, rgba(243, 240, 230, 0.70) 0%, rgba(220, 232, 213, 0.30) 45%, transparent 75%);
   filter: blur(95px);
   pointer-events: none;
   animation: cromaAuraShiftRight 26s ease-in-out infinite alternate;
@@ -535,7 +550,7 @@ input:focus, textarea:focus, select:focus {
 .croma-rgb-orb-bottom {
   position: absolute;
   border-radius: 9999px;
-  background: radial-gradient(circle, #28162C 0%, rgba(40, 22, 44, 0.45) 45%, transparent 75%);
+  background: radial-gradient(circle, rgba(220, 232, 213, 0.45) 0%, rgba(168, 191, 163, 0.20) 45%, transparent 75%);
   filter: blur(85px);
   pointer-events: none;
   animation: cromaAuraShiftBottom 24s ease-in-out infinite alternate;
@@ -545,14 +560,13 @@ input:focus, textarea:focus, select:focus {
 .croma-rgb-orb-amber {
   position: absolute;
   border-radius: 9999px;
-  background: radial-gradient(circle, #6B451B 0%, rgba(107, 69, 27, 0.35) 45%, transparent 75%);
+  background: radial-gradient(circle, rgba(243, 240, 230, 0.60) 0%, rgba(168, 191, 163, 0.25) 45%, transparent 75%);
   filter: blur(90px);
   pointer-events: none;
   animation: cromaAuraShiftRight 20s ease-in-out infinite alternate;
   will-change: transform, opacity;
 }
 
-/* Hero Ambient Aura */
 .croma-hero-aura {
   animation: cromaHeroPulse 14s ease-in-out infinite alternate;
   will-change: transform, opacity;

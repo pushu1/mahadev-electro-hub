@@ -249,12 +249,12 @@ export default function WhyChooseUs() {
       id="why-choose-us"
       ref={sectionRef}
       aria-label="Why Choose Mahadev Electro Hub"
-      className="relative py-16 sm:py-20 lg:py-28 bg-[#0B0B0B] border-t border-[#202020] overflow-hidden select-none"
+      className="relative py-16 sm:py-20 lg:py-28 bg-[#F3F0E6] border-t border-[#E2E6DC] overflow-hidden select-none"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-center">
           
-          {/* Left Column: Brand Introduction (Completely Preserved) */}
+          {/* Left Column: Brand Introduction */}
           <div
             data-left-intro="true"
             className={`lg:col-span-5 flex flex-col items-start text-left transition-all duration-700 ease-out ${
@@ -264,37 +264,37 @@ export default function WhyChooseUs() {
             }`}
           >
             {/* Eyebrow */}
-            <div className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#D6A52A] mb-3">
+            <div className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#355E3B] mb-3">
               <span>{activeContent.eyebrow}</span>
             </div>
 
             {/* Main Heading */}
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-heading font-extrabold text-[#FFFFFF] tracking-tight leading-[1.2] mb-3">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-heading font-extrabold text-[#26352A] tracking-tight leading-[1.2] mb-3">
               {activeContent.heading}
             </h2>
 
-            {/* Subtle Animated Gold Underline */}
-            <div className="w-full h-[2.5px] bg-[#202020] rounded-full mb-5 overflow-hidden">
+            {/* Subtle Animated Sage Underline */}
+            <div className="w-full h-[2.5px] bg-[#E2E6DC] rounded-full mb-5 overflow-hidden">
               <div
                 data-gold-underline="true"
-                className={`h-full bg-gradient-to-r from-[#D6A52A] via-[#F2C75C] to-transparent transition-all duration-1000 ease-out rounded-full ${
+                className={`h-full bg-gradient-to-r from-[#355E3B] via-[#2E7D46] to-transparent transition-all duration-1000 ease-out rounded-full ${
                   hasEntered || reducedMotion ? 'w-32 sm:w-44 opacity-100' : 'w-0 opacity-0'
                 }`}
               />
             </div>
 
             {/* Supporting Description */}
-            <p className="text-sm sm:text-base text-[#B5B5B5] leading-relaxed mb-8 max-w-lg font-normal">
+            <p className="text-sm sm:text-base text-[#50574F] leading-relaxed mb-8 max-w-lg font-normal">
               {activeContent.description}
             </p>
 
             {/* Small CTA Button */}
             <Link
               to="/shop"
-              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-[#0B0B0B] bg-[#D6A52A] hover:bg-[#F2C75C] active:scale-[0.98] transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-[#D6A52A]/20"
+              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-[#355E3B] hover:bg-[#294A30] active:scale-[0.98] transition-all duration-300 shadow-sm hover:shadow-md hover:shadow-[#355E3B]/20"
             >
               <span>{activeContent.cta}</span>
-              <ArrowRight className="w-4 h-4 text-[#0B0B0B] transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 text-white transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
 
@@ -318,10 +318,10 @@ export default function WhyChooseUs() {
               hasEntered || reducedMotion ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             }`}
           >
-            {/* Restrained Gold Ambient Glow */}
+            {/* Restrained Sage Ambient Glow */}
             <div
               className={`absolute -top-12 -right-12 w-72 sm:w-96 h-72 sm:h-96 rounded-full blur-3xl pointer-events-none -z-0 transition-opacity duration-700 ${
-                isExpanded ? 'bg-[#D6A52A]/[0.08] opacity-100' : 'bg-[#D6A52A]/[0.04] opacity-70'
+                isExpanded ? 'bg-[#A8BFA3]/[0.15] opacity-100' : 'bg-[#A8BFA3]/[0.08] opacity-70'
               }`}
               aria-hidden="true"
             />
@@ -344,28 +344,28 @@ export default function WhyChooseUs() {
                   >
                     {/* Inner Card Presentation */}
                     <div
-                      className={`w-full h-full min-h-[180px] sm:min-h-[200px] bg-[#202020] rounded-xl p-4 sm:p-6 border ${
+                      className={`w-full h-full min-h-[180px] sm:min-h-[200px] bg-[#FFFFFF] rounded-xl p-4 sm:p-6 border ${
                         isExpanded
-                          ? 'border-[rgba(255,255,255,0.12)] hover:border-[#D6A52A] shadow-md hover:shadow-xl hover:shadow-[#D6A52A]/15 hover:-translate-y-1.5'
+                          ? 'border-[#E2E6DC] hover:border-[#A8BFA3] shadow-sm hover:shadow-xl hover:shadow-[#A8BFA3]/15 hover:-translate-y-1.5'
                           : idx === 0
-                            ? 'border-[rgba(255,255,255,0.15)] shadow-2xl shadow-black/80'
-                            : 'border-[rgba(255,255,255,0.08)] shadow-lg shadow-black/60'
+                            ? 'border-[#E2E6DC] shadow-xl shadow-black/5'
+                            : 'border-[#E2E6DC] shadow-md shadow-black/5'
                       } transition-all duration-300 ease-out flex flex-col justify-between group/card`}
                     >
                       {/* Top: Icon & Indicator */}
                       <div>
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-[#181818] border border-[rgba(255,255,255,0.10)] group-hover/card:border-[#D6A52A]/40 flex items-center justify-center mb-3 sm:mb-4 transition-all duration-300 group-hover/card:scale-105 shrink-0">
-                          <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#D6A52A] transition-transform duration-300" />
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-[#F3F0E6] border border-[#E2E6DC] group-hover/card:border-[#A8BFA3] flex items-center justify-center mb-3 sm:mb-4 transition-all duration-300 group-hover/card:scale-105 shrink-0">
+                          <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#355E3B] transition-transform duration-300" />
                         </div>
 
                         {/* Title */}
-                        <h3 className="font-heading font-bold text-sm sm:text-base lg:text-lg text-[#FFFFFF] mb-1.5 group-hover/card:text-[#F2C75C] transition-colors duration-200">
+                        <h3 className="font-heading font-bold text-sm sm:text-base lg:text-lg text-[#26352A] mb-1.5 group-hover/card:text-[#355E3B] transition-colors duration-200">
                           {feature.title}
                         </h3>
                       </div>
 
                       {/* Bottom: Description */}
-                      <p className="text-[11px] sm:text-xs lg:text-sm text-[#B5B5B5] leading-snug sm:leading-relaxed font-normal">
+                      <p className="text-[11px] sm:text-xs lg:text-sm text-[#50574F] leading-snug sm:leading-relaxed font-normal">
                         {feature.desc}
                       </p>
                     </div>

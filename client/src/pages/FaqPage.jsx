@@ -104,19 +104,19 @@ export default function FaqPage() {
   const currentFaq = faqData[language] || faqData.en;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0B0B0B] text-white">
+    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#50574F]">
       <Header />
 
       <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 w-full">
         {/* Page Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 md:mb-12">
-          <span className="text-xs font-extrabold uppercase tracking-widest text-[#D6A52A] block mb-2">
+          <span className="text-xs font-extrabold uppercase tracking-widest text-[#355E3B] block mb-2">
             {currentFaq.eyebrow}
           </span>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-white tracking-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-[#26352A] tracking-tight">
             {currentFaq.title}
           </h1>
-          <p className="text-xs sm:text-sm text-[#C4C4C4] mt-3 leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#50574F] mt-3 leading-relaxed">
             {currentFaq.subtitle}
           </p>
         </div>
@@ -131,8 +131,8 @@ export default function FaqPage() {
                 key={idx}
                 className={`rounded-xl border transition-all duration-300 overflow-hidden ${
                   isOpen
-                    ? 'bg-[#141414] border-[#D6A52A]/70 shadow-[0_4px_24px_rgba(214,165,42,0.12)]'
-                    : 'bg-[#141414] border-[#2E2E2E] hover:border-[#444444]'
+                    ? 'bg-[#FFFFFF] border-[#355E3B] shadow-sm'
+                    : 'bg-[#FFFFFF] border-[#E2E6DC] hover:border-[#A8BFA3]'
                 }`}
               >
                 {/* Question Button */}
@@ -140,26 +140,26 @@ export default function FaqPage() {
                   type="button"
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
                   aria-expanded={isOpen}
-                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-heading font-bold text-sm sm:text-base text-white hover:text-[#D6A52A] transition-colors cursor-pointer select-none"
+                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-heading font-bold text-sm sm:text-base text-[#26352A] hover:text-[#355E3B] transition-colors cursor-pointer select-none"
                 >
                   <span className="flex items-center gap-3">
-                    <HelpCircle className="w-4 h-4 text-[#D6A52A] shrink-0" />
+                    <HelpCircle className="w-4 h-4 text-[#355E3B] shrink-0" />
                     <span className="leading-snug">{faq.q}</span>
                   </span>
                   <div
                     className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
                       isOpen
-                        ? 'bg-[#D6A52A]/20 text-[#D6A52A] rotate-180'
-                        : 'bg-white/5 text-[#888888]'
+                        ? 'bg-[#DCE8D5]/70 text-[#294A30] rotate-180'
+                        : 'bg-[#F3F0E6] text-[#7A8277]'
                     }`}
                   >
-                    <ChevronDown className="w-4 h-4 text-[#D6A52A]" />
+                    <ChevronDown className="w-4 h-4 text-[#355E3B]" />
                   </div>
                 </button>
 
-                {/* Answer Container: Dark Charcoal Background (#1B1B1B) with Readable Light Grey (#C4C4C4) Text */}
+                {/* Answer Container */}
                 {isOpen && (
-                  <div className="px-5 pb-5 pt-3 text-xs sm:text-sm text-[#C4C4C4] leading-relaxed border-t border-[#262626] bg-[#1B1B1B] animate-fadeIn">
+                  <div className="px-5 pb-5 pt-3 text-xs sm:text-sm text-[#50574F] leading-relaxed border-t border-[#E2E6DC] bg-[#FAF9F6] animate-fadeIn">
                     <p className="whitespace-normal break-words">{faq.a}</p>
                   </div>
                 )}
@@ -169,16 +169,16 @@ export default function FaqPage() {
         </div>
 
         {/* Helpful Contact Box */}
-        <div className="mt-12 p-6 rounded-2xl bg-[#141414] border border-[#2E2E2E] text-center max-w-xl mx-auto shadow-md">
-          <p className="text-xs sm:text-sm text-[#C4C4C4] mb-4">
+        <div className="mt-12 p-6 rounded-2xl bg-[#FFFFFF] border border-[#E2E6DC] text-center max-w-xl mx-auto shadow-sm">
+          <p className="text-xs sm:text-sm text-[#50574F] mb-4">
             {currentFaq.needMoreHelp}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
               href="tel:+917014248415"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#1F1F1F] hover:bg-[#282828] border border-[#383838] hover:border-[#D6A52A] text-white hover:text-[#D6A52A] font-bold text-xs transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#FFFFFF] hover:bg-[#F3F0E6] border border-[#E2E6DC] hover:border-[#355E3B] text-[#26352A] hover:text-[#355E3B] font-bold text-xs transition-colors shadow-2xs"
             >
-              <Phone className="w-3.5 h-3.5 text-[#D6A52A]" />
+              <Phone className="w-3.5 h-3.5 text-[#355E3B]" />
               <span>{currentFaq.callUs}</span>
             </a>
             <a

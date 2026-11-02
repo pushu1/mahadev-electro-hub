@@ -10,51 +10,63 @@ export default {
         'xs': '380px',
       },
       colors: {
+        // Official Mahadev Electro Hub Organic Theme Palette
+        theme: {
+          page: '#FAF9F6',          // Warm Off-White (Main page background)
+          cream: '#F3F0E6',         // Soft Cream (Secondary section background)
+          surface: '#FFFFFF',       // Pure Warm White (Cards & content surfaces)
+          sage: '#A8BFA3',          // Soft Sage Green (Primary accent)
+          mint: '#DCE8D5',          // Light Mint Green (Secondary accent)
+          primary: '#355E3B',       // Forest Green (Primary buttons)
+          primaryHover: '#294A30',  // Deep Forest Green (Button hover)
+          heading: '#26352A',       // Deep Charcoal Green (Main headings)
+          body: '#50574F',          // Soft Dark Grey (Body text)
+          muted: '#7A8277',         // Grey Sage (Muted text)
+          border: '#E2E6DC',        // Light Sage Grey (Borders and dividers)
+          inputBg: '#FFFFFF',       // Warm White (Input background)
+          inputBorder: '#E2E6DC',   // Light Sage Grey border
+          inputFocus: '#8BA889',    // Sage Green focus ring
+          success: '#2E7D46',       // Green (Success states)
+          warning: '#B7791F',       // Warm Amber (Warning states)
+          error: '#B94343',         // Muted Red (Error states)
+        },
+        // Backward-compatibility Brand Mapping
         brand: {
-          // Croma RGB Gradient Palette
-          rgbBlack: '#000000',
-          rgbCharcoal: '#111111',
-          rgbBurgundy: '#501B28',
-          rgbPurple: '#28162C',
-          rgbAmber: '#6B451B',
-          rgbGoldenOrange: '#8A5A16',
-
-          // Premium Croma-Inspired Dark Theme Palette
-          navbar: '#000000',
-          mainBg: '#181818',
-          secondaryBg: '#202020',
-          card: '#242424',
-          cardHover: '#2D2D2D',
-          textPrimary: '#FFFFFF',
-          textSecondary: '#B3B3B3',
-          border: '#383838',
-          gold: '#D6A52A',
-          goldHover: '#E5B93B',
-          inputBg: '#242424',
-          inputBorder: '#444444',
-          sale: '#E53935',
-          success: '#16803D',
-          error: '#D92D20',
-          footer: '#000000',
-          footerText: '#FFFFFF',
+          navbar: '#FAF9F6',
+          mainBg: '#FAF9F6',
+          secondaryBg: '#F3F0E6',
+          card: '#FFFFFF',
+          cardHover: '#F3F0E6',
+          textPrimary: '#26352A',
+          textSecondary: '#50574F',
+          border: '#E2E6DC',
+          gold: '#355E3B',
+          goldHover: '#294A30',
+          inputBg: '#FFFFFF',
+          inputBorder: '#E2E6DC',
+          sale: '#B94343',
+          success: '#2E7D46',
+          error: '#B94343',
+          footer: '#F3F0E6',
+          footerText: '#50574F',
 
           // Compatibility / Semantic Aliases
-          primary: '#D6A52A',
-          primaryHover: '#E5B93B',
-          accent: '#D6A52A',
-          orange: '#D6A52A',
-          teal: '#D6A52A',
-          tealHover: '#E5B93B',
-          black: '#000000',
-          charcoal: '#181818',
-          dark: '#181818',
-          light: '#202020',
-          surface: '#242424',
-          offwhite: '#242424',
-          announcement: '#000000',
-          heroBg: '#181818',
-          heroSubtext: '#B3B3B3',
-          borderDark: '#383838',
+          primary: '#355E3B',
+          primaryHover: '#294A30',
+          accent: '#A8BFA3',
+          orange: '#355E3B',
+          teal: '#355E3B',
+          tealHover: '#294A30',
+          black: '#26352A',
+          charcoal: '#FAF9F6',
+          dark: '#FAF9F6',
+          light: '#F3F0E6',
+          surface: '#FFFFFF',
+          offwhite: '#FAF9F6',
+          announcement: '#F3F0E6',
+          heroBg: '#FAF9F6',
+          heroSubtext: '#50574F',
+          borderDark: '#E2E6DC',
         }
       },
       fontFamily: {

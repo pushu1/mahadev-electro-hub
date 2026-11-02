@@ -329,20 +329,20 @@ export default function CategoryGrid({ categories = [] }) {
   return (
     <section
       ref={sectionRef}
-      className="py-12 md:py-16 bg-[#0a0a0a]/90 relative overflow-hidden"
+      className="py-12 md:py-16 bg-[#F3F0E6] relative overflow-hidden"
       aria-label="Shop by Category Slider"
     >
       {/* Container aligned and matching Most Loved by People section */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header: Clean Heading and View All Link */}
-        <div className="flex items-center justify-between pb-4 mb-6 md:mb-8 border-b border-[#383838]">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-heading font-extrabold text-white tracking-tight">
+        <div className="flex items-center justify-between pb-4 mb-6 md:mb-8 border-b border-[#E2E6DC]">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-heading font-extrabold text-[#26352A] tracking-tight">
             {t('shopByCategory')}
           </h2>
 
           <Link
             to="/shop"
-            className="text-xs md:text-sm font-bold text-[#D6A52A] hover:text-[#E5B93B] flex items-center gap-1.5 transition-colors group"
+            className="text-xs md:text-sm font-bold text-[#355E3B] hover:text-[#294A30] flex items-center gap-1.5 transition-colors group"
           >
             <span>{t('viewAll')}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
@@ -380,10 +380,10 @@ export default function CategoryGrid({ categories = [] }) {
                   to={`/category/${cat.slug}`}
                   onClick={handleCardClick}
                   draggable={false}
-                  className="group shrink-0 flex flex-col justify-between w-[240px] xs:w-[260px] sm:w-[280px] md:w-[300px] lg:w-[320px] bg-[#242424] hover:bg-[#2D2D2D] border border-[#383838] hover:border-[#D6A52A] shadow-md hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden select-none"
+                  className="group shrink-0 flex flex-col justify-between w-[240px] xs:w-[260px] sm:w-[280px] md:w-[300px] lg:w-[320px] bg-[#FFFFFF] hover:bg-[#FAF9F6] border border-[#E2E6DC] hover:border-[#8BA889] shadow-sm hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden select-none"
                 >
-                  {/* Category Image at Top (Pure White Background, Original aspect ratio preserved) */}
-                  <div className="relative aspect-square w-full overflow-hidden bg-[#1E1E1E] flex items-center justify-center p-3 sm:p-4 border-b border-[#383838]">
+                  {/* Category Image at Top (Pure Warm White Background) */}
+                  <div className="relative aspect-square w-full overflow-hidden bg-[#FAF9F6] flex items-center justify-center p-3 sm:p-4 border-b border-[#E2E6DC]">
                     <img
                       src={imageSrc}
                       alt={name}
@@ -396,31 +396,31 @@ export default function CategoryGrid({ categories = [] }) {
                         e.currentTarget.src = cat.image || '/images/logo.png';
                       }}
                     />
-                    {/* Subtle luxury antique gold accent line on bottom of image */}
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#D6A52A] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                    {/* Subtle green accent line on bottom of image */}
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#355E3B] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                   </div>
 
-                  {/* Card Body: Name, Description, and Antique Gold Explore Products Button */}
+                  {/* Card Body: Name, Description, and Forest Green Explore Products Button */}
                   <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between bg-transparent">
                     <div>
-                      <h3 className="font-heading font-extrabold text-sm sm:text-base text-white group-hover:text-[#D6A52A] transition-colors line-clamp-1 leading-snug">
+                      <h3 className="font-heading font-extrabold text-sm sm:text-base text-[#26352A] group-hover:text-[#355E3B] transition-colors line-clamp-1 leading-snug">
                         {name}
                       </h3>
                       {hindiSub && (
-                        <span className="text-[11px] sm:text-xs text-[#B3B3B3] font-devanagari block mt-0.5 opacity-90 line-clamp-1">
+                        <span className="text-[11px] sm:text-xs text-[#50574F] font-devanagari block mt-0.5 opacity-90 line-clamp-1">
                           {hindiSub}
                         </span>
                       )}
                       {desc && (
-                        <p className="text-xs text-[#B3B3B3] line-clamp-2 mt-2 leading-relaxed">
+                        <p className="text-xs text-[#50574F] line-clamp-2 mt-2 leading-relaxed">
                           {desc}
                         </p>
                       )}
                     </div>
 
-                    {/* Explore Products Button with Antique Gold Background & Pure White Text */}
-                    <div className="w-full mt-4 pt-3 border-t border-[#383838]">
-                      <div className="category-explore-btn w-full py-2.5 px-4 bg-[#D6A52A] hover:bg-[#E5B93B] text-[#000000] font-bold text-xs sm:text-sm rounded-lg flex items-center justify-center gap-2 shadow-sm transition-all duration-300">
+                    {/* Explore Products Button with Forest Green Background & White Text */}
+                    <div className="w-full mt-4 pt-3 border-t border-[#E2E6DC]">
+                      <div className="category-explore-btn w-full py-2.5 px-4 bg-[#355E3B] hover:bg-[#294A30] text-[#FFFFFF] font-bold text-xs sm:text-sm rounded-lg flex items-center justify-center gap-2 shadow-xs transition-all duration-300">
                         <span>{t('exploreProducts')}</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
                       </div>

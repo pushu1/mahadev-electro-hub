@@ -76,33 +76,33 @@ export default function CustomerLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0B0B0B] text-white selection:bg-[#D6A52A] selection:text-black">
+    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#50574F] selection:bg-[#DCE8D5] selection:text-[#26352A]">
       <Header />
 
       <main className="flex-1 max-w-md mx-auto px-4 py-12 sm:py-16 w-full">
-        <div className="bg-[#141414] p-6 sm:p-8 rounded-2xl border border-[#262626] shadow-2xl space-y-6">
+        <div className="bg-[#FFFFFF] p-6 sm:p-8 rounded-2xl border border-[#E2E6DC] shadow-sm space-y-6">
           <div className="text-center">
-            <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#D6A52A] bg-[#1E1E1E] mx-auto mb-3 p-1">
+            <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#355E3B] bg-[#FAF9F6] mx-auto mb-3 p-1">
               <img src="/images/logo.png" alt="Logo" className="w-full h-full object-contain" />
             </div>
-            <h1 className="text-xl sm:text-2xl font-heading font-extrabold text-white">
+            <h1 className="text-xl sm:text-2xl font-heading font-extrabold text-[#26352A]">
               {c.title}
             </h1>
-            <p className="text-xs sm:text-sm text-[#D1D5DB] mt-1.5 leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#50574F] mt-1.5 leading-relaxed">
               {c.desc}
             </p>
           </div>
 
           {error && (
-            <div className="p-3 bg-red-950/50 border border-red-500/40 text-red-200 text-xs rounded-lg flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+            <div className="p-3 bg-red-50 border border-red-200 text-[#B94343] text-xs rounded-lg flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0 text-[#B94343]" />
               <span>{error}</span>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-[#E0E0E0] mb-1.5">
+              <label className="block text-xs font-semibold text-[#26352A] mb-1.5">
                 {c.identifierLabel} *
               </label>
               <div className="relative">
@@ -112,14 +112,14 @@ export default function CustomerLoginPage() {
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
                   placeholder={c.identifierPlaceholder}
-                  className="w-full pl-9 pr-3.5 py-2.5 text-xs bg-[#1F1F1F] text-white placeholder-[#777777] border border-[#383838] rounded-lg focus:outline-none focus:border-[#D6A52A] transition-colors"
+                  className="w-full pl-9 pr-3.5 py-2.5 text-xs bg-[#FFFFFF] text-[#26352A] placeholder-[#7A8277] border border-[#E2E6DC] rounded-lg focus:outline-none focus:border-[#355E3B] transition-colors"
                 />
-                <Phone className="w-4 h-4 text-[#D6A52A] absolute left-3 top-3" />
+                <Phone className="w-4 h-4 text-[#355E3B] absolute left-3 top-3" />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#E0E0E0] mb-1.5">
+              <label className="block text-xs font-semibold text-[#26352A] mb-1.5">
                 {c.passwordLabel} *
               </label>
               <div className="relative">
@@ -129,16 +129,16 @@ export default function CustomerLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-9 pr-3.5 py-2.5 text-xs bg-[#1F1F1F] text-white placeholder-[#777777] border border-[#383838] rounded-lg focus:outline-none focus:border-[#D6A52A] transition-colors"
+                  className="w-full pl-9 pr-3.5 py-2.5 text-xs bg-[#FFFFFF] text-[#26352A] placeholder-[#7A8277] border border-[#E2E6DC] rounded-lg focus:outline-none focus:border-[#355E3B] transition-colors"
                 />
-                <Lock className="w-4 h-4 text-[#D6A52A] absolute left-3 top-3" />
+                <Lock className="w-4 h-4 text-[#355E3B] absolute left-3 top-3" />
               </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-[#D6A52A] hover:bg-[#E5B93B] text-black font-extrabold text-xs sm:text-sm rounded-lg transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer active:scale-95 disabled:opacity-50"
+              className="w-full py-3 bg-[#355E3B] hover:bg-[#294A30] text-white font-extrabold text-xs sm:text-sm rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer active:scale-95 disabled:opacity-50"
             >
               {loading ? (
                 <span>{c.submitting}</span>
@@ -151,9 +151,9 @@ export default function CustomerLoginPage() {
             </button>
           </form>
 
-          <div className="pt-4 border-t border-[#262626] text-center text-xs text-[#D1D5DB]">
+          <div className="pt-4 border-t border-[#E2E6DC] text-center text-xs text-[#50574F]">
             {c.noAccount}{' '}
-            <Link to="/register" className="text-[#D6A52A] hover:text-[#E5B93B] font-bold hover:underline">
+            <Link to="/register" className="text-[#355E3B] hover:text-[#294A30] font-bold hover:underline">
               {c.registerLink}
             </Link>
           </div>

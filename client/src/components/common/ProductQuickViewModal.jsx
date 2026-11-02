@@ -99,29 +99,29 @@ export default function ProductQuickViewModal() {
     >
       {/* Frosted Liquid Glass Backdrop */}
       <div
-        className="fixed inset-0 bg-black/75 backdrop-blur-md transition-opacity"
+        className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
         onClick={closeQuickView}
         aria-hidden="true"
       />
 
-      {/* Luxury Liquid-Glass Modal Container */}
-      <div className="relative w-full max-w-4xl bg-[#242424] text-white rounded-3xl overflow-hidden shadow-2xl border border-[#383838] z-10 animate-fadeIn">
+      {/* Modal Container */}
+      <div className="relative w-full max-w-4xl bg-[#FFFFFF] text-[#26352A] rounded-2xl overflow-hidden shadow-2xl border border-[#E2E6DC] z-10 animate-fadeIn">
         {/* Close Button */}
         <button
           type="button"
           onClick={closeQuickView}
-          className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-[#2D2D2D] text-[#B3B3B3] hover:text-white hover:bg-[#383838] transition-all border border-[#444444]"
+          className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-[#F3F0E6] text-[#7A8277] hover:text-[#26352A] hover:bg-[#E2E6DC] transition-all border border-[#E2E6DC]"
           aria-label="Modal Band Karein"
         >
           <X className="w-5 h-5" />
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
-          {/* Left Column: Image Gallery with Glass Depth */}
-          <div className="md:col-span-6 p-6 sm:p-8 bg-[#1E1E1E] flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#383838]">
+          {/* Left Column: Image Gallery */}
+          <div className="md:col-span-6 p-6 sm:p-8 bg-[#FAF9F6] flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#E2E6DC]">
             <div>
               {/* Main Preview with Badges */}
-              <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#181818] border border-[#383838] flex items-center justify-center shadow-inner group">
+              <div className="relative aspect-square rounded-xl overflow-hidden bg-[#FFFFFF] border border-[#E2E6DC] flex items-center justify-center shadow-inner group">
                 <img
                   src={selectedImage || product.mainImage || '/images/logo.png'}
                   alt={title}
@@ -131,12 +131,12 @@ export default function ProductQuickViewModal() {
                 {/* Badges */}
                 <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start">
                   {hasDiscount && (
-                    <span className="bg-[#E53935] text-white text-[11px] font-extrabold px-2.5 py-0.5 rounded-md shadow-md">
+                    <span className="bg-[#B94343] text-white text-[11px] font-extrabold px-2.5 py-0.5 rounded-md shadow-xs">
                       {discountPercent}% OFF
                     </span>
                   )}
                   {product.featured && (
-                    <span className="bg-[#000000]/85 text-[#D6A52A] border border-[#D6A52A]/40 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
+                    <span className="bg-[#DCE8D5] text-[#294A30] border border-[#A8BFA3] text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
                       ★ Featured
                     </span>
                   )}
@@ -146,10 +146,10 @@ export default function ProductQuickViewModal() {
                 <button
                   type="button"
                   onClick={handleWishlistClick}
-                  className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-all shadow-md ${
+                  className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-all shadow-xs ${
                     isWishlisted
                       ? 'bg-red-500 text-white'
-                      : 'bg-[#242424]/90 text-[#B3B3B3] hover:text-[#D6A52A] hover:bg-[#2D2D2D] border border-[#383838]'
+                      : 'bg-[#FFFFFF]/90 text-[#7A8277] hover:text-[#B94343] hover:bg-[#F3F0E6] border border-[#E2E6DC]'
                   }`}
                   aria-label="Wishlist Toggle"
                 >
@@ -165,10 +165,10 @@ export default function ProductQuickViewModal() {
                       key={idx}
                       type="button"
                       onClick={() => setSelectedImage(img)}
-                      className={`w-14 h-14 rounded-xl overflow-hidden border-2 shrink-0 transition-all ${
+                      className={`w-14 h-14 rounded-lg overflow-hidden border-2 shrink-0 transition-all ${
                         selectedImage === img
-                          ? 'border-[#D6A52A] ring-2 ring-[#D6A52A]/30'
-                          : 'border-[#383838] opacity-60 hover:opacity-100'
+                          ? 'border-[#355E3B] ring-2 ring-[#8BA889]/30'
+                          : 'border-[#E2E6DC] opacity-70 hover:opacity-100'
                       }`}
                     >
                       <img src={img} alt={`Thumb ${idx}`} className="w-full h-full object-cover" />
@@ -179,74 +179,74 @@ export default function ProductQuickViewModal() {
             </div>
 
             {/* Quick Trust Bar */}
-            <div className="pt-4 mt-4 border-t border-[#383838] flex items-center justify-between text-[11px] text-[#B3B3B3]">
-              <span className="flex items-center gap-1.5 text-[#D6A52A]">
+            <div className="pt-4 mt-4 border-t border-[#E2E6DC] flex items-center justify-between text-[11px] text-[#7A8277]">
+              <span className="flex items-center gap-1.5 text-[#355E3B] font-semibold">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>Pali Store Verified</span>
               </span>
-              <span className="text-[#B3B3B3]">SKU: {product.sku || 'MEH-ELECTRO'}</span>
+              <span className="text-[#7A8277]">SKU: {product.sku || 'MEH-ELECTRO'}</span>
             </div>
           </div>
 
-          {/* Right Column: Product Specs & Working CTAs */}
+          {/* Right Column: Product Specs & Actions */}
           <div className="md:col-span-6 p-6 sm:p-8 flex flex-col justify-between">
             <div className="space-y-4">
               {/* Category Pill & Stock Status */}
               <div className="flex items-center justify-between flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-widest text-[#D6A52A]">
-                  <Zap className="w-3 h-3 text-[#D6A52A]" />
+                <span className="inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-widest text-[#355E3B]">
+                  <Zap className="w-3 h-3 text-[#355E3B]" />
                   <span>{product.category?.name_en || 'Electricals'}</span>
                 </span>
 
                 {/* Stock Status Badge */}
                 {isOutOfStock ? (
-                  <span className="text-[11px] font-bold text-red-400 bg-red-950/50 border border-red-500/30 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[11px] font-bold text-red-600 bg-red-50 border border-red-200 px-2.5 py-0.5 rounded-full">
                     {t('outOfStock')}
                   </span>
                 ) : isLowStock ? (
-                  <span className="text-[11px] font-bold text-amber-400 bg-amber-950/50 border border-amber-500/30 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[11px] font-bold text-[#B7791F] bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full">
                     {t('onlyLeft').replace('{count}', product.stockQuantity)}
                   </span>
                 ) : (
-                  <span className="text-[11px] font-bold text-emerald-400 bg-emerald-950/50 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[11px] font-bold text-[#2E7D46] bg-green-50 border border-green-200 px-2.5 py-0.5 rounded-full">
                     {t('inStock')} ({product.stockQuantity} Units)
                   </span>
                 )}
               </div>
 
               {/* Title */}
-              <h2 className="text-xl sm:text-2xl font-heading font-extrabold text-white leading-snug">
+              <h2 className="text-xl sm:text-2xl font-heading font-extrabold text-[#26352A] leading-snug">
                 {title}
               </h2>
 
               {/* Rating */}
               <div className="flex items-center gap-2 text-xs">
-                <div className="flex items-center text-[#D6A52A]">
+                <div className="flex items-center text-[#B7791F]">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-3.5 h-3.5 fill-current" />
                   ))}
                 </div>
-                <span className="text-[#B3B3B3] font-semibold">(4.9/5 • Verified Pali Reviews)</span>
+                <span className="text-[#7A8277] font-semibold">(4.9/5 • Verified Pali Reviews)</span>
               </div>
 
               {/* Pricing */}
-              <div className="py-2.5 px-4 rounded-2xl bg-[#181818] border border-[#383838] flex items-baseline gap-3">
-                <span className="text-2xl sm:text-3xl font-extrabold text-[#D6A52A] font-mono">
+              <div className="py-2.5 px-4 rounded-xl bg-[#F3F0E6] border border-[#E2E6DC] flex items-baseline gap-3">
+                <span className="text-2xl sm:text-3xl font-extrabold text-[#26352A] font-mono">
                   ₹{product.price.toLocaleString('en-IN')}
                 </span>
                 {hasDiscount && (
-                  <span className="text-sm text-[#B3B3B3] line-through">
+                  <span className="text-sm text-[#7A8277] line-through">
                     ₹{product.compareAtPrice.toLocaleString('en-IN')}
                   </span>
                 )}
-                <span className="text-[11px] text-[#B3B3B3] ml-auto font-medium">
+                <span className="text-[11px] text-[#7A8277] ml-auto font-medium">
                   GST 18% Included
                 </span>
               </div>
 
               {/* Short Description */}
               {description && (
-                <p className="text-xs sm:text-sm text-[#B3B3B3] line-clamp-3 leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#50574F] line-clamp-3 leading-relaxed">
                   {description}
                 </p>
               )}
@@ -254,14 +254,14 @@ export default function ProductQuickViewModal() {
               {/* Technical Specifications Highlights */}
               {Array.isArray(product.specifications) && product.specifications.length > 0 && (
                 <div className="space-y-1.5 pt-2">
-                  <span className="text-[11px] font-bold text-[#B3B3B3] uppercase tracking-wider block">
+                  <span className="text-[11px] font-bold text-[#7A8277] uppercase tracking-wider block">
                     Technical Specifications:
                   </span>
                   <div className="grid grid-cols-2 gap-2 text-[11px]">
                     {product.specifications.slice(0, 4).map((spec, sIdx) => (
-                      <div key={sIdx} className="bg-[#181818] rounded-lg p-2 border border-[#383838]">
-                        <span className="text-[#B3B3B3] block text-[10px]">{spec.key}:</span>
-                        <strong className="text-white font-mono">{spec.value}</strong>
+                      <div key={sIdx} className="bg-[#FAF9F6] rounded-lg p-2 border border-[#E2E6DC]">
+                        <span className="text-[#7A8277] block text-[10px]">{spec.key}:</span>
+                        <strong className="text-[#26352A] font-mono">{spec.value}</strong>
                       </div>
                     ))}
                   </div>
@@ -270,26 +270,26 @@ export default function ProductQuickViewModal() {
             </div>
 
             {/* Bottom Actions: Quantity + Add To Cart + View Full Page */}
-            <div className="pt-6 mt-4 border-t border-[#383838] space-y-3">
+            <div className="pt-6 mt-4 border-t border-[#E2E6DC] space-y-3">
               <div className="flex items-center gap-3">
                 {/* Quantity Controls */}
-                <div className="flex items-center bg-[#181818] rounded-xl border border-[#383838] p-1">
+                <div className="flex items-center bg-[#FAF9F6] rounded-xl border border-[#E2E6DC] p-1">
                   <button
                     type="button"
                     disabled={quantity <= 1}
                     onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[#B3B3B3] hover:text-white hover:bg-white/5 transition-colors disabled:opacity-30"
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[#50574F] hover:text-[#26352A] hover:bg-black/5 transition-colors disabled:opacity-30"
                   >
                     <Minus className="w-3.5 h-3.5" />
                   </button>
-                  <span className="w-10 text-center text-sm font-bold font-mono text-white">
+                  <span className="w-10 text-center text-sm font-bold font-mono text-[#26352A]">
                     {quantity}
                   </span>
                   <button
                     type="button"
                     disabled={product.stockQuantity && quantity >= product.stockQuantity}
                     onClick={() => setQuantity(prev => prev + 1)}
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[#B3B3B3] hover:text-white hover:bg-white/5 transition-colors disabled:opacity-30"
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[#50574F] hover:text-[#26352A] hover:bg-black/5 transition-colors disabled:opacity-30"
                   >
                     <Plus className="w-3.5 h-3.5" />
                   </button>
@@ -300,12 +300,12 @@ export default function ProductQuickViewModal() {
                   type="button"
                   disabled={isOutOfStock}
                   onClick={handleAddToCart}
-                  className={`flex-1 py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-all ${
+                  className={`flex-1 py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all ${
                     isOutOfStock
-                      ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                      ? 'bg-[#E2E6DC] text-[#7A8277] cursor-not-allowed'
                       : justAdded
-                      ? 'bg-[#16803D] text-white'
-                      : 'bg-[#D6A52A] hover:bg-[#E5B93B] text-[#000000] font-extrabold active:scale-98'
+                      ? 'bg-[#2E7D46] text-white'
+                      : 'bg-[#355E3B] hover:bg-[#294A30] text-[#FFFFFF] font-extrabold active:scale-98'
                   }`}
                 >
                   {justAdded ? (
@@ -326,7 +326,7 @@ export default function ProductQuickViewModal() {
               <button
                 type="button"
                 onClick={handleViewFullPage}
-                className="w-full text-center text-xs font-bold text-[#D6A52A] hover:underline flex items-center justify-center gap-1.5 transition-colors py-1"
+                className="w-full text-center text-xs font-bold text-[#355E3B] hover:underline flex items-center justify-center gap-1.5 transition-colors py-1"
               >
                 <span>Poore Details & Customer Reviews Dekhein</span>
                 <ArrowRight className="w-3.5 h-3.5" />

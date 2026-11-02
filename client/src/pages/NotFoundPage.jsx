@@ -32,24 +32,24 @@ export default function NotFoundPage() {
   const c = texts[language] || texts.en;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0B0B0B] text-white selection:bg-[#D6A52A] selection:text-black">
+    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#50574F] selection:bg-[#DCE8D5] selection:text-[#26352A]">
       <Header />
 
       <main className="flex-1 max-w-lg mx-auto px-4 py-20 text-center flex flex-col items-center justify-center">
-        <span className="text-6xl md:text-8xl font-black text-[#D6A52A] tracking-tight mb-2">
+        <span className="text-6xl md:text-8xl font-black text-[#355E3B] tracking-tight mb-2">
           404
         </span>
-        <h1 className="text-2xl font-heading font-extrabold text-white mb-3">
+        <h1 className="text-2xl font-heading font-extrabold text-[#26352A] mb-3">
           {c.title}
         </h1>
-        <p className="text-xs sm:text-sm text-[#D1D5DB] mb-8 max-w-sm leading-relaxed">
+        <p className="text-xs sm:text-sm text-[#50574F] mb-8 max-w-sm leading-relaxed">
           {c.desc}
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Link
             to="/"
-            className="px-6 py-3 bg-[#D6A52A] hover:bg-[#E5B93B] text-black font-extrabold text-xs sm:text-sm rounded-xl transition-all flex items-center gap-2 shadow-md active:scale-95"
+            className="px-6 py-3 bg-[#355E3B] hover:bg-[#294A30] text-white font-extrabold text-xs sm:text-sm rounded-xl transition-all flex items-center gap-2 shadow-sm active:scale-95"
           >
             <Home className="w-4 h-4" />
             <span>{c.homeBtn}</span>
@@ -57,7 +57,7 @@ export default function NotFoundPage() {
 
           <Link
             to="/shop"
-            className="px-6 py-3 border border-[#383838] bg-[#1E1E1E] text-white hover:border-[#D6A52A] hover:text-[#D6A52A] font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm"
+            className="px-6 py-3 border border-[#E2E6DC] bg-white text-[#26352A] hover:bg-[#F3F0E6] hover:border-[#A8BFA3] font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm active:scale-95"
           >
             <span>{c.shopBtn}</span>
           </Link>

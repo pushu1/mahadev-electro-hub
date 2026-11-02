@@ -67,7 +67,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0b0b0b] text-white relative overflow-x-clip">
+    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#50574F] relative overflow-x-clip">
       <Header />
 
       {/* Persistent Animated Croma RGB Ambient Background Layer */}
