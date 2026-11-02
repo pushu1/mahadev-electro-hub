@@ -17,14 +17,19 @@ const CATEGORY_IMAGE_MAP = {
 
 const getCategoryImage = (cat) => {
   if (!cat) return '/images/logo.png';
+  let img = cat.image || '/images/logo.png';
   if (cat.slug && CATEGORY_IMAGE_MAP[cat.slug]) {
-    return CATEGORY_IMAGE_MAP[cat.slug];
+    img = CATEGORY_IMAGE_MAP[cat.slug];
+  } else {
+    const cleanId = (cat.id || '').replace(/^cat-/, '');
+    if (CATEGORY_IMAGE_MAP[cleanId]) {
+      img = CATEGORY_IMAGE_MAP[cleanId];
+    }
   }
-  const cleanId = (cat.id || '').replace(/^cat-/, '');
-  if (CATEGORY_IMAGE_MAP[cleanId]) {
-    return CATEGORY_IMAGE_MAP[cleanId];
+  if (img.startsWith('/images/categories/') && img.endsWith('.png')) {
+    return img.replace(/\.png$/, '.webp');
   }
-  return cat.image || '/images/logo.png';
+  return img;
 };
 
 export default function CategoryGrid({ categories = [] }) {
@@ -152,7 +157,7 @@ export default function CategoryGrid({ categories = [] }) {
   // Continuous auto-running animation loop via requestAnimationFrame
   useEffect(() => {
     const container = sliderRef.current;
-    if (!container || categories.length === 0) return;
+    if (!container || categories.length === 0 || !isVisible || reducedMotion) return;
 
     let animId;
     let lastTime = null;
@@ -163,8 +168,8 @@ export default function CategoryGrid({ categories = [] }) {
       const delta = Math.min((now - lastTime) / 1000, 0.1);
       lastTime = now;
 
-      // Auto-run only when visible, not hovered on desktop, not actively interacting, and no reduced motion
-      if (isVisibleRef.current && !isHoveredRef.current && !isInteractingRef.current && !reducedMotionRef.current) {
+      // Auto-run only when visible, not hovered on desktop, not actively interacting
+      if (!isHoveredRef.current && !isInteractingRef.current) {
         const singleWidth = singleSetWidthRef.current;
         if (singleWidth > 0) {
           posRef.current += speed * delta;
@@ -185,7 +190,7 @@ export default function CategoryGrid({ categories = [] }) {
     return () => {
       if (animId) cancelAnimationFrame(animId);
     };
-  }, [categories.length]);
+  }, [categories.length, isVisible, reducedMotion]);
 
   // Handle native scroll & seamless wrap during user touch/drag interaction
   const handleScroll = () => {
@@ -383,7 +388,8 @@ export default function CategoryGrid({ categories = [] }) {
                       src={imageSrc}
                       alt={name}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 pointer-events-none select-none"
-                      loading="eager"
+                      loading="lazy"
+                      decoding="async"
                       draggable={false}
                       onError={(e) => {
                         e.currentTarget.onerror = null;

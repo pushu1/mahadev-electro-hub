@@ -65,9 +65,11 @@ export default function MostLovedSection() {
     return () => window.removeEventListener('resize', updateHeaderHeight);
   }, []);
 
-  // Measure scroll progress through the pinned track (smooth requestAnimationFrame)
+  // Measure scroll progress through the pinned track (optimized requestAnimationFrame with IntersectionObserver)
   useEffect(() => {
     let ticking = false;
+    let rafId = null;
+    let isTrackInView = false;
 
     const calculateProgress = () => {
       if (!trackRef.current) return;
@@ -79,6 +81,7 @@ export default function MostLovedSection() {
 
       if (totalScrollable <= 0) {
         setScrollProgress(0);
+        ticking = false;
         return;
       }
 
@@ -86,22 +89,46 @@ export default function MostLovedSection() {
       const scrolled = headerHeight - rect.top;
       const rawProgress = scrolled / totalScrollable;
       const clamped = Math.max(0, Math.min(1, rawProgress));
-      setScrollProgress(clamped);
+
+      setScrollProgress(prev => {
+        // Prevent state update & re-render if delta is microscopic
+        if (Math.abs(prev - clamped) < 0.002) return prev;
+        return clamped;
+      });
+
       ticking = false;
     };
 
     const handleScroll = () => {
+      if (!isTrackInView) return;
       if (!ticking) {
-        window.requestAnimationFrame(calculateProgress);
+        rafId = window.requestAnimationFrame(calculateProgress);
         ticking = true;
       }
     };
+
+    // IntersectionObserver to only bind active scroll calculations when track is near/in viewport
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isTrackInView = entry.isIntersecting;
+        if (isTrackInView) {
+          calculateProgress();
+        }
+      },
+      { threshold: 0, rootMargin: '250px 0px 250px 0px' }
+    );
+
+    if (trackRef.current) {
+      observer.observe(trackRef.current);
+    }
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll, { passive: true });
     calculateProgress();
 
     return () => {
+      if (rafId) window.cancelAnimationFrame(rafId);
+      observer.disconnect();
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
     };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext.jsx';
@@ -11,7 +11,20 @@ export default function FeaturedProducts({ products: initialProducts = [] }) {
   const [products, setProducts] = useState(initialProducts.length > 0 ? initialProducts : DEFAULT_FEATURED_PRODUCTS);
   const [loading, setLoading] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isInView, setIsInView] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const sectionRef = useRef(null);
+
+  // Viewport IntersectionObserver to pause animation when offscreen
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsInView(entry.isIntersecting);
+    }, { threshold: 0.05, rootMargin: '100px 0px 100px 0px' });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Detect accessibility preference
   useEffect(() => {
@@ -89,6 +102,7 @@ export default function FeaturedProducts({ products: initialProducts = [] }) {
 
   return (
     <section
+      ref={sectionRef}
       aria-label="Featured Products"
       className="py-12 md:py-16 bg-[#0c0c0c]/90 border-t border-b border-[#383838] select-none relative overflow-hidden"
     >
@@ -138,7 +152,7 @@ export default function FeaturedProducts({ products: initialProducts = [] }) {
               animationDuration: `${animationDuration}s`,
               animationTimingFunction: 'linear',
               animationIterationCount: 'infinite',
-              animationPlayState: isPaused ? 'paused' : 'running',
+              animationPlayState: (isPaused || !isInView) ? 'paused' : 'running',
             }}
           >
             {displayItems.map((product, idx) => {

@@ -68,12 +68,13 @@ export default function ReelsShowcase() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsInViewport(entry.isIntersecting);
-        if (entry.isIntersecting) {
+        const inView = entry.isIntersecting;
+        setIsInViewport(inView);
+        if (inView) {
           setHasEntered(true);
-          // Play all visible videos muted
+          // Play visible video muted
           Object.entries(videoRefs.current).forEach(([id, video]) => {
-            if (video) {
+            if (video && video.paused) {
               const playPromise = video.play();
               if (playPromise !== undefined) {
                 playPromise
@@ -83,9 +84,7 @@ export default function ReelsShowcase() {
                       [id]: { ...(prev[id] || { isMuted: true }), isPlaying: true }
                     }));
                   })
-                  .catch(() => {
-                    // Handled gracefully if browser restricts autoplay
-                  });
+                  .catch(() => {});
               }
             }
           });
@@ -104,7 +103,7 @@ export default function ReelsShowcase() {
       },
       {
         threshold: 0.15,
-        rootMargin: '0px 0px -20px 0px',
+        rootMargin: '100px 0px 100px 0px',
       }
     );
 
@@ -115,9 +114,9 @@ export default function ReelsShowcase() {
     return () => observer.disconnect();
   }, [reels]);
 
-  // Automatic Horizontal Slider Interval
+  // Automatic Horizontal Slider Interval (Pauses when outside viewport, hovered, or reduced motion)
   useEffect(() => {
-    if (reducedMotion || isPausedHover || reels.length <= 1) return;
+    if (reducedMotion || isPausedHover || !isInViewport || reels.length <= 1) return;
 
     const interval = setInterval(() => {
       if (sliderRef.current) {
@@ -134,7 +133,7 @@ export default function ReelsShowcase() {
     }, 4500);
 
     return () => clearInterval(interval);
-  }, [reducedMotion, isPausedHover, reels.length]);
+  }, [reducedMotion, isPausedHover, isInViewport, reels.length]);
 
   const scrollLeft = () => {
     if (sliderRef.current) {
@@ -337,16 +336,16 @@ export default function ReelsShowcase() {
                   onClick={() => isVideoUrl && togglePlay(reel.id)}
                 >
                   {/* Video or Thumbnail Media Layer - 100% of Card (width: 100%, height: 100%, object-fit: cover) */}
-                  {isVideoUrl ? (
+                  {isVideoUrl && hasEntered ? (
                     <video
                       ref={el => videoRefs.current[reel.id] = el}
                       src={reel.videoUrl}
-                      poster={reel.thumbnailUrl || undefined}
-                      autoPlay
+                      poster={reel.thumbnailUrl || '/images/categories/zatka-machines.png'}
+                      autoPlay={isInViewport}
                       muted={reelState.isMuted}
                       loop
                       playsInline
-                      preload="metadata"
+                      preload="none"
                       onPlay={() => setMediaState(p => ({ ...p, [reel.id]: { ...(p[reel.id] || {}), isPlaying: true } }))}
                       onPause={() => setMediaState(p => ({ ...p, [reel.id]: { ...(p[reel.id] || {}), isPlaying: false } }))}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
@@ -356,6 +355,8 @@ export default function ReelsShowcase() {
                     <img
                       src={reel.thumbnailUrl || '/images/categories/zatka-machines.png'}
                       alt={reel.category || 'Reel Media'}
+                      loading="lazy"
+                      decoding="async"
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       className="w-full h-full object-cover rounded-xl transition-transform duration-700 group-hover:scale-105"
                     />

@@ -57,40 +57,75 @@ export default function HeroSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isInViewport, setIsInViewport] = useState(true);
+  const containerRef = useRef(null);
   const timerRef = useRef(null);
 
   const banners = HERO_BANNERS;
 
-  // Preload all banner images into browser memory to eliminate transition delays/flicker
+  // Viewport IntersectionObserver: Pause carousel when user scrolls down past hero
   useEffect(() => {
-    banners.forEach((banner) => {
-      const imgD = new Image();
-      imgD.src = encodeURI(banner.desktopImage);
-      const imgM = new Image();
-      imgM.src = encodeURI(banner.mobileImage);
-    });
-  }, [banners]);
+    const el = containerRef.current;
+    if (!el) return;
 
-  // Clean, singular autoplay timer cycling every 3 seconds (3000ms)
-  const resetAutoplayTimer = () => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInViewport(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Preload only the next banner slide just-in-time to eliminate latency without network congestion
+  useEffect(() => {
+    if (banners.length <= 1) return;
+    const nextIdx = (currentIndex + 1) % banners.length;
+    const nextBanner = banners[nextIdx];
+    if (nextBanner) {
+      const imgD = new Image();
+      imgD.src = encodeURI(nextBanner.desktopImage.replace(/\.png$/, '.webp'));
+      const imgM = new Image();
+      imgM.src = encodeURI(nextBanner.mobileImage.replace(/\.png$/, '.webp'));
+    }
+  }, [currentIndex, banners]);
+
+  // Clean autoplay timer cycling every 3.5 seconds, automatically paused when offscreen, hovered, or tab hidden
+  const startTimer = () => {
     if (timerRef.current) clearInterval(timerRef.current);
+    if (!isInViewport || isPaused || document.hidden || banners.length <= 1) return;
+
     timerRef.current = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % banners.length);
-    }, 3000);
+    }, 3500);
   };
 
   useEffect(() => {
-    if (banners.length <= 1) return;
-    resetAutoplayTimer();
+    startTimer();
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (timerRef.current) clearInterval(timerRef.current);
+      } else {
+        startTimer();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [banners.length]);
+  }, [isInViewport, isPaused, banners.length]);
 
   // Keyboard navigation listener (Left/Right arrows)
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (!isInViewport) return;
       if (e.key === 'ArrowLeft') {
         prevSlide();
       } else if (e.key === 'ArrowRight') {
@@ -99,16 +134,14 @@ export default function HeroSlider() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [banners.length]);
+  }, [isInViewport, banners.length]);
 
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
-    resetAutoplayTimer();
   };
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % banners.length);
-    resetAutoplayTimer();
   };
 
   // Mobile swipe gestures
@@ -134,21 +167,14 @@ export default function HeroSlider() {
   };
 
   return (
-    /* ==========================================================================
-       HERO BANNER SECTION
-       - 100% Full-Width Image filling the entire banner container
-       - ZERO black space above or below
-       - Image natural aspect ratio (display: block; width: 100%; height: auto;)
-       - No artificial min-height, padding, or fixed-height wrappers
-       - Beautiful rounded corners with overflow-hidden
-       - Automatic 3s slide transitions & smooth crossfade
-       - Prev/Next arrows positioned cleanly over image
-       ========================================================================== */
     <section
+      ref={containerRef}
       aria-label="Mahadev Electro Hub Hero Showcase"
       className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 mt-3 sm:mt-4 md:mt-6 mb-6 sm:mb-8 relative"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Cinematic Ambient RGB Gradient Aura behind the Hero Banner (Left: Dark Burgundy, Center: Charcoal, Right: Amber) */}
+      {/* Cinematic Ambient RGB Gradient Aura behind the Hero Banner */}
       <div
         className="absolute -inset-2 sm:-inset-4 md:-inset-6 rounded-[22px] sm:rounded-[28px] md:rounded-[36px] bg-gradient-to-r from-[#501B28]/55 via-[#28162C]/25 to-[#8A5A16]/50 blur-2xl md:blur-3xl pointer-events-none -z-10 croma-hero-aura"
         aria-hidden="true"
@@ -164,11 +190,13 @@ export default function HeroSlider() {
         <div className="grid grid-cols-1 grid-rows-1 w-full">
           {banners.map((slide, idx) => {
             const isActive = idx === currentIndex;
+            const desktopWebp = slide.desktopImage.replace(/\.png$/, '.webp');
+            const mobileWebp = slide.mobileImage.replace(/\.png$/, '.webp');
 
             return (
               <div
                 key={slide.id}
-                className={`col-start-1 row-start-1 w-full transition-opacity duration-600 ease-in-out ${
+                className={`col-start-1 row-start-1 w-full transition-opacity duration-500 ease-in-out ${
                   isActive
                     ? 'opacity-100 z-10 pointer-events-auto'
                     : 'opacity-0 z-0 pointer-events-none'
@@ -184,10 +212,23 @@ export default function HeroSlider() {
                   {/* Full-width responsive picture element (Desktop 2048x768 & Mobile 1024x1536) */}
                   <picture className="w-full block">
                     <source
+                      type="image/webp"
+                      media="(min-width: 768px)"
+                      srcSet={encodeURI(desktopWebp)}
+                      width="2048"
+                      height="768"
+                    />
+                    <source
                       media="(min-width: 768px)"
                       srcSet={encodeURI(slide.desktopImage)}
                       width="2048"
                       height="768"
+                    />
+                    <source
+                      type="image/webp"
+                      srcSet={encodeURI(mobileWebp)}
+                      width="1024"
+                      height="1536"
                     />
                     <img
                       src={encodeURI(slide.mobileImage)}
@@ -195,6 +236,7 @@ export default function HeroSlider() {
                       width="1024"
                       height="1536"
                       loading={idx === 0 ? 'eager' : 'lazy'}
+                      fetchPriority={idx === 0 ? 'high' : 'auto'}
                       decoding="async"
                       className="w-full h-auto block select-none"
                     />

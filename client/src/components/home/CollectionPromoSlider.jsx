@@ -94,10 +94,28 @@ export default function CollectionPromoSlider() {
   const [slides, setSlides] = useState(DEFAULT_SLIDES);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isInView, setIsInView] = useState(true);
 
+  const sectionRef = useRef(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const timerRef = useRef(null);
+
+  // IntersectionObserver to pause autoplay when scrolled away
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Fetch configured slides from CMS
   const fetchSlides = useCallback(() => {
@@ -118,12 +136,10 @@ export default function CollectionPromoSlider() {
     // Live update listeners when admin updates slides
     window.addEventListener('meh_collection_slides_updated', fetchSlides);
     window.addEventListener('storage', fetchSlides);
-    window.addEventListener('focus', fetchSlides);
 
     return () => {
       window.removeEventListener('meh_collection_slides_updated', fetchSlides);
       window.removeEventListener('storage', fetchSlides);
-      window.removeEventListener('focus', fetchSlides);
     };
   }, [fetchSlides]);
 
@@ -140,9 +156,9 @@ export default function CollectionPromoSlider() {
     setCurrentIndex(prev => (prev - 1 + totalSlides) % totalSlides);
   }, [totalSlides]);
 
-  // Autoplay timer with 4.5s interval, pauses on hover
+  // Autoplay timer with 4.5s interval, pauses when offscreen, hovered, or tab hidden
   useEffect(() => {
-    if (totalSlides <= 1 || isPaused) {
+    if (totalSlides <= 1 || isPaused || !isInView || document.hidden) {
       if (timerRef.current) clearInterval(timerRef.current);
       return;
     }
@@ -151,10 +167,19 @@ export default function CollectionPromoSlider() {
       nextSlide();
     }, 4500);
 
+    const handleVisibility = () => {
+      if (document.hidden) {
+        if (timerRef.current) clearInterval(timerRef.current);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      document.removeEventListener('visibilitychange', handleVisibility);
     };
-  }, [totalSlides, isPaused, nextSlide]);
+  }, [totalSlides, isPaused, isInView, nextSlide]);
 
   // Mobile Touch Swipe Handlers
   const handleTouchStart = (e) => {
@@ -179,6 +204,7 @@ export default function CollectionPromoSlider() {
 
   return (
     <section
+      ref={sectionRef}
       aria-label="Promotional Collection Slider"
       className="py-12 sm:py-16 md:py-20 bg-[#0a0a0a]/90 select-none overflow-hidden relative"
     >

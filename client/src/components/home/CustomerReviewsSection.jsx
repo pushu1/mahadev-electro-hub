@@ -195,7 +195,10 @@ export default function CustomerReviewsSection() {
                   <img
                     src={rev.customerPhoto}
                     alt={rev.customerName}
+                    width="340"
+                    height="340"
                     loading="lazy"
+                    decoding="async"
                     className={`w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-[1.08] ${
                       isRevealed ? 'filter blur-[2px] brightness-50' : 'group-hover:filter group-hover:blur-[2px] group-hover:brightness-50'
                     }`}

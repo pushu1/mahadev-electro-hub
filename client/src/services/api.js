@@ -1,6 +1,17 @@
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
+// In-memory cache for GET requests & inflight request deduplication
+const apiCache = new Map();
+const inflightRequests = new Map();
+const DEFAULT_TTL_MS = 60 * 1000; // 60 seconds
+
+export function clearApiCache() {
+  apiCache.clear();
+  inflightRequests.clear();
+}
+
 export async function request(endpoint, options = {}) {
+  const method = (options.method || 'GET').toUpperCase();
   const url = `${API_BASE}${endpoint}`;
   const headers = { ...options.headers };
 
@@ -19,24 +30,63 @@ export async function request(endpoint, options = {}) {
     options.body = JSON.stringify(options.body);
   }
 
-  const response = await fetch(url, {
-    ...options,
-    headers,
-  });
-
-  const data = await response.json().catch(() => ({
-    success: false,
-    message: `Server returned ${response.status} ${response.statusText}`,
-  }));
-
-  if (!response.ok) {
-    throw new Error(data.message || `Request failed with status ${response.status}`);
+  // For state-mutating requests, invalidate all cached GET responses
+  if (method !== 'GET') {
+    clearApiCache();
   }
 
-  return data;
+  // Cache & deduplication logic for GET requests
+  const isCacheableGet = method === 'GET' && !headers['Authorization'];
+  const cacheKey = url;
+
+  if (isCacheableGet) {
+    const cached = apiCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < DEFAULT_TTL_MS) {
+      return cached.data;
+    }
+
+    if (inflightRequests.has(cacheKey)) {
+      return inflightRequests.get(cacheKey);
+    }
+  }
+
+  const fetchPromise = (async () => {
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers,
+      });
+
+      const data = await response.json().catch(() => ({
+        success: false,
+        message: `Server returned ${response.status} ${response.statusText}`,
+      }));
+
+      if (!response.ok) {
+        throw new Error(data.message || `Request failed with status ${response.status}`);
+      }
+
+      if (isCacheableGet && data && data.success !== false) {
+        apiCache.set(cacheKey, { timestamp: Date.now(), data });
+      }
+
+      return data;
+    } finally {
+      if (isCacheableGet) {
+        inflightRequests.delete(cacheKey);
+      }
+    }
+  })();
+
+  if (isCacheableGet) {
+    inflightRequests.set(cacheKey, fetchPromise);
+  }
+
+  return fetchPromise;
 }
 
 export const api = {
+  clearCache: clearApiCache,
   // Health & DB diagnostics
   getHealth: () => request('/health'),
 

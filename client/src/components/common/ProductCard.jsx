@@ -83,8 +83,11 @@ export default function ProductCard({ product }) {
           <img
             src={product.mainImage || '/images/logo.png'}
             alt={title}
+            width="286"
+            height="286"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
             loading="lazy"
+            decoding="async"
           />
         </Link>
 
