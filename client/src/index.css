@@ -1,0 +1,571 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   OFFICIAL TYPOGRAPHY SYSTEM:
+   1. English: 'Xmind Variable' (2 axes: wght 100-900, ital 0-1)
+   2. Hindi: 'Baloo 2' (Variable: wght 400-800 by Ek Type)
+   ========================================================================== */
+
+/* Xmind Variable — Normal (Weight axis: 100 - 900) */
+@font-face {
+  font-family: 'Xmind Variable';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/xmind-latin-normal.woff2') format('woff2-variations'),
+       url('/fonts/xmind-latin-normal.woff2') format('woff2'),
+       url('https://fonts.gstatic.com/s/xmind/v1/Z9XYDmpbQhSR34uZLKE.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Xmind Variable — Italic */
+@font-face {
+  font-family: 'Xmind Variable';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/xmind-latin-italic.woff2') format('woff2-variations'),
+       url('/fonts/xmind-latin-italic.woff2') format('woff2'),
+       url('https://fonts.gstatic.com/s/xmind/v1/Z9XWDmpbQhSR34ucHKP-zQ.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Xmind standard alias */
+@font-face {
+  font-family: 'Xmind';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/xmind-latin-normal.woff2') format('woff2-variations'),
+       url('/fonts/xmind-latin-normal.woff2') format('woff2'),
+       url('https://fonts.gstatic.com/s/xmind/v1/Z9XYDmpbQhSR34uZLKE.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Xmind';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/xmind-latin-italic.woff2') format('woff2-variations'),
+       url('/fonts/xmind-latin-italic.woff2') format('woff2'),
+       url('https://fonts.gstatic.com/s/xmind/v1/Z9XWDmpbQhSR34ucHKP-zQ.woff2') format('woff2');
+}
+
+/* Baloo 2 Variable — Devanagari (Weight axis: 400 - 800 | Ek Type) */
+@font-face {
+  font-family: 'Baloo 2';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/baloo2-devanagari.woff2') format('woff2-variations'),
+       url('/fonts/baloo2-devanagari.woff2') format('woff2'),
+       url('https://fonts.gstatic.com/s/baloo2/v23/wXKrE3kTposypRyd51ncANwr.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF4, U+1CF7-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B0A;
+}
+
+/* Baloo 2 Variable — Latin */
+@font-face {
+  font-family: 'Baloo 2';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/baloo2-latin.woff2') format('woff2-variations'),
+       url('/fonts/baloo2-latin.woff2') format('woff2'),
+       url('https://fonts.gstatic.com/s/baloo2/v23/wXKrE3kTposypRyd51jcAA.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  /* Centralized Typography Variables */
+  --font-en: 'Xmind Variable', 'Xmind', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-hi: 'Baloo 2', 'Noto Sans Devanagari', sans-serif;
+  --font-site: var(--font-en);
+  --font-heading: var(--font-en);
+
+  --color-navbar: #000000;
+  --color-announcement: #000000;
+  --color-background: #181818;
+  --color-secondary-bg: #202020;
+  --color-card: #242424;
+  --color-card-hover: #2D2D2D;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B3B3B3;
+  --color-border: #383838;
+  --color-primary: #D6A52A;
+  --color-primary-hover: #E5B93B;
+  --color-input-bg: #242424;
+  --color-input-border: #444444;
+  --color-sale: #E53935;
+  --color-success: #16803D;
+  --color-error: #D92D20;
+  --color-footer-bg: #000000;
+  --color-footer-text: #FFFFFF;
+  --color-accent: #D6A52A;
+  --color-surface: #242424;
+
+  /* Croma-Inspired Cinematic RGB Gradient Palette */
+  --rgb-black: #000000;
+  --rgb-charcoal: #111111;
+  --rgb-burgundy: #501B28;
+  --rgb-purple: #28162C;
+  --rgb-amber: #6B451B;
+  --rgb-golden-orange: #8A5A16;
+}
+
+/* ==========================================================================
+   DYNAMIC LANGUAGE-SPECIFIC TYPOGRAPHY ACTIVATION
+   ========================================================================== */
+html[data-lang="hi"],
+body[data-lang="hi"],
+.lang-hi {
+  --font-site: var(--font-hi);
+  --font-heading: var(--font-hi);
+}
+
+html[data-lang="en"],
+body[data-lang="en"],
+.lang-en {
+  --font-site: var(--font-en);
+  --font-heading: var(--font-en);
+}
+
+html[data-lang="hinglish"],
+body[data-lang="hinglish"],
+.lang-hinglish {
+  --font-site: var(--font-en);
+  --font-heading: var(--font-en);
+}
+
+/* ==========================================================================
+   ADMIN PORTAL — ALWAYS ENFORCES XMIND VARIABLE
+   ========================================================================== */
+html:has([data-admin="true"]),
+body:has([data-admin="true"]),
+body.admin-body,
+.admin-portal,
+.admin-portal *,
+[data-admin="true"],
+[data-admin="true"] *,
+[class*="admin-portal"] {
+  --font-site: var(--font-en) !important;
+  --font-heading: var(--font-en) !important;
+  font-family: var(--font-en) !important;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-site);
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #0b0b0b !important;
+    color: #FFFFFF;
+    overflow-x: clip;
+    font-family: var(--font-site);
+  }
+
+  #root {
+    min-height: 100vh;
+    background-color: #0b0b0b !important;
+    color: #FFFFFF;
+    font-family: var(--font-site);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+
+  button, input, textarea, select {
+    font-family: inherit;
+  }
+
+  ::selection {
+    background-color: #D6A52A;
+    color: #000000;
+  }
+}
+
+/* Utility font classes */
+.font-heading {
+  font-family: var(--font-heading) !important;
+}
+
+.font-devanagari {
+  font-family: var(--font-hi) !important;
+}
+
+.font-sans {
+  font-family: var(--font-site) !important;
+}
+
+.font-xmind {
+  font-family: var(--font-en) !important;
+}
+
+.font-baloo {
+  font-family: var(--font-hi) !important;
+}
+
+/* ==========================================================================
+   PREMIUM CROMA-INSPIRED DARK THEME SURFACES & BUTTONS
+   ========================================================================== */
+
+/* Navbar & Mega Menu Surfaces */
+.bg-navbar {
+  background-color: #000000;
+}
+
+.border-titanium {
+  border-color: #383838;
+}
+
+.text-champagne {
+  color: #D6A52A;
+}
+
+.text-electric {
+  color: #D6A52A;
+}
+
+/* Dropdown & Modal Surfaces */
+.glass-dropdown {
+  background: #202020;
+  border: 1px solid #383838;
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.6);
+  color: #FFFFFF;
+}
+
+.glass-titanium {
+  background: #242424;
+  border: 1px solid #383838;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+.glass-luxury-dark {
+  background: #202020;
+  border: 1px solid #383838;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.glass-luxury-light {
+  background: #242424;
+  border: 1px solid #383838;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Global Button Classes */
+.btn-primary {
+  background-color: #D6A52A;
+  color: #000000;
+  font-weight: 700;
+  transition: all 0.2s ease-in-out;
+}
+.btn-primary:hover {
+  background-color: #E5B93B;
+}
+
+.btn-secondary {
+  background-color: #242424;
+  color: #FFFFFF;
+  border: 1px solid #444444;
+  font-weight: 700;
+  transition: all 0.2s ease-in-out;
+}
+.btn-secondary:hover {
+  background-color: #2D2D2D;
+  border-color: #D6A52A;
+}
+
+/* Input Styles */
+input, textarea, select {
+  background-color: #242424;
+  color: #FFFFFF;
+  border-color: #444444;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #D6A52A !important;
+  outline: none;
+}
+
+/* ==========================================================================
+   SMOOTH ANNOUNCEMENT MARQUEE ANIMATION
+   ========================================================================== */
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Hardware-accelerated continuous infinite marquee for Featured & New Arrival sliders */
+@keyframes continuousMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.continuous-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: continuousMarquee 38s linear infinite;
+  will-change: transform;
+}
+
+.continuous-marquee-track:hover,
+.continuous-marquee-wrapper:hover .continuous-marquee-track {
+  animation-play-state: paused !important;
+}
+
+/* ==========================================================================
+   PROMOTIONAL SLIDER ANIMATED HEADING LABELS
+   Smooth upward fade-in with staggered word reveal
+   ========================================================================== */
+@keyframes promoTagWordReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.promo-tag-word {
+  display: inline-block;
+  opacity: 0;
+  animation: promoTagWordReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.marquee-content {
+  display: inline-flex;
+  width: max-content;
+  animation: marqueeScroll 32s linear infinite;
+  will-change: transform;
+}
+
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+/* Accessibility: Reduced-Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-content,
+  .continuous-marquee-track {
+    animation: none !important;
+    transform: none !important;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .promo-tag-word {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Scrollbar utilities */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ==========================================================================
+   CROMA-INSPIRED ANIMATED RGB GRADIENT ATMOSPHERE
+   Left: Subtle dark burgundy (#501B28) & red glow
+   Center: Deep black (#000000) & charcoal (#111111)
+   Right: Warm amber (#6B451B) & golden orange (#8A5A16)
+   Bottom: Subtle purple (#28162C) & reddish tones
+   ========================================================================== */
+
+@keyframes cromaAuraShiftLeft {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.38;
+  }
+  33% {
+    transform: translate(35px, 25px) scale(1.08);
+    opacity: 0.48;
+  }
+  66% {
+    transform: translate(15px, -30px) scale(0.96);
+    opacity: 0.34;
+  }
+  100% {
+    transform: translate(-25px, 20px) scale(1.04);
+    opacity: 0.44;
+  }
+}
+
+@keyframes cromaAuraShiftRight {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.32;
+  }
+  33% {
+    transform: translate(-30px, -20px) scale(1.10);
+    opacity: 0.42;
+  }
+  66% {
+    transform: translate(-10px, 35px) scale(0.95);
+    opacity: 0.28;
+  }
+  100% {
+    transform: translate(25px, -15px) scale(1.05);
+    opacity: 0.38;
+  }
+}
+
+@keyframes cromaAuraShiftBottom {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate(30px, -25px) scale(1.06);
+    opacity: 0.46;
+  }
+  100% {
+    transform: translate(-20px, 15px) scale(0.97);
+    opacity: 0.30;
+  }
+}
+
+@keyframes cromaHeroPulse {
+  0% {
+    opacity: 0.40;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.58;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 0.40;
+    transform: scale(0.98);
+  }
+}
+
+/* Ambient RGB Floating Orbs */
+.croma-rgb-orb-left {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #501B28 0%, rgba(80, 27, 40, 0.45) 45%, transparent 75%);
+  filter: blur(90px);
+  pointer-events: none;
+  animation: cromaAuraShiftLeft 22s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+.croma-rgb-orb-right {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #8A5A16 0%, rgba(138, 90, 22, 0.4) 45%, transparent 75%);
+  filter: blur(95px);
+  pointer-events: none;
+  animation: cromaAuraShiftRight 26s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+.croma-rgb-orb-bottom {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #28162C 0%, rgba(40, 22, 44, 0.45) 45%, transparent 75%);
+  filter: blur(85px);
+  pointer-events: none;
+  animation: cromaAuraShiftBottom 24s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+.croma-rgb-orb-amber {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #6B451B 0%, rgba(107, 69, 27, 0.35) 45%, transparent 75%);
+  filter: blur(90px);
+  pointer-events: none;
+  animation: cromaAuraShiftRight 20s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+/* Hero Ambient Aura */
+.croma-hero-aura {
+  animation: cromaHeroPulse 14s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+/* Reduced Motion Respect */
+@media (prefers-reduced-motion: reduce) {
+  .croma-rgb-orb-left,
+  .croma-rgb-orb-right,
+  .croma-rgb-orb-bottom,
+  .croma-rgb-orb-amber,
+  .croma-hero-aura {
+    animation: none !important;
+    transform: none !important;
+  }
+}

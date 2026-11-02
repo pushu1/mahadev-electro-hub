@@ -1,0 +1,30 @@
+{
+  "name": "mahadev-electro-hub",
+  "version": "1.0.0",
+  "description": "Bilingual E-Commerce Website & Admin CMS for Mahadev Electro Hub (Pali, Rajasthan)",
+  "scripts": {
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"blue,green\" \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "start": "concurrently -n \"SERVER,CLIENT\" -c \"blue,green\" \"npm start --prefix server\" \"npm run preview --prefix client\"",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "build:client": "npm run build --prefix client",
+    "build": "npm run build --prefix client",
+    "install:all": "npm install && npm install --prefix client && npm install --prefix server"
+  },
+  "keywords": [
+    "ecommerce",
+    "electrical",
+    "solar",
+    "zatka-machine",
+    "bilingual",
+    "hindi",
+    "rajasthan",
+    "pali",
+    "admin-cms"
+  ],
+  "author": "Mahadev Electro Hub",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}

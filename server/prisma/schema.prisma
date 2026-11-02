@@ -1,0 +1,258 @@
+// Prisma schema for Mahadev Electro Hub
+// Location: Pali, Rajasthan, India
+// Bilingual E-Commerce Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  STAFF
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  RETURN_REQUESTED
+  RETURNED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  COD
+  RAZORPAY
+  UPI
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Admin {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role     @default(ADMIN)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Customer {
+  id           String    @id @default(uuid())
+  email        String?   @unique
+  phone        String    @unique
+  passwordHash String
+  name         String
+  addresses    Json?     // Saved delivery addresses
+  wishlist     Json?     // Array of product IDs
+  orders       Order[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Category {
+  id             String        @id @default(uuid())
+  slug           String        @unique
+  name_en        String
+  name_hi        String
+  description_en String?
+  description_hi String?
+  image          String?
+  bannerImage    String?
+  order          Int           @default(0)
+  isActive       Boolean       @default(true)
+  showInNav      Boolean       @default(true)
+  subcategories  Subcategory[]
+  products       Product[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Subcategory {
+  id             String    @id @default(uuid())
+  categoryId     String
+  category       Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  slug           String    @unique
+  name_en        String
+  name_hi        String
+  description_en String?
+  description_hi String?
+  image          String?
+  order          Int       @default(0)
+  isActive       Boolean   @default(true)
+  products       Product[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Product {
+  id                    String        @id @default(uuid())
+  slug                  String        @unique
+  sku                   String        @unique
+  barcode               String?
+  title_en              String
+  title_hi              String
+  short_description_en  String?
+  short_description_hi  String?
+  description_en        String
+  description_hi        String
+  features_en           String[]      @default([])
+  features_hi           String[]      @default([])
+  usage_instructions_en String?
+  usage_instructions_hi String?
+  specifications        Json?         // Technical key-value pairs (voltage, power, battery, warranty, fencing distance, etc.)
+  price                 Float
+  compareAtPrice        Float?
+  stockQuantity         Int           @default(0)
+  categoryId            String
+  category              Category      @relation(fields: [categoryId], references: [id])
+  subcategoryId         String?
+  subcategory           Subcategory?  @relation(fields: [subcategoryId], references: [id])
+  brand                 String        @default("Mahadev Electro Hub")
+  warranty              String?
+  mainImage             String
+  images                String[]      @default([])
+  shippingInfo          String?
+  returnEligibility     String?
+  status                ProductStatus @default(ACTIVE)
+  featured              Boolean       @default(false)
+  newArrival            Boolean       @default(false)
+  bestSeller            Boolean       @default(false)
+  seoTitle_en           String?
+  seoTitle_hi           String?
+  seoDescription_en     String?
+  seoDescription_hi     String?
+  reviews               Review[]
+  orderItems            OrderItem[]
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+}
+
+model Order {
+  id                  String        @id @default(uuid())
+  orderNumber         String        @unique
+  customerId          String?
+  customer            Customer?     @relation(fields: [customerId], references: [id])
+  customerName        String
+  customerPhone       String
+  customerEmail       String?
+  shippingAddress     Json          // { street, city, state, pincode, landmark }
+  paymentMethod       PaymentMethod @default(COD)
+  paymentStatus       PaymentStatus @default(PENDING)
+  razorpayOrderId     String?
+  razorpayPaymentId   String?
+  subtotal            Float
+  discount            Float         @default(0)
+  shippingFee         Float         @default(0)
+  totalAmount         Float
+  status              OrderStatus   @default(PENDING)
+  notes               String?
+  items               OrderItem[]
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+}
+
+model OrderItem {
+  id              String   @id @default(uuid())
+  orderId         String
+  order           Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId       String
+  product         Product  @relation(fields: [productId], references: [id])
+  productTitle_en String
+  productTitle_hi String
+  productImage    String
+  price           Float
+  quantity        Int
+  total           Float
+}
+
+model Coupon {
+  id             String    @id @default(uuid())
+  code           String    @unique
+  discountType   String    // 'percentage' or 'fixed'
+  discountValue  Float
+  minOrderValue  Float     @default(0)
+  maxDiscount    Float?
+  expiresAt      DateTime?
+  isActive       Boolean   @default(true)
+  usageLimit     Int?
+  usedCount      Int       @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Banner {
+  id          String    @id @default(uuid())
+  title_en    String
+  title_hi    String
+  subtitle_en String?
+  subtitle_hi String?
+  image       String
+  link        String?
+  ctaText_en  String?
+  ctaText_hi  String?
+  order       Int       @default(0)
+  isActive    Boolean   @default(true)
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Review {
+  id            String       @id @default(uuid())
+  productId     String
+  product       Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  customerName  String
+  customerEmail String?
+  rating        Int          @default(5)
+  comment       String
+  status        ReviewStatus @default(PENDING)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Announcement {
+  id        String   @id @default(uuid())
+  text_en   String
+  text_hi   String
+  link      String?
+  bgColor   String   @default("#080808")
+  textColor String   @default("#D6A52A")
+  isActive  Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}
+
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
