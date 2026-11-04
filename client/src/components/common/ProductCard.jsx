@@ -78,16 +78,20 @@ export default function ProductCard({ product }) {
       </button>
 
       {/* Product Image Link with Hover Zoom & Floating Quick-View Pill */}
-      <div className="relative aspect-square overflow-hidden bg-[#F3F0E6]">
-        <Link to={`/product/${product.slug || product.id}`} className="block w-full h-full">
+      <div className="relative aspect-square overflow-hidden bg-[#FFFFFF] p-2 flex items-center justify-center">
+        <Link to={`/product/${product.slug || product.id}`} className="block w-full h-full flex items-center justify-center">
           <img
             src={product.mainImage || '/images/logo.png'}
             alt={title}
             width="286"
             height="286"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 ease-out"
             loading="lazy"
             decoding="async"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = '/images/categories/zatka-machines.png';
+            }}
           />
         </Link>
 

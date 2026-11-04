@@ -68,9 +68,26 @@ export default function ProductQuickViewModal() {
     ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
     : 0;
 
-  const imagesList = Array.isArray(product.images) && product.images.length > 0
-    ? [product.mainImage, ...product.images.filter(img => img !== product.mainImage)]
-    : [product.mainImage || '/images/logo.png'];
+  const imagesList = React.useMemo(() => {
+    if (!product) return ['/images/logo.png'];
+    let list = [];
+    if (Array.isArray(product.images) && product.images.length > 0) {
+      list = product.images.filter(img => typeof img === 'string' && img.trim());
+    } else if (typeof product.images === 'string' && product.images.trim()) {
+      try {
+        const parsed = JSON.parse(product.images);
+        if (Array.isArray(parsed)) list = parsed.filter(img => typeof img === 'string' && img.trim());
+      } catch (_) {
+        list = [product.images.trim()];
+      }
+    }
+    const main = (product.mainImage && typeof product.mainImage === 'string') ? product.mainImage.trim() : '';
+    if (main) {
+      const others = list.filter(img => img.trim() !== main);
+      return [main, ...others];
+    }
+    return list.length > 0 ? list : ['/images/logo.png'];
+  }, [product]);
 
   const handleAddToCart = () => {
     if (isOutOfStock) return;
@@ -121,11 +138,11 @@ export default function ProductQuickViewModal() {
           <div className="md:col-span-6 p-6 sm:p-8 bg-[#FAF9F6] flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#D5DDD2]">
             <div>
               {/* Main Preview with Badges */}
-              <div className="relative aspect-square rounded-xl overflow-hidden bg-[#FFFFFF] border border-[#D5DDD2] flex items-center justify-center shadow-inner group">
+              <div className="relative aspect-square rounded-xl overflow-hidden bg-[#FFFFFF] border border-[#D5DDD2] flex items-center justify-center p-3 shadow-inner group">
                 <img
                   src={selectedImage || product.mainImage || '/images/logo.png'}
                   alt={title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                 />
 
                 {/* Badges */}
@@ -165,13 +182,13 @@ export default function ProductQuickViewModal() {
                       key={idx}
                       type="button"
                       onClick={() => setSelectedImage(img)}
-                      className={`w-14 h-14 rounded-lg overflow-hidden border-2 shrink-0 transition-all ${
+                      className={`w-14 h-14 rounded-lg overflow-hidden bg-white p-1 border-2 shrink-0 transition-all cursor-pointer ${
                         selectedImage === img
                           ? 'border-[#24532F] ring-2 ring-[#24532F]/30'
                           : 'border-[#D5DDD2] opacity-70 hover:opacity-100'
                       }`}
                     >
-                      <img src={img} alt={`Thumb ${idx}`} className="w-full h-full object-cover" />
+                      <img src={img} alt={`Thumb ${idx}`} className="w-full h-full object-contain" />
                     </button>
                   ))}
                 </div>

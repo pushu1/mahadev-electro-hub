@@ -285,7 +285,15 @@ export default function ProductManagementPage() {
   };
 
   const handleSetMainImage = (url) => {
-    setFormData(prev => ({ ...prev, mainImage: url }));
+    setFormData(prev => {
+      const currentImages = Array.isArray(prev.images) ? [...prev.images] : [];
+      const others = currentImages.filter(u => u !== url);
+      return {
+        ...prev,
+        mainImage: url,
+        images: [url, ...others]
+      };
+    });
   };
 
   const handleRemoveImage = (urlToRemove) => {
@@ -313,7 +321,8 @@ export default function ProductManagementPage() {
       list[targetIndex] = temp;
       return {
         ...prev,
-        images: list
+        images: list,
+        mainImage: list[0] || prev.mainImage
       };
     });
   };
@@ -329,8 +338,15 @@ export default function ProductManagementPage() {
 
     setSaveLoading(true);
 
+    const resolvedMain = formData.mainImage || (formData.images && formData.images[0]) || '';
+    const resolvedImages = Array.isArray(formData.images) && formData.images.length > 0
+      ? formData.images
+      : (resolvedMain ? [resolvedMain] : []);
+
     const payload = {
       ...formData,
+      mainImage: resolvedMain,
+      images: resolvedImages,
       price: Number(formData.price),
       compareAtPrice: formData.compareAtPrice ? Number(formData.compareAtPrice) : null,
       stockQuantity: Number(formData.stockQuantity) || 0,
@@ -1182,7 +1198,7 @@ export default function ProductManagementPage() {
                                   <img
                                     src={imgUrl}
                                     alt=""
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                    className="w-full h-full object-contain p-1.5 group-hover:scale-105 transition-transform duration-300"
                                   />
 
                                   {/* Main Badge */}

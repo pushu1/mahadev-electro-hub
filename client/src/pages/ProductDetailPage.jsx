@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ShoppingCart,
@@ -9,9 +9,13 @@ import {
   Zap,
   CheckCircle2,
   ChevronRight,
+  ChevronLeft,
   Star,
   MessageSquare,
-  Globe
+  Globe,
+  Maximize2,
+  X,
+  Image as ImageIcon
 } from 'lucide-react';
 import Header from '../components/common/Header.jsx';
 import Footer from '../components/common/Footer.jsx';
@@ -31,10 +35,15 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('description');
+
+  const thumbnailsRef = useRef(null);
+  const touchStartX = useRef(null);
+  const touchEndX = useRef(null);
 
   // Review Form
   const [reviewName, setReviewName] = useState('');
@@ -48,7 +57,6 @@ export default function ProductDetailPage() {
       .then(res => {
         if (res && res.success && res.product) {
           setProduct(res.product);
-          setSelectedImage(prev => prev || res.product.mainImage);
           if (Array.isArray(res.related)) setRelatedProducts(res.related);
           if (Array.isArray(res.reviews)) setReviews(res.reviews);
         } else {
@@ -68,6 +76,7 @@ export default function ProductDetailPage() {
     window.scrollTo(0, 0);
     setLoading(true);
     setQuantity(1);
+    setSelectedImageIndex(0);
     fetchProduct();
 
     window.addEventListener('meh_data_synced', fetchProduct);
@@ -80,6 +89,96 @@ export default function ProductDetailPage() {
       window.removeEventListener('focus', fetchProduct);
     };
   }, [slug, fetchProduct]);
+
+  // Robust gallery images normalization and deduplication
+  const galleryImages = useMemo(() => {
+    if (!product) return [];
+    let list = [];
+    if (Array.isArray(product.images) && product.images.length > 0) {
+      list = product.images.filter(img => typeof img === 'string' && img.trim());
+    } else if (typeof product.images === 'string' && product.images.trim()) {
+      try {
+        const parsed = JSON.parse(product.images);
+        if (Array.isArray(parsed)) {
+          list = parsed.filter(img => typeof img === 'string' && img.trim());
+        }
+      } catch (_) {
+        list = [product.images.trim()];
+      }
+    }
+
+    const main = (product.mainImage && typeof product.mainImage === 'string') ? product.mainImage.trim() : '';
+    if (main) {
+      const others = list.filter(img => img.trim() !== main);
+      return [main, ...others];
+    }
+
+    return list.length > 0 ? list : ['/images/categories/zatka-machines.png'];
+  }, [product]);
+
+  const activeImage = galleryImages[selectedImageIndex] || galleryImages[0] || product?.mainImage || '/images/categories/zatka-machines.png';
+
+  const handlePrevImage = useCallback((e) => {
+    if (e) e.stopPropagation();
+    setSelectedImageIndex(prev => (prev === 0 ? galleryImages.length - 1 : prev - 1));
+  }, [galleryImages.length]);
+
+  const handleNextImage = useCallback((e) => {
+    if (e) e.stopPropagation();
+    setSelectedImageIndex(prev => (prev === galleryImages.length - 1 ? 0 : prev + 1));
+  }, [galleryImages.length]);
+
+  const handleSelectThumbnail = (index) => {
+    setSelectedImageIndex(index);
+  };
+
+  // Auto-scroll selected thumbnail into view
+  useEffect(() => {
+    if (thumbnailsRef.current) {
+      const activeBtn = thumbnailsRef.current.querySelector(`[data-thumb-index="${selectedImageIndex}"]`);
+      if (activeBtn) {
+        activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+  }, [selectedImageIndex]);
+
+  // Mobile touch swipe gestures
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const distance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 45;
+    if (distance > minSwipeDistance) {
+      handleNextImage();
+    } else if (distance < -minSwipeDistance) {
+      handlePrevImage();
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
+  // Lightbox keyboard navigation (Escape, Left, Right)
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setIsLightboxOpen(false);
+      if (e.key === 'ArrowLeft') handlePrevImage();
+      if (e.key === 'ArrowRight') handleNextImage();
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isLightboxOpen, handlePrevImage, handleNextImage]);
 
   if (loading) {
     return (
@@ -121,10 +220,6 @@ export default function ProductDetailPage() {
   const discountPercent = hasDiscount
     ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
     : 0;
-
-  const allImages = Array.isArray(product.images) && product.images.length > 0
-    ? product.images
-    : [product.mainImage];
 
   const handleAddToCart = () => {
     if (isOutOfStock) return;
@@ -192,36 +287,117 @@ export default function ProductDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 mb-12 bg-[#FFFFFF] p-4 sm:p-6 md:p-8 rounded-3xl border border-[#D5DDD2] shadow-sm">
           {/* Left: Gallery */}
           <div className="space-y-4">
-            <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#FAF9F6] border border-[#D5DDD2] flex items-center justify-center p-4">
+            {/* Main Image Container */}
+            <div
+              className="relative w-full aspect-square rounded-2xl overflow-hidden bg-[#FFFFFF] border border-[#D5DDD2] flex items-center justify-center p-4 sm:p-6 shadow-sm group select-none cursor-pointer"
+              onClick={() => setIsLightboxOpen(true)}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              role="region"
+              aria-label="Product Image Gallery Main View"
+            >
+              {/* Product Image - Contain, Never crop, Never distort */}
               <img
-                src={selectedImage || product.mainImage}
-                alt={title}
-                className="w-full h-full object-contain hover:scale-105 transition-transform duration-300"
+                src={activeImage}
+                alt={`${title} - View ${selectedImageIndex + 1}`}
+                className="w-full h-full object-contain transition-all duration-300 group-hover:scale-[1.02]"
+                loading="eager"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/images/categories/zatka-machines.png';
+                }}
               />
+
+              {/* Discount Badge */}
               {hasDiscount && (
-                <span className="absolute top-4 left-4 bg-[#B94343] text-white font-extrabold text-xs px-2.5 py-1 rounded-md shadow-xs">
+                <span className="absolute top-4 left-4 bg-[#B94343] text-white font-extrabold text-xs px-2.5 py-1 rounded-md shadow-xs pointer-events-none z-10">
                   {discountPercent}% OFF
                 </span>
               )}
+
+              {/* Zoom Prompt Pill */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsLightboxOpen(true);
+                }}
+                className="absolute top-4 right-4 p-2 rounded-full bg-white/90 hover:bg-[#24532F] text-[#596358] hover:text-white border border-[#D5DDD2] backdrop-blur-sm transition-all duration-200 shadow-xs z-10 active:scale-95"
+                aria-label="Enlarge image"
+                title="Click to zoom image"
+              >
+                <Maximize2 className="w-4 h-4" />
+              </button>
+
+              {/* Image Counter Badge */}
+              {galleryImages.length > 1 && (
+                <div className="absolute bottom-4 left-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/60 text-white text-[11px] font-semibold backdrop-blur-md shadow-sm pointer-events-none z-10">
+                  <ImageIcon className="w-3.5 h-3.5 text-[#DCE8D5]" />
+                  <span>{selectedImageIndex + 1} / {galleryImages.length}</span>
+                </div>
+              )}
+
+              {/* Previous / Next Arrow Controls */}
+              {galleryImages.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={handlePrevImage}
+                    aria-label="Previous product image"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-[#24532F] text-[#171C17] hover:text-white border border-[#D5DDD2] hover:border-[#24532F] flex items-center justify-center transition-all duration-200 shadow-md opacity-90 sm:opacity-0 sm:group-hover:opacity-100 focus:opacity-100 z-10 active:scale-90"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleNextImage}
+                    aria-label="Next product image"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-[#24532F] text-[#171C17] hover:text-white border border-[#D5DDD2] hover:border-[#24532F] flex items-center justify-center transition-all duration-200 shadow-md opacity-90 sm:opacity-0 sm:group-hover:opacity-100 focus:opacity-100 z-10 active:scale-90"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </>
+              )}
             </div>
 
-            {/* Thumbnail Gallery */}
-            {allImages.length > 1 && (
-              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
-                {allImages.map((img, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setSelectedImage(img)}
-                    className={`w-18 h-18 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
-                      selectedImage === img
-                        ? 'border-[#24532F] shadow-sm'
-                        : 'border-[#D5DDD2] hover:border-[#356B3D]'
-                    }`}
-                  >
-                    <img src={img} alt={`${title} view ${idx + 1}`} className="w-full h-full object-cover" />
-                  </button>
-                ))}
+            {/* Thumbnail Images Below Main Image */}
+            {galleryImages.length > 1 && (
+              <div className="relative">
+                <div
+                  ref={thumbnailsRef}
+                  className="flex items-center gap-3 overflow-x-auto pb-2 pt-1 scroll-smooth no-scrollbar"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
+                  {galleryImages.map((img, idx) => {
+                    const isSelected = selectedImageIndex === idx;
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        data-thumb-index={idx}
+                        onClick={() => handleSelectThumbnail(idx)}
+                        aria-label={`Select product image ${idx + 1}`}
+                        className={`relative w-16 h-16 sm:w-20 sm:h-20 min-w-[64px] sm:min-w-[80px] rounded-xl overflow-hidden bg-[#FFFFFF] p-1.5 transition-all duration-200 shrink-0 cursor-pointer ${
+                          isSelected
+                            ? 'border-2 border-[#24532F] ring-2 ring-[#24532F]/25 shadow-md scale-[1.03]'
+                            : 'border border-[#D5DDD2] hover:border-[#356B3D] hover:shadow-xs opacity-75 hover:opacity-100'
+                        }`}
+                      >
+                        <img
+                          src={img}
+                          alt={`${title} thumbnail ${idx + 1}`}
+                          className="w-full h-full object-contain"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = '/images/categories/zatka-machines.png';
+                          }}
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>
@@ -651,17 +827,87 @@ export default function ProductDetailPage() {
           </div>
         </div>
 
-        {/* Related Products */}
-        {relatedProducts.length > 0 && (
-          <div className="mb-12">
-            <h3 className="text-xl font-heading font-extrabold text-[#171C17] mb-6 pb-2 border-b border-[#D5DDD2]">
-              {t('relatedProducts')}
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {relatedProducts.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
+        {/* Lightbox / Fullscreen Image Preview Modal */}
+        {isLightboxOpen && (
+          <div
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center p-4 sm:p-8 select-none"
+            role="dialog"
+            aria-modal="true"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            {/* Top Bar with Title, Counter and Close Button */}
+            <div className="w-full max-w-5xl flex items-center justify-between text-white mb-3 px-2 z-50">
+              <div className="text-sm font-semibold tracking-wide flex items-center gap-2">
+                <span className="text-[#DCE8D5] max-w-xs sm:max-w-md truncate">{title}</span>
+                <span className="text-white/60">•</span>
+                <span>{selectedImageIndex + 1} / {galleryImages.length}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsLightboxOpen(false)}
+                className="p-2 rounded-full bg-white/10 hover:bg-white/25 text-white transition-colors active:scale-90 cursor-pointer"
+                aria-label="Close image preview"
+              >
+                <X className="w-6 h-6" />
+              </button>
             </div>
+
+            {/* Central Image Container */}
+            <div
+              className="relative w-full max-w-4xl max-h-[75vh] flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={activeImage}
+                alt={title}
+                className="max-w-full max-h-[72vh] object-contain rounded-lg shadow-2xl"
+              />
+
+              {/* Lightbox Prev / Next */}
+              {galleryImages.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={handlePrevImage}
+                    className="absolute left-2 sm:-left-12 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 hover:bg-[#24532F] text-white flex items-center justify-center transition-all duration-200 border border-white/20 active:scale-95 cursor-pointer"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleNextImage}
+                    className="absolute right-2 sm:-right-12 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 hover:bg-[#24532F] text-white flex items-center justify-center transition-all duration-200 border border-white/20 active:scale-95 cursor-pointer"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Bottom Thumbnails Strip in Lightbox */}
+            {galleryImages.length > 1 && (
+              <div
+                className="flex items-center gap-2.5 mt-4 overflow-x-auto max-w-xl pb-1"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {galleryImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setSelectedImageIndex(idx)}
+                    className={`w-14 h-14 rounded-lg overflow-hidden bg-white/10 p-1 border transition-all cursor-pointer ${
+                      selectedImageIndex === idx
+                        ? 'border-[#24532F] ring-2 ring-white/50 scale-105'
+                        : 'border-white/20 opacity-50 hover:opacity-100'
+                    }`}
+                  >
+                    <img src={img} alt="" className="w-full h-full object-contain" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </main>

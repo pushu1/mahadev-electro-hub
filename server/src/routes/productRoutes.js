@@ -7,8 +7,19 @@ const router = express.Router();
 
 function formatProduct(p) {
   if (!p) return null;
+  const rawImages = Array.isArray(p.images) && p.images.length > 0
+    ? p.images.filter(Boolean)
+    : (p.mainImage ? [p.mainImage] : []);
+
+  const main = p.mainImage || rawImages[0] || null;
+  const normalizedImages = main
+    ? [main, ...rawImages.filter(img => img !== main)]
+    : rawImages;
+
   return {
     ...p,
+    mainImage: main,
+    images: normalizedImages,
     categorySlug: p.category?.slug || null,
     categoryName: p.category?.name_en || null,
     subcategorySlug: p.subcategory?.slug || null,
