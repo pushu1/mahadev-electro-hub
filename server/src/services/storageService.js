@@ -1,3 +1,4 @@
+import { put, del } from '@vercel/blob';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
 import fs from 'fs';
@@ -7,98 +8,144 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const localUploadDir = path.join(__dirname, '../../public/uploads');
 
-// Ensure local upload dir exists
-if (!fs.existsSync(localUploadDir)) {
-  fs.mkdirSync(localUploadDir, { recursive: true });
-}
+// Check for Vercel Blob token
+const isBlobConfigured = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 
 // Check for S3 / Neon Object Storage configuration
-const endpoint = process.env.NEON_STORAGE_ENDPOINT || process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT;
-const accessKeyId = process.env.NEON_STORAGE_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.NEON_STORAGE_SECRET_ACCESS_KEY || process.env.AWS_SECRET_ACCESS_KEY;
-const region = process.env.NEON_STORAGE_REGION || process.env.AWS_REGION || 'us-east-2';
-const bucket = process.env.NEON_STORAGE_BUCKET || process.env.AWS_S3_BUCKET_NAME || process.env.AWS_BUCKET_NAME;
-const publicBaseUrl = process.env.NEON_STORAGE_PUBLIC_URL || process.env.STORAGE_PUBLIC_URL;
+const s3Endpoint = process.env.NEON_STORAGE_ENDPOINT || process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT;
+const s3AccessKeyId = process.env.NEON_STORAGE_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID;
+const s3SecretAccessKey = process.env.NEON_STORAGE_SECRET_ACCESS_KEY || process.env.AWS_SECRET_ACCESS_KEY;
+const s3Region = process.env.NEON_STORAGE_REGION || process.env.AWS_REGION || 'us-east-2';
+const s3Bucket = process.env.NEON_STORAGE_BUCKET || process.env.AWS_S3_BUCKET_NAME || process.env.AWS_BUCKET_NAME;
+const s3PublicBaseUrl = process.env.NEON_STORAGE_PUBLIC_URL || process.env.STORAGE_PUBLIC_URL;
 
-const isS3Configured = Boolean(endpoint && accessKeyId && secretAccessKey && bucket);
+const isS3Configured = Boolean(s3Endpoint && s3AccessKeyId && s3SecretAccessKey && s3Bucket);
 
 let s3Client = null;
 if (isS3Configured) {
   try {
     s3Client = new S3Client({
-      endpoint,
-      region,
+      endpoint: s3Endpoint,
+      region: s3Region,
       credentials: {
-        accessKeyId,
-        secretAccessKey,
+        accessKeyId: s3AccessKeyId,
+        secretAccessKey: s3SecretAccessKey,
       },
       forcePathStyle: true,
     });
-    console.log('✅ [Storage] Neon / S3-compatible Object Storage Client initialized.');
   } catch (err) {
-    console.error('⚠️ [Storage] Failed to initialize S3 client:', err.message);
+    console.error('[Storage] Failed to initialize S3 client:', err.message);
   }
 }
 
 export function getStorageStatus() {
+  if (isBlobConfigured) {
+    return {
+      provider: 'Vercel Blob Storage',
+      isConfigured: true,
+      hasToken: true,
+      directUploadSupported: true,
+    };
+  }
+  if (isS3Configured) {
+    return {
+      provider: 'S3-Compatible Object Storage',
+      isConfigured: true,
+      bucket: s3Bucket,
+      region: s3Region,
+      directUploadSupported: false,
+    };
+  }
   return {
-    provider: isS3Configured ? 'Neon Object Storage (S3-Compatible)' : 'Local File Storage (server/public/uploads)',
-    isConfigured: isS3Configured,
-    bucket: bucket || null,
-    endpoint: endpoint ? endpoint.replace(/^https?:\/\//, '') : null,
-    region: isS3Configured ? region : null,
-    publicUrlConfigured: Boolean(publicBaseUrl),
+    provider: process.env.VERCEL ? 'None (Serverless Read-Only)' : 'Local File Storage',
+    isConfigured: false,
+    directUploadSupported: false,
   };
 }
 
 /**
- * Upload a file buffer or file stream to Object Storage (or local disk fallback)
- * @param {Object} file - Express/Multer file object
+ * Upload a file buffer to permanent storage (Vercel Blob > S3 > Local fallback in dev)
+ * @param {Object} file - Express/Multer file object (with buffer or path)
  * @param {string} folder - 'products', 'banners', 'reels', etc.
- * @returns {Promise<string>} Public URL of the uploaded file
+ * @returns {Promise<string>} Permanent public URL of the uploaded file
  */
 export async function uploadFile(file, folder = 'media') {
   const ext = path.extname(file.originalname).toLowerCase();
   const cleanBase = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_');
-  const uniqueKey = `${folder}/${cleanBase}-${Date.now()}-${Math.round(Math.random() * 1e6)}${ext}`;
+  const uniqueKey = `${folder}/${cleanBase}-${Date.now()}-${Math.round(Math.random() * 1e4)}${ext}`;
 
-  if (isS3Configured && s3Client) {
+  const fileBuffer = file.buffer || (file.path ? fs.readFileSync(file.path) : null);
+  if (!fileBuffer) {
+    throw new Error('No file buffer available for storage upload.');
+  }
+
+  // 1. Primary: Vercel Blob Storage
+  if (isBlobConfigured) {
     try {
-      const fileBuffer = file.buffer || (file.path ? fs.readFileSync(file.path) : null);
-      if (!fileBuffer) {
-        throw new Error('No file buffer available for object storage upload.');
-      }
-
-      await s3Client.send(new PutObjectCommand({
-        Bucket: bucket,
-        Key: uniqueKey,
-        Body: fileBuffer,
-        ContentType: file.mimetype,
-        // Neon / S3 public read ACL
-        ACL: 'public-read',
-      }));
-
-      // Construct public URL
-      if (publicBaseUrl) {
-        return `${publicBaseUrl.replace(/\/$/, '')}/${uniqueKey}`;
-      }
-      return `${endpoint.replace(/\/$/, '')}/${bucket}/${uniqueKey}`;
+      const blob = await put(uniqueKey, fileBuffer, {
+        access: 'public',
+        contentType: file.mimetype || 'application/octet-stream',
+      });
+      return blob.url;
     } catch (err) {
-      console.warn('⚠️ [Storage] Upload to Neon Object Storage failed, falling back to local file:', err.message);
+      console.error('[Storage] Vercel Blob upload failed:', err.message);
+      if (process.env.VERCEL) {
+        throw new Error(`Permanent storage upload failed: ${err.message}`);
+      }
     }
   }
 
-  // Local fallback: write to local upload directory if not already there
-  const filename = `${cleanBase}-${Date.now()}${ext}`;
-  const localPath = path.join(localUploadDir, filename);
+  // 2. Secondary: S3-Compatible Storage
+  if (isS3Configured && s3Client) {
+    try {
+      await s3Client.send(new PutObjectCommand({
+        Bucket: s3Bucket,
+        Key: uniqueKey,
+        Body: fileBuffer,
+        ContentType: file.mimetype,
+        ACL: 'public-read',
+      }));
 
-  if (file.buffer) {
-    fs.writeFileSync(localPath, file.buffer);
-  } else if (file.path && file.path !== localPath) {
-    fs.copyFileSync(file.path, localPath);
+      if (s3PublicBaseUrl) {
+        return `${s3PublicBaseUrl.replace(/\/$/, '')}/${uniqueKey}`;
+      }
+      return `${s3Endpoint.replace(/\/$/, '')}/${s3Bucket}/${uniqueKey}`;
+    } catch (err) {
+      console.error('[Storage] S3 upload failed:', err.message);
+      if (process.env.VERCEL) {
+        throw new Error(`Permanent S3 upload failed: ${err.message}`);
+      }
+    }
   }
 
-  return `/uploads/${filename}`;
+  // 3. Fallback: Local disk ONLY in local development (never on Vercel)
+  if (!process.env.VERCEL) {
+    if (!fs.existsSync(localUploadDir)) {
+      fs.mkdirSync(localUploadDir, { recursive: true });
+    }
+    const filename = `${cleanBase}-${Date.now()}${ext}`;
+    const localPath = path.join(localUploadDir, filename);
+    fs.writeFileSync(localPath, fileBuffer);
+    return `/uploads/${filename}`;
+  }
+
+  throw new Error('No permanent storage provider configured. Set BLOB_READ_WRITE_TOKEN in environment.');
 }
 
-export { isS3Configured };
+/**
+ * Delete a file from permanent storage if it belongs to Vercel Blob
+ * @param {string} url - Public URL of the file to delete
+ */
+export async function deleteFile(url) {
+  if (!url || typeof url !== 'string') return;
+
+  if (isBlobConfigured && (url.includes('.blob.vercel-storage.com') || url.includes('/blob.vercel-storage.com'))) {
+    try {
+      await del(url);
+    } catch (err) {
+      console.warn('[Storage] Failed to delete blob:', err.message);
+    }
+  }
+}
+
+export { isBlobConfigured, isS3Configured };

@@ -125,6 +125,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/uploads', uploadRoutes);
+app.use('/api/upload', uploadRoutes);
 app.use('/api/cms', cmsRoutes);
 app.use('/api/newsletter', cmsRoutes);
 app.use('/api/contact', cmsRoutes);

@@ -1,6 +1,7 @@
 import express from 'express';
 import { prisma } from '../database/connection.js';
 import { requireAdmin } from '../middleware/auth.js';
+import { deleteFile } from '../services/storageService.js';
 
 const router = express.Router();
 
@@ -216,6 +217,14 @@ router.delete('/:id', requireAdmin, async (req, res) => {
     const existing = await prisma.reel.findUnique({ where: { id: req.params.id } });
     if (!existing) {
       return res.status(404).json({ success: false, message: 'Reel not found or already deleted.' });
+    }
+
+    // Clean up media in permanent storage if applicable
+    if (existing.videoUrl) {
+      deleteFile(existing.videoUrl).catch(() => {});
+    }
+    if (existing.thumbnailUrl) {
+      deleteFile(existing.thumbnailUrl).catch(() => {});
     }
 
     await prisma.reel.delete({ where: { id: req.params.id } });

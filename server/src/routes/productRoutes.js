@@ -1,6 +1,7 @@
 import express from 'express';
 import { prisma } from '../database/connection.js';
 import { requireAdmin } from '../middleware/auth.js';
+import { deleteFile } from '../services/storageService.js';
 
 const router = express.Router();
 
@@ -389,6 +390,14 @@ router.delete('/:id', requireAdmin, async (req, res) => {
     const existing = await prisma.product.findUnique({ where: { id: req.params.id } });
     if (!existing) {
       return res.status(404).json({ success: false, message: 'Product not found.' });
+    }
+
+    // Clean up media in permanent storage if applicable
+    if (existing.mainImage) {
+      deleteFile(existing.mainImage).catch(() => {});
+    }
+    if (Array.isArray(existing.images)) {
+      existing.images.forEach(img => deleteFile(img).catch(() => {}));
     }
 
     // Delete related reviews and orderItem references (handled cleanly by schema or explicit deletion)

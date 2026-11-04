@@ -205,9 +205,56 @@ export const api = {
   // Dashboard
   getDashboardStats: () => request('/dashboard/stats'),
 
-  // Uploads
-  uploadImage: (formData) => request('/uploads', { method: 'POST', body: formData }),
-  uploadVideo: (formData) => request('/uploads/video', { method: 'POST', body: formData }),
+  // Uploads & Permanent Storage
+  uploadDirectToStorage: async (file, folder = 'media', onProgress = null) => {
+    try {
+      const { upload } = await import('@vercel/blob/client');
+      const cleanName = (file.name || 'file').replace(/[^a-zA-Z0-9._-]/g, '_');
+      const pathname = `${folder}/${Date.now()}-${cleanName}`;
+      const adminToken = localStorage.getItem('meh_admin_token');
+
+      const blob = await upload(pathname, file, {
+        access: 'public',
+        handleUploadUrl: `${API_BASE}/uploads/blob-auth`,
+        clientPayload: JSON.stringify({ folder }),
+        headers: adminToken ? { Authorization: `Bearer ${adminToken}` } : {},
+        onUploadProgress: (progress) => {
+          if (onProgress && typeof onProgress === 'function') {
+            onProgress(Math.round(progress.percentage));
+          }
+        }
+      });
+
+      return {
+        success: true,
+        fileUrl: blob.url,
+        url: blob.url,
+        fileName: file.name,
+        size: file.size,
+      };
+    } catch (err) {
+      console.warn('Direct storage upload notice (attempting server route):', err.message);
+      const formData = new FormData();
+      const isVideo = file.type?.startsWith('video/') || /\.(mp4|webm|mov|ogg)$/i.test(file.name);
+      formData.append(isVideo ? 'video' : 'image', file);
+      const endpoint = isVideo ? '/uploads/video' : '/uploads';
+      return request(endpoint, { method: 'POST', body: formData });
+    }
+  },
+
+  uploadImage: (fileOrFormData, onProgress) => {
+    if (fileOrFormData instanceof File) {
+      return api.uploadDirectToStorage(fileOrFormData, 'products', onProgress);
+    }
+    return request('/uploads', { method: 'POST', body: fileOrFormData });
+  },
+
+  uploadVideo: (fileOrFormData, onProgress) => {
+    if (fileOrFormData instanceof File) {
+      return api.uploadDirectToStorage(fileOrFormData, 'reels', onProgress);
+    }
+    return request('/uploads/video', { method: 'POST', body: fileOrFormData });
+  },
 
   // Auth
   adminLogin: (email, password) => request('/auth/admin/login', { method: 'POST', body: { email, password } }),

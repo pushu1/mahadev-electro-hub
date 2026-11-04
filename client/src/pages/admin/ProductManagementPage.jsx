@@ -12,7 +12,11 @@ import {
   AlertCircle,
   ExternalLink,
   Sparkles,
-  RefreshCw
+  RefreshCw,
+  Star,
+  ArrowLeft,
+  ArrowRight,
+  Image as ImageIcon
 } from 'lucide-react';
 import AdminLayout from '../../components/admin/AdminLayout.jsx';
 import { api } from '../../services/api.js';
@@ -115,8 +119,12 @@ export default function ProductManagementPage() {
     };
   }, []);
 
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [imageUrlInput, setImageUrlInput] = useState('');
+
   const openAddModal = () => {
     setEditingProduct(null);
+    setImageUrlInput('');
     setFormData({
       title_en: '',
       title_hinglish: '',
@@ -144,6 +152,7 @@ export default function ProductManagementPage() {
       warranty_en: '1 Year Mahadev Warranty',
       warranty_hi: '1 वर्ष महादेव इलेक्ट्रो हब वारंटी',
       mainImage: '',
+      images: [],
       shippingInfo: 'Pali warehouse se tez dispatch.',
       featured: false,
       newArrival: true,
@@ -157,6 +166,15 @@ export default function ProductManagementPage() {
 
   const openEditModal = (p) => {
     setEditingProduct(p);
+    setImageUrlInput('');
+    const rawImages = Array.isArray(p.images) && p.images.length > 0 
+      ? [...p.images] 
+      : (p.mainImage ? [p.mainImage] : []);
+    const initialMain = p.mainImage || rawImages[0] || '';
+    if (initialMain && !rawImages.includes(initialMain)) {
+      rawImages.unshift(initialMain);
+    }
+
     setFormData({
       title_en: p.title_en || '',
       title_hinglish: p.title_hinglish || '',
@@ -183,7 +201,8 @@ export default function ProductManagementPage() {
       usage_instructions_hi: p.usage_instructions_hi || '',
       warranty_en: p.warranty_en || p.warranty || '',
       warranty_hi: p.warranty_hi || '',
-      mainImage: p.mainImage || '',
+      mainImage: initialMain,
+      images: rawImages,
       shippingInfo: p.shippingInfo || '',
       featured: Boolean(p.featured),
       newArrival: Boolean(p.newArrival),
@@ -196,25 +215,107 @@ export default function ProductManagementPage() {
   };
 
   const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    const validFiles = files.filter(f => {
+      const isImg = f.type.startsWith('image/') || /\.(jpe?g|png|webp|gif|svg)$/i.test(f.name);
+      return isImg && f.size <= 25 * 1024 * 1024;
+    });
+
+    if (validFiles.length === 0) {
+      alert('Kripya valid image file chunein (JPG, JPEG, PNG, WebP - max 25MB).');
+      return;
+    }
 
     setUploadingImage(true);
-    const body = new FormData();
-    body.append('image', file);
+    setUploadProgress(10);
 
     try {
-      const res = await api.uploadImage(body);
-      if (res.success && res.fileUrl) {
-        setFormData(prev => ({ ...prev, mainImage: res.fileUrl }));
-        setSuccessToast('Image successfully upload ho gayi!');
-        setTimeout(() => setSuccessToast(''), 3000);
+      const uploadedUrls = [];
+      for (let i = 0; i < validFiles.length; i++) {
+        const file = validFiles[i];
+        const res = await api.uploadImage(file, (pct) => {
+          setUploadProgress(Math.round(((i + pct / 100) / validFiles.length) * 100));
+        });
+        if (res && (res.fileUrl || res.url)) {
+          uploadedUrls.push(res.fileUrl || res.url);
+        }
+      }
+
+      if (uploadedUrls.length > 0) {
+        setFormData(prev => {
+          const currentImages = Array.isArray(prev.images) ? [...prev.images] : [];
+          uploadedUrls.forEach(u => {
+            if (!currentImages.includes(u)) currentImages.push(u);
+          });
+          const newMain = prev.mainImage || currentImages[0] || '';
+          return {
+            ...prev,
+            images: currentImages,
+            mainImage: newMain
+          };
+        });
+        setSuccessToast(`${uploadedUrls.length} image(s) successfully upload ho gayi permanent storage mein!`);
+        setTimeout(() => setSuccessToast(''), 4000);
       }
     } catch (err) {
       alert('Image upload fail ho gayi: ' + err.message);
     } finally {
       setUploadingImage(false);
+      setUploadProgress(0);
+      if (e.target) e.target.value = '';
     }
+  };
+
+  const handleAddImageUrl = (e) => {
+    e.preventDefault();
+    if (!imageUrlInput.trim()) return;
+    const url = imageUrlInput.trim();
+    setFormData(prev => {
+      const currentImages = Array.isArray(prev.images) ? [...prev.images] : [];
+      if (!currentImages.includes(url)) currentImages.push(url);
+      return {
+        ...prev,
+        images: currentImages,
+        mainImage: prev.mainImage || url
+      };
+    });
+    setImageUrlInput('');
+  };
+
+  const handleSetMainImage = (url) => {
+    setFormData(prev => ({ ...prev, mainImage: url }));
+  };
+
+  const handleRemoveImage = (urlToRemove) => {
+    setFormData(prev => {
+      const currentImages = (prev.images || []).filter(u => u !== urlToRemove);
+      let nextMain = prev.mainImage;
+      if (nextMain === urlToRemove) {
+        nextMain = currentImages[0] || '';
+      }
+      return {
+        ...prev,
+        images: currentImages,
+        mainImage: nextMain
+      };
+    });
+  };
+
+  const handleReorderImage = (index, direction) => {
+    setFormData(prev => {
+      const list = [...(prev.images || [])];
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= list.length) return prev;
+      const temp = list[index];
+      list[index] = list[targetIndex];
+      list[targetIndex] = temp;
+      return {
+        ...prev,
+        images: list
+      };
+    });
   };
 
   const handleSaveProduct = async (e) => {
@@ -981,55 +1082,167 @@ export default function ProductManagementPage() {
                   </div>
                 )}
 
-                {/* TAB 5: Image Upload */}
+                {/* TAB 5: Gallery & Permanent Image Storage */}
                 {modalTab === 'images' && (
-                  <div className="space-y-4 text-xs">
+                  <div className="space-y-5 text-xs">
+                    {/* Upload Box */}
                     <div>
-                      <label className="block font-semibold text-[#171C17] mb-1">
-                        Computer Se Image Upload Karein
+                      <label className="block font-bold text-[#171C17] mb-1.5 uppercase tracking-wider text-[11px]">
+                        Computer Se Images Upload Karein (Single ya Multiple)
                       </label>
-                      <div className="border-2 border-dashed border-[#D5DDD2] hover:border-[#24532F] bg-[#FAF9F6] rounded-xl p-6 text-center transition-colors">
+                      <div className="border-2 border-dashed border-[#D5DDD2] hover:border-[#24532F] bg-[#FAF9F6] rounded-2xl p-6 text-center transition-colors">
                         <input
                           type="file"
-                          accept="image/*"
+                          multiple
+                          accept="image/jpeg,image/png,image/webp,image/jpg"
                           onChange={handleFileUpload}
                           disabled={uploadingImage}
                           className="hidden"
                           id="prod-file-upload"
                         />
                         <label htmlFor="prod-file-upload" className="cursor-pointer block">
-                          <Upload className="w-8 h-8 text-[#24532F] mx-auto mb-2" />
-                          <span className="font-bold text-[#171C17] block">
-                            {uploadingImage ? 'Image Upload Ho Rahi Hai...' : 'Computer Se Image File Chunein'}
+                          <Upload className="w-9 h-9 text-[#24532F] mx-auto mb-2" />
+                          <span className="font-extrabold text-[#171C17] text-sm block">
+                            {uploadingImage ? 'Permanent Storage Mein Upload Ho Rahi Hai...' : 'Computer Se Photo File Chunein (Multiple Allowed)'}
                           </span>
-                          <span className="text-[11px] text-[#596358]">
-                            PNG, JPG, JPEG, WebP files supported
+                          <span className="text-[11px] text-[#596358] block mt-1">
+                            PNG, JPG, JPEG, WebP files supported (Direct Vercel Blob CDN upload)
                           </span>
                         </label>
+
+                        {uploadingImage && (
+                          <div className="mt-4 max-w-xs mx-auto">
+                            <div className="flex justify-between text-[11px] text-[#24532F] font-bold mb-1">
+                              <span>Uploading to Vercel Blob CDN...</span>
+                              <span>{uploadProgress}%</span>
+                            </div>
+                            <div className="w-full h-2 bg-[#DCE8D5] rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-[#24532F] transition-all duration-300 rounded-full"
+                                style={{ width: `${uploadProgress}%` }}
+                              />
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
 
-                    <div>
-                      <label className="block font-semibold text-[#171C17] mb-1">
-                        Ya Image URL Link Dalein
+                    {/* Add by URL */}
+                    <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#D5DDD2]">
+                      <label className="block font-bold text-[#171C17] mb-1.5 uppercase tracking-wider text-[11px]">
+                        Ya Direct Image URL Add Karein
                       </label>
-                      <input
-                        type="url"
-                        value={formData.mainImage}
-                        onChange={(e) => setFormData({ ...formData, mainImage: e.target.value })}
-                        placeholder="https://..."
-                        className="w-full px-3 py-2 border border-[#D5DDD2] bg-white text-[#171C17] rounded-xl focus:outline-none focus:border-[#24532F] focus:ring-1 focus:ring-[#24532F] text-xs placeholder-[#596358]"
-                      />
+                      <div className="flex gap-2">
+                        <input
+                          type="url"
+                          value={imageUrlInput}
+                          onChange={(e) => setImageUrlInput(e.target.value)}
+                          placeholder="https://images.unsplash.com/... ya direct image link"
+                          className="flex-1 px-3 py-2 border border-[#D5DDD2] bg-white text-[#171C17] rounded-xl focus:outline-none focus:border-[#24532F] text-xs placeholder-[#596358]"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleAddImageUrl}
+                          className="px-4 py-2 bg-[#24532F] hover:bg-[#183D22] text-white font-bold rounded-xl text-xs transition-colors shrink-0"
+                        >
+                          Add to Gallery
+                        </button>
+                      </div>
                     </div>
 
-                    {formData.mainImage && (
-                      <div>
-                        <span className="block font-semibold text-[#171C17] mb-1">Image Preview:</span>
-                        <div className="w-32 h-32 rounded-xl border border-[#D5DDD2] overflow-hidden bg-[#FAF9F6]">
-                          <img src={formData.mainImage} alt="" className="w-full h-full object-cover" />
-                        </div>
+                    {/* Gallery List & Reorder Controls */}
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-bold text-[#171C17] uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                          <ImageIcon className="w-4 h-4 text-[#24532F]" />
+                          Product Image Gallery ({(formData.images || []).length} Photos)
+                        </span>
+                        <span className="text-[11px] text-[#596358]">
+                          ★ icon wali image catalog ki Main Photo rahegi
+                        </span>
                       </div>
-                    )}
+
+                      {(formData.images || []).length === 0 ? (
+                        <div className="p-6 text-center border border-dashed border-[#D5DDD2] rounded-xl text-[#596358] text-xs">
+                          Abhi koi image add nahi ki gayi hai. Kripya upar se file upload karein ya URL dalein.
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                          {(formData.images || []).map((imgUrl, idx) => {
+                            const isMain = formData.mainImage === imgUrl;
+                            return (
+                              <div
+                                key={idx}
+                                className={`relative rounded-xl border overflow-hidden bg-white shadow-xs group transition-all ${
+                                  isMain ? 'border-[#24532F] ring-2 ring-[#24532F]/30' : 'border-[#D5DDD2] hover:border-[#596358]'
+                                }`}
+                              >
+                                {/* Thumbnail Image */}
+                                <div className="aspect-square w-full bg-[#FAF9F6] relative overflow-hidden">
+                                  <img
+                                    src={imgUrl}
+                                    alt=""
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  />
+
+                                  {/* Main Badge */}
+                                  {isMain && (
+                                    <span className="absolute top-1.5 left-1.5 z-10 bg-[#24532F] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-md flex items-center gap-1 shadow-sm">
+                                      <Star className="w-3 h-3 fill-current" />
+                                      Main Photo
+                                    </span>
+                                  )}
+
+                                  {/* Delete Button */}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRemoveImage(imgUrl)}
+                                    title="Remove this photo"
+                                    className="absolute top-1.5 right-1.5 z-10 w-6 h-6 rounded-md bg-red-600/90 hover:bg-red-700 text-white flex items-center justify-center transition-colors shadow-sm"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+
+                                {/* Reorder & Main Controls */}
+                                <div className="p-2 bg-white border-t border-[#D5DDD2] flex items-center justify-between gap-1">
+                                  <div className="flex items-center gap-1">
+                                    <button
+                                      type="button"
+                                      disabled={idx === 0}
+                                      onClick={() => handleReorderImage(idx, -1)}
+                                      title="Move Left"
+                                      className="p-1 rounded bg-[#FAF9F6] border border-[#D5DDD2] hover:bg-[#DCE8D5] disabled:opacity-30 disabled:cursor-not-allowed text-[#171C17]"
+                                    >
+                                      <ArrowLeft className="w-3 h-3" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={idx === (formData.images || []).length - 1}
+                                      onClick={() => handleReorderImage(idx, 1)}
+                                      title="Move Right"
+                                      className="p-1 rounded bg-[#FAF9F6] border border-[#D5DDD2] hover:bg-[#DCE8D5] disabled:opacity-30 disabled:cursor-not-allowed text-[#171C17]"
+                                    >
+                                      <ArrowRight className="w-3 h-3" />
+                                    </button>
+                                  </div>
+
+                                  {!isMain && (
+                                    <button
+                                      type="button"
+                                      onClick={() => handleSetMainImage(imgUrl)}
+                                      className="text-[10px] font-bold text-[#24532F] hover:text-[#183D22] hover:underline px-1 py-0.5"
+                                    >
+                                      Set Main
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
 

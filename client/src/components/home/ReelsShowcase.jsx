@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Volume2, VolumeX, Play, Pause } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Volume2, VolumeX, Play, Pause, ExternalLink, Loader2, AlertCircle } from 'lucide-react';
 import { api } from '../../services/api.js';
 import { useLanguage } from '../../context/LanguageContext.jsx';
 import { DEFAULT_REELS } from '../../data/defaultProducts.js';
@@ -17,6 +17,52 @@ export default function ReelsShowcase() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [isPausedHover, setIsPausedHover] = useState(false);
   const [videoPlayingMap, setVideoPlayingMap] = useState({});
+  const [bufferingMap, setBufferingMap] = useState({});
+  const [videoErrorMap, setVideoErrorMap] = useState({});
+
+  // Helpers to categorize reel source types
+  const isInstagramReel = (reel) => {
+    if (!reel) return false;
+    if (reel.sourceType === 'instagram') return true;
+    return Boolean(reel.videoUrl && /instagram\.com\/(?:reel|reels|p)\//i.test(reel.videoUrl));
+  };
+
+  const getInstagramShortcode = (url) => {
+    if (!url || typeof url !== 'string') return null;
+    const match = url.match(/(?:https?:\/\/)?(?:www\.)?instagram\.com\/(?:reel|reels|p)\/([A-Za-z0-9_-]+)/i);
+    return match ? match[1] : null;
+  };
+
+  const isDirectVideo = (reel) => {
+    if (!reel || isInstagramReel(reel)) return false;
+    if (reel.sourceType === 'upload') return true;
+    if (!reel.videoUrl) return false;
+    return (
+      /\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(reel.videoUrl) ||
+      reel.videoUrl.includes('blob.vercel-storage.com') ||
+      reel.videoUrl.includes('/uploads/') ||
+      reel.sourceType === 'url'
+    );
+  };
+
+  // Official Instagram embed script loader
+  useEffect(() => {
+    const hasInstagram = (reels || []).some(isInstagramReel);
+    if (!hasInstagram) return;
+
+    if (!document.getElementById('instagram-embed-script')) {
+      const script = document.createElement('script');
+      script.id = 'instagram-embed-script';
+      script.src = 'https://www.instagram.com/embed.js';
+      script.async = true;
+      script.onload = () => {
+        try { window.instgrm?.Embeds?.process(); } catch (_) {}
+      };
+      document.body.appendChild(script);
+    } else {
+      try { window.instgrm?.Embeds?.process(); } catch (_) {}
+    }
+  }, [reels]);
 
   // Per-card playback state: { [reelId]: { isPlaying: boolean, isMuted: boolean } }
   const [mediaState, setMediaState] = useState(() => {
@@ -315,13 +361,9 @@ export default function ReelsShowcase() {
           >
             {displayReels.map((reel, idx) => {
               const reelState = mediaState[reel.id] || { isPlaying: true, isMuted: true };
-              const isVideoUrl = reel.videoUrl && (
-                reel.videoUrl.endsWith('.mp4') ||
-                reel.videoUrl.endsWith('.webm') ||
-                reel.videoUrl.includes('/uploads/') ||
-                reel.sourceType === 'upload' ||
-                reel.sourceType === 'url'
-              );
+              const isInsta = isInstagramReel(reel);
+              const isDirect = isDirectVideo(reel);
+              const instaShortcode = isInsta ? getInstagramShortcode(reel.videoUrl) : null;
 
               // Authentic poster thumbnail fallback based on category
               const getPoster = () => {
@@ -347,70 +389,143 @@ export default function ReelsShowcase() {
                     transitionDelay: reducedMotion ? '0ms' : `${idx * 80}ms`,
                   }}
                   className="snap-start shrink-0 w-[228px] sm:w-[calc((100%-32px)/3)] lg:w-[calc((100%-64px)/5)] aspect-[9/16] relative bg-[#FAF9F6] rounded-xl border border-[#D5DDD2] hover:border-[#24532F] transition-all duration-300 overflow-hidden group cursor-pointer shadow-sm hover:shadow-xl hover:shadow-[#356B3D]/15 select-none opacity-100"
-                  onClick={() => isVideoUrl && togglePlay(reel.id)}
+                  onClick={() => {
+                    if (isDirect) {
+                      togglePlay(reel.id);
+                    }
+                  }}
                 >
-                  {/* Base Poster Media Layer - Always visible for instant crisp render with zero blank cards */}
-                  <img
-                    src={posterSrc}
-                    alt={reel.category || 'Reel Media'}
-                    loading="eager"
-                    decoding="async"
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = '/images/categories/zatka-machines.png';
-                    }}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    className="w-full h-full object-cover rounded-xl transition-transform duration-700 group-hover:scale-105"
-                  />
+                  {isInsta ? (
+                    /* Instagram Embed Card */
+                    <div className="relative w-full h-full bg-[#171C17] flex items-center justify-center overflow-hidden">
+                      {instaShortcode ? (
+                        <iframe
+                          src={`https://www.instagram.com/reel/${instaShortcode}/embed/`}
+                          title={reel.title || reel.category || "Instagram Reel"}
+                          className="w-full h-full border-0 rounded-xl"
+                          loading="lazy"
+                          allowFullScreen
+                          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                          scrolling="no"
+                        />
+                      ) : (
+                        <img
+                          src={posterSrc}
+                          alt={reel.title || reel.category || 'Instagram Reel'}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                      <a
+                        href={reel.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="absolute bottom-3 left-3 z-30 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:opacity-90 text-white backdrop-blur-md transition-opacity shadow-md"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        <span>Instagram</span>
+                      </a>
+                    </div>
+                  ) : (
+                    /* Direct HTML5 MP4 / WebM Video Card */
+                    <>
+                      {/* Base Poster Media Layer - Always visible for instant crisp render with zero blank cards */}
+                      <img
+                        src={posterSrc}
+                        alt={reel.title || reel.category || 'Reel Media'}
+                        loading="eager"
+                        decoding="async"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = '/images/categories/zatka-machines.png';
+                        }}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        className="w-full h-full object-cover rounded-xl transition-transform duration-700 group-hover:scale-105"
+                      />
 
-                  {/* Dynamic Video Layer - Mounted on viewport entry, crossfades smoothly when playing */}
-                  {isVideoUrl && hasEntered && (
-                    <video
-                      ref={el => videoRefs.current[reel.id] = el}
-                      src={reel.videoUrl}
-                      autoPlay={isInViewport}
-                      muted={reelState.isMuted}
-                      loop
-                      playsInline
-                      preload="none"
-                      onPlaying={() => setVideoPlayingMap(p => ({ ...p, [reel.id]: true }))}
-                      onWaiting={() => setVideoPlayingMap(p => ({ ...p, [reel.id]: false }))}
-                      onPlay={() => setMediaState(p => ({ ...p, [reel.id]: { ...(p[reel.id] || {}), isPlaying: true } }))}
-                      onPause={() => {
-                        setVideoPlayingMap(p => ({ ...p, [reel.id]: false }));
-                        setMediaState(p => ({ ...p, [reel.id]: { ...(p[reel.id] || {}), isPlaying: false } }));
-                      }}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      className={`absolute inset-0 w-full h-full object-cover rounded-xl transition-opacity duration-500 ${
-                        videoPlayingMap[reel.id] ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                      }`}
-                    />
+                      {/* Dynamic Video Layer */}
+                      {isDirect && hasEntered && (
+                        <video
+                          ref={el => videoRefs.current[reel.id] = el}
+                          src={reel.videoUrl}
+                          autoPlay={isInViewport}
+                          muted={reelState.isMuted}
+                          loop
+                          playsInline
+                          preload="metadata"
+                          crossOrigin="anonymous"
+                          onPlaying={() => {
+                            setVideoPlayingMap(p => ({ ...p, [reel.id]: true }));
+                            setBufferingMap(p => ({ ...p, [reel.id]: false }));
+                          }}
+                          onWaiting={() => setBufferingMap(p => ({ ...p, [reel.id]: true }))}
+                          onCanPlay={() => setBufferingMap(p => ({ ...p, [reel.id]: false }))}
+                          onPlay={() => setMediaState(p => ({ ...p, [reel.id]: { ...(p[reel.id] || {}), isPlaying: true } }))}
+                          onPause={() => {
+                            setVideoPlayingMap(p => ({ ...p, [reel.id]: false }));
+                            setMediaState(p => ({ ...p, [reel.id]: { ...(p[reel.id] || {}), isPlaying: false } }));
+                          }}
+                          onError={() => {
+                            setVideoErrorMap(p => ({ ...p, [reel.id]: true }));
+                            setBufferingMap(p => ({ ...p, [reel.id]: false }));
+                          }}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          className={`absolute inset-0 w-full h-full object-cover rounded-xl transition-opacity duration-500 ${
+                            videoPlayingMap[reel.id] ? 'opacity-100' : 'opacity-0'
+                          }`}
+                        />
+                      )}
+
+                      {/* Buffering Spinner */}
+                      {bufferingMap[reel.id] && (
+                        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/30 pointer-events-none">
+                          <Loader2 className="w-8 h-8 text-white animate-spin" />
+                        </div>
+                      )}
+
+                      {/* Play overlay when paused */}
+                      {hasEntered && !reelState.isPlaying && !videoErrorMap[reel.id] && (
+                        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/25 pointer-events-none transition-opacity">
+                          <div className="w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center shadow-lg backdrop-blur-sm group-hover:scale-110 transition-transform">
+                            <Play className="w-6 h-6 ml-0.5 text-white" />
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Error fallback */}
+                      {videoErrorMap[reel.id] && (
+                        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/60 p-4 text-center pointer-events-none">
+                          <AlertCircle className="w-8 h-8 text-amber-400 mb-2" />
+                          <span className="text-xs text-white">Video unavailable</span>
+                        </div>
+                      )}
+
+                      {/* Bottom-Right: Independent Mute / Unmute Button Only */}
+                      {isDirect && (
+                        <div className="absolute bottom-3 right-3 z-30 pointer-events-auto">
+                          <button
+                            type="button"
+                            onClick={(e) => toggleMute(reel.id, e)}
+                            aria-label={reelState.isMuted ? 'Unmute video' : 'Mute video'}
+                            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-[#24532F] text-white border border-white/20 hover:border-[#24532F] flex items-center justify-center transition-all duration-200 backdrop-blur-md shadow-lg active:scale-95"
+                          >
+                            {reelState.isMuted ? (
+                              <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                            ) : (
+                              <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#DCE8D5]" />
+                            )}
+                          </button>
+                        </div>
+                      )}
+                    </>
                   )}
 
-                  {/* Top-Left: Category Label Only */}
+                  {/* Top-Left: Category Label */}
                   {reel.category && (
                     <div className="absolute top-3 left-3 z-20 pointer-events-none">
                       <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-white/90 text-[#183D22] border border-[#356B3D]/50 backdrop-blur-md shadow-sm">
                         {reel.category}
                       </span>
-                    </div>
-                  )}
-
-                  {/* Bottom-Right: Independent Mute / Unmute Button Only */}
-                  {isVideoUrl && (
-                    <div className="absolute bottom-3 right-3 z-20 pointer-events-auto">
-                      <button
-                        type="button"
-                        onClick={(e) => toggleMute(reel.id, e)}
-                        aria-label={reelState.isMuted ? 'Unmute video' : 'Mute video'}
-                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-[#24532F] text-white border border-white/20 hover:border-[#24532F] flex items-center justify-center transition-all duration-200 backdrop-blur-md shadow-lg active:scale-95"
-                      >
-                        {reelState.isMuted ? (
-                          <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
-                        ) : (
-                          <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#DCE8D5]" />
-                        )}
-                      </button>
                     </div>
                   )}
 

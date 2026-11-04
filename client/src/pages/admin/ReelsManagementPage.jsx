@@ -27,6 +27,7 @@ export default function ReelsManagementPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
+  const [videoProgress, setVideoProgress] = useState(0);
   const [uploadingThumb, setUploadingThumb] = useState(false);
   const [alert, setAlert] = useState(null); // { type: 'success' | 'error', message: string }
 
@@ -37,12 +38,26 @@ export default function ReelsManagementPage() {
     title: '',
     category: 'Zatka Machines',
     description: '',
-    sourceType: 'url', // 'upload' | 'url' | 'youtube' | 'instagram'
+    sourceType: 'upload', // 'upload' | 'instagram' | 'url'
     videoUrl: '',
     thumbnailUrl: '',
     sortOrder: 1,
     isActive: true,
   });
+
+  // Helpers to validate & normalize Instagram Reel URLs
+  const normalizeInstagramUrl = (url) => {
+    if (!url || typeof url !== 'string') return '';
+    const match = url.trim().match(/(?:https?:\/\/)?(?:www\.)?instagram\.com\/(?:reel|reels|p)\/([A-Za-z0-9_-]+)/i);
+    if (!match) return '';
+    return `https://www.instagram.com/reel/${match[1]}/`;
+  };
+
+  const extractInstagramShortcode = (url) => {
+    if (!url || typeof url !== 'string') return null;
+    const match = url.trim().match(/(?:https?:\/\/)?(?:www\.)?instagram\.com\/(?:reel|reels|p)\/([A-Za-z0-9_-]+)/i);
+    return match ? match[1] : null;
+  };
 
   // Category choices
   const categoryOptions = [
@@ -119,10 +134,17 @@ export default function ReelsManagementPage() {
     setIsModalOpen(true);
   };
 
-  // Handle Video File Upload
+  // Handle Video File Upload (Direct-to-storage to avoid Vercel 4.5MB limit)
   const handleVideoUpload = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (!file) return;
+
+    // Validate type (MP4 with H.264 recommended, WebM, MOV)
+    const isVideo = file.type?.startsWith('video/') || /\.(mp4|webm|mov|m4v)$/i.test(file.name);
+    if (!isVideo) {
+      showAlert('error', 'Only video files (MP4, WebM, MOV) are allowed.');
+      return;
+    }
 
     // Validate size (100MB max)
     if (file.size > 100 * 1024 * 1024) {
@@ -132,17 +154,21 @@ export default function ReelsManagementPage() {
 
     try {
       setUploadingVideo(true);
-      const body = new FormData();
-      body.append('video', file);
+      setVideoProgress(5);
 
-      const res = await api.uploadVideo(body);
-      if (res && res.success && res.fileUrl) {
+      // Direct upload straight to Vercel Blob CDN with real-time percentage progress
+      const res = await api.uploadVideo(file, (pct) => {
+        setVideoProgress(pct);
+      });
+
+      if (res && (res.fileUrl || res.url)) {
+        const finalUrl = res.fileUrl || res.url;
         setFormData(prev => ({
           ...prev,
-          videoUrl: res.fileUrl,
+          videoUrl: finalUrl,
           sourceType: 'upload',
         }));
-        showAlert('success', 'Video file uploaded successfully!');
+        showAlert('success', 'Video file uploaded directly to permanent storage!');
       } else {
         throw new Error(res.message || 'Upload failed.');
       }
@@ -150,31 +176,35 @@ export default function ReelsManagementPage() {
       showAlert('error', `Failed to upload video: ${err.message}`);
     } finally {
       setUploadingVideo(false);
+      setVideoProgress(0);
+      if (e.target) e.target.value = '';
     }
   };
 
   // Handle Thumbnail File Upload
   const handleThumbUpload = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 10 * 1024 * 1024) {
-      showAlert('error', 'Thumbnail file size exceeds 10MB.');
+    if (!file.type?.startsWith('image/') && !/\.(jpe?g|png|webp)$/i.test(file.name)) {
+      showAlert('error', 'Only image files (JPG, PNG, WebP) are allowed.');
+      return;
+    }
+
+    if (file.size > 15 * 1024 * 1024) {
+      showAlert('error', 'Thumbnail file size exceeds 15MB.');
       return;
     }
 
     try {
       setUploadingThumb(true);
-      const body = new FormData();
-      body.append('image', file);
-
-      const res = await api.uploadImage(body);
-      if (res && res.success && res.fileUrl) {
+      const res = await api.uploadImage(file);
+      if (res && (res.fileUrl || res.url)) {
         setFormData(prev => ({
           ...prev,
-          thumbnailUrl: res.fileUrl,
+          thumbnailUrl: res.fileUrl || res.url,
         }));
-        showAlert('success', 'Thumbnail image uploaded successfully!');
+        showAlert('success', 'Thumbnail image uploaded successfully to permanent storage!');
       } else {
         throw new Error(res.message || 'Thumbnail upload failed.');
       }
@@ -182,6 +212,7 @@ export default function ReelsManagementPage() {
       showAlert('error', `Failed to upload thumbnail: ${err.message}`);
     } finally {
       setUploadingThumb(false);
+      if (e.target) e.target.value = '';
     }
   };
 
@@ -194,26 +225,42 @@ export default function ReelsManagementPage() {
       return;
     }
 
-    if (!formData.videoUrl.trim()) {
+    let finalVideoUrl = formData.videoUrl.trim();
+    if (!finalVideoUrl) {
       showAlert('error', 'Please upload a video or provide a valid video URL.');
       return;
     }
+
+    // Strict validation & normalization for Instagram Reel URLs
+    if (formData.sourceType === 'instagram') {
+      const normalized = normalizeInstagramUrl(finalVideoUrl);
+      if (!normalized) {
+        showAlert('error', 'Please enter a valid Instagram Reel or post URL (e.g. https://www.instagram.com/reel/C8xYz123/).');
+        return;
+      }
+      finalVideoUrl = normalized;
+    }
+
+    const payload = {
+      ...formData,
+      videoUrl: finalVideoUrl,
+    };
 
     try {
       setSaving(true);
       if (editingReelId) {
         // Update
-        const res = await api.updateReel(editingReelId, formData);
+        const res = await api.updateReel(editingReelId, payload);
         if (res && res.success) {
-          showAlert('success', 'Reel updated successfully!');
+          showAlert('success', 'Reel updated successfully in Neon PostgreSQL!');
           setIsModalOpen(false);
           fetchReels();
         }
       } else {
         // Create
-        const res = await api.createReel(formData);
+        const res = await api.createReel(payload);
         if (res && res.success) {
-          showAlert('success', 'New Reel added successfully!');
+          showAlert('success', 'New Reel added successfully to Neon PostgreSQL!');
           setIsModalOpen(false);
           fetchReels();
         }
@@ -576,66 +623,177 @@ export default function ReelsManagementPage() {
                     </select>
                   </div>
 
-                  {/* Source Type */}
+                  {/* Source Type Selector */}
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-[#171C17] mb-1.5">
-                      Video Source Type *
+                      Video Source Method *
                     </label>
-                    <select
-                      value={formData.sourceType}
-                      onChange={(e) => setFormData({ ...formData, sourceType: e.target.value })}
-                      className="w-full bg-white border border-[#D5DDD2] rounded-xl px-3.5 py-2.5 text-[#171C17] text-sm focus:border-[#24532F] outline-none"
-                    >
-                      <option value="upload">Direct Video Upload (MP4 / WebM)</option>
-                      <option value="url">Public Video File URL (.mp4 / .webm)</option>
-                      <option value="youtube">YouTube Video / Shorts</option>
-                      <option value="instagram">Instagram Reel URL</option>
-                    </select>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, sourceType: 'upload' }))}
+                        className={`px-3 py-2.5 rounded-xl border text-xs font-bold transition-all text-center flex flex-col items-center gap-1 ${
+                          formData.sourceType === 'upload'
+                            ? 'bg-[#24532F] text-white border-[#24532F] shadow-sm'
+                            : 'bg-white text-[#252A25] border-[#D5DDD2] hover:border-[#24532F]'
+                        }`}
+                      >
+                        <Upload className="w-4 h-4" />
+                        <span>Upload MP4</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, sourceType: 'instagram' }))}
+                        className={`px-3 py-2.5 rounded-xl border text-xs font-bold transition-all text-center flex flex-col items-center gap-1 ${
+                          formData.sourceType === 'instagram'
+                            ? 'bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] text-white border-transparent shadow-sm'
+                            : 'bg-white text-[#252A25] border-[#D5DDD2] hover:border-[#FD1D1D]'
+                        }`}
+                      >
+                        <span className="text-base leading-none">📸</span>
+                        <span>Instagram Reel</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, sourceType: 'url' }))}
+                        className={`px-3 py-2.5 rounded-xl border text-xs font-bold transition-all text-center flex flex-col items-center gap-1 ${
+                          formData.sourceType === 'url'
+                            ? 'bg-[#24532F] text-white border-[#24532F] shadow-sm'
+                            : 'bg-white text-[#252A25] border-[#D5DDD2] hover:border-[#24532F]'
+                        }`}
+                      >
+                        <LinkIcon className="w-4 h-4" />
+                        <span>External Link</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-                {/* 3. Video File Upload (Native File Picker) */}
+                {/* METHOD 1: Direct Video Upload */}
                 {formData.sourceType === 'upload' && (
-                  <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#D5DDD2] space-y-2">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-[#24532F]">
-                      Upload Video File (MP4, WebM, MOV - Max 100MB)
-                    </label>
-                    <input
-                      type="file"
-                      accept="video/mp4,video/webm,video/quicktime,video/mov"
-                      onChange={handleVideoUpload}
-                      disabled={uploadingVideo}
-                      className="block w-full text-xs text-[#596358] file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#24532F] file:text-white hover:file:bg-[#183D22] cursor-pointer"
-                    />
-                    {uploadingVideo && (
-                      <p className="text-xs text-[#24532F] animate-pulse">Uploading video to server, please wait...</p>
-                    )}
+                  <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#D5DDD2] space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-[#24532F]">
+                        Upload Video File (MP4, WebM, MOV - Max 100MB)
+                      </label>
+                      <span className="text-[11px] text-[#596358] font-medium">
+                        Direct-to-Vercel Blob Storage
+                      </span>
+                    </div>
+
+                    <div className="border-2 border-dashed border-[#D5DDD2] hover:border-[#24532F] bg-white rounded-xl p-5 text-center transition-colors">
+                      <input
+                        type="file"
+                        accept="video/mp4,video/webm,video/quicktime,video/mov"
+                        onChange={handleVideoUpload}
+                        disabled={uploadingVideo}
+                        className="hidden"
+                        id="reel-video-file-upload"
+                      />
+                      <label htmlFor="reel-video-file-upload" className="cursor-pointer block">
+                        <Video className="w-8 h-8 text-[#24532F] mx-auto mb-2" />
+                        <span className="font-bold text-[#171C17] text-xs block">
+                          {uploadingVideo ? 'Video Direct Storage Mein Upload Ho Rahi Hai...' : 'Computer Se Video File Chunein (MP4 H.264 Recommended)'}
+                        </span>
+                        <span className="text-[11px] text-[#596358] block mt-1">
+                          Direct CDN upload bypasses server limits — no 413 error
+                        </span>
+                      </label>
+
+                      {uploadingVideo && (
+                        <div className="mt-3 max-w-xs mx-auto">
+                          <div className="flex justify-between text-[11px] text-[#24532F] font-bold mb-1">
+                            <span>Uploading video...</span>
+                            <span>{videoProgress}%</span>
+                          </div>
+                          <div className="w-full h-2 bg-[#DCE8D5] rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-[#24532F] transition-all duration-300 rounded-full"
+                              style={{ width: `${videoProgress}%` }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
                     {formData.videoUrl && (
-                      <p className="text-xs text-[#2E7D46] truncate">
-                        ✓ Video uploaded: {formData.videoUrl}
-                      </p>
+                      <div className="mt-3 space-y-2">
+                        <p className="text-xs text-[#2E7D46] font-bold truncate">
+                          ✓ Uploaded Video URL: {formData.videoUrl}
+                        </p>
+                        <div className="max-w-[220px] mx-auto rounded-xl overflow-hidden bg-black border border-[#D5DDD2] shadow-sm">
+                          <video
+                            src={formData.videoUrl}
+                            controls
+                            playsInline
+                            className="w-full aspect-[9/16] object-cover"
+                          />
+                        </div>
+                      </div>
                     )}
                   </div>
                 )}
 
-                {/* 4. Video URL Input */}
-                {formData.sourceType !== 'upload' && (
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-[#171C17] mb-1.5">
-                      Video URL *
-                    </label>
+                {/* METHOD 2: Instagram Reel URL */}
+                {formData.sourceType === 'instagram' && (
+                  <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#FD1D1D]/30 space-y-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">📸</span>
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-[#833AB4]">
+                          Instagram Reel or Post URL *
+                        </label>
+                        <span className="text-[11px] text-[#596358] block">
+                          Public Instagram Reels will render with Instagram's official embed player
+                        </span>
+                      </div>
+                    </div>
+
                     <input
-                      type="text"
-                      required={formData.sourceType !== 'upload'}
+                      type="url"
+                      required={formData.sourceType === 'instagram'}
                       value={formData.videoUrl}
                       onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
-                      placeholder={
-                        formData.sourceType === 'youtube'
-                          ? 'e.g. https://www.youtube.com/watch?v=... or https://youtube.com/shorts/...'
-                          : formData.sourceType === 'instagram'
-                            ? 'e.g. https://www.instagram.com/reel/...'
-                            : 'e.g. https://example.com/videos/zatka-demo.mp4'
-                      }
+                      placeholder="https://www.instagram.com/reel/C8xYz123/ ya https://instagram.com/p/..."
+                      className="w-full bg-white border border-[#D5DDD2] rounded-xl px-3.5 py-2.5 text-[#171C17] text-xs focus:border-[#833AB4] focus:ring-1 focus:ring-[#833AB4] outline-none placeholder-[#596358]"
+                    />
+
+                    {extractInstagramShortcode(formData.videoUrl) ? (
+                      <div className="space-y-2">
+                        <p className="text-xs font-bold text-[#833AB4]">
+                          ✓ Valid Instagram Reel detected (ID: {extractInstagramShortcode(formData.videoUrl)})
+                        </p>
+                        <div className="max-w-[280px] mx-auto rounded-xl overflow-hidden border border-[#D5DDD2] shadow-sm bg-white p-2">
+                          <iframe
+                            src={`https://www.instagram.com/reel/${extractInstagramShortcode(formData.videoUrl)}/embed/`}
+                            className="w-full h-80 rounded-lg border-0"
+                            title="Instagram Reel Preview"
+                            loading="lazy"
+                          />
+                        </div>
+                      </div>
+                    ) : formData.videoUrl.trim() ? (
+                      <p className="text-xs text-amber-700 bg-amber-50 p-2 rounded-lg border border-amber-200">
+                        ⚠️ Kripya valid public Instagram Reel link dalein (jaise https://www.instagram.com/reel/C7abc123/)
+                      </p>
+                    ) : null}
+                  </div>
+                )}
+
+                {/* METHOD 3: External Video URL / YouTube */}
+                {formData.sourceType === 'url' && (
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#171C17] mb-1.5">
+                      External Video URL (.mp4 / .webm link) *
+                    </label>
+                    <input
+                      type="url"
+                      required={formData.sourceType === 'url'}
+                      value={formData.videoUrl}
+                      onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+                      placeholder="https://example.com/videos/demonstration.mp4"
                       className="w-full bg-white border border-[#D5DDD2] rounded-xl px-3.5 py-2.5 text-[#171C17] text-sm focus:border-[#24532F] outline-none placeholder-[#596358]"
                     />
                   </div>
