@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, ShieldAlert, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
@@ -7,10 +7,16 @@ export default function AdminLoginPage() {
   const { loginAdmin, isAdminAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('admin@mahadevelectrohub.com');
-  const [password, setPassword] = useState('Admin@Mahadev2026');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Explicitly guarantee fields start blank on mount
+  useEffect(() => {
+    setEmail('');
+    setPassword('');
+  }, []);
 
   if (isAdminAuthenticated) {
     navigate('/admin/dashboard', { replace: true });
@@ -20,6 +26,12 @@ export default function AdminLoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (!email.trim() || !password) {
+      setError('Kripya admin email aur password dono enter karein.');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -57,7 +69,7 @@ export default function AdminLoginPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} autoComplete="off" className="space-y-4">
           <div>
             <label className="block text-xs font-semibold text-[#171C17] mb-1">
               Admin Email Address
@@ -65,13 +77,16 @@ export default function AdminLoginPage() {
             <div className="relative">
               <input
                 type="email"
+                name="admin_email"
+                id="admin_email"
                 required
+                autoComplete="off"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@mahadevelectrohub.com"
+                placeholder="Enter admin email address"
                 className="w-full pl-9 pr-3 py-2.5 bg-white text-[#171C17] text-xs border border-[#D5DDD2] rounded-xl focus:outline-none focus:border-[#24532F] focus:ring-1 focus:ring-[#24532F] placeholder-[#596358]"
               />
-              <Mail className="w-4 h-4 text-[#596358] absolute left-3 top-3" />
+              <Mail className="w-4 h-4 text-[#596358] absolute left-3 top-3 pointer-events-none" />
             </div>
           </div>
 
@@ -82,20 +97,23 @@ export default function AdminLoginPage() {
             <div className="relative">
               <input
                 type="password"
+                name="admin_password"
+                id="admin_password"
                 required
+                autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder="Enter admin password"
                 className="w-full pl-9 pr-3 py-2.5 bg-white text-[#171C17] text-xs border border-[#D5DDD2] rounded-xl focus:outline-none focus:border-[#24532F] focus:ring-1 focus:ring-[#24532F] placeholder-[#596358]"
               />
-              <Lock className="w-4 h-4 text-[#596358] absolute left-3 top-3" />
+              <Lock className="w-4 h-4 text-[#596358] absolute left-3 top-3 pointer-events-none" />
             </div>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-[#24532F] hover:bg-[#183D22] text-white font-bold text-xs rounded-xl active:scale-98 transition-all flex items-center justify-center gap-2 shadow-sm"
+            className="w-full py-3 bg-[#24532F] hover:bg-[#183D22] text-white font-bold text-xs rounded-xl active:scale-98 transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-60"
           >
             {loading ? (
               <span>Login Ho Raha Hai...</span>
